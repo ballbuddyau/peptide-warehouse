@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin — Peptide Warehouse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink:#0a0b0c; --ink-mid:#1c1e21; --ink-sub:#2a2d31;
+  --border:#2e3136; --border-faint:#222428;
+  --text:#e8eaed; --text-mid:#9aa0a6; --text-faint:#5f6368;
+  --riviera:#006B96; --riviera-mid:#0087bc; --riviera-pale:#0d2535; --riviera-bright:#00aadf;
+  --green:#1a9e5c; --green-pale:#0d2a1c;
+  --amber:#d4820a; --amber-pale:#2a1e08;
+  --red:#c0392b; --red-pale:#2a0e0b;
+  --purple:#7c4dff; --purple-pale:#1a1230;
+  --shadow:0 4px 20px rgba(0,0,0,.35);
+  --sidebar-w:220px;
+  --mono:'JetBrains Mono',monospace;
+  --radius:10px; --radius-sm:6px; --radius-lg:14px;
+}
+[data-theme="light"] {
+  --ink:#f0f2f5; --ink-mid:#ffffff; --ink-sub:#f7f8fa;
+  --border:#e2e5ea; --border-faint:#eaecf0;
+  --text:#0f1114; --text-mid:#4a5260; --text-faint:#9aa0aa;
+  --riviera:#006B96; --riviera-mid:#0087bc; --riviera-pale:#e6f4fb; --riviera-bright:#0087bc;
+  --green:#1a9e5c; --green-pale:#e8f8f0;
+  --amber:#c47a0a; --amber-pale:#fdf3e3;
+  --red:#c0392b; --red-pale:#fdecea;
+  --purple:#6c3df0; --purple-pale:#f0ecff;
+  --shadow:0 4px 20px rgba(0,0,0,.08);
+}
+[data-theme="light"] {
+  --ink:#f0f2f5; --ink-mid:#ffffff; --ink-sub:#f7f8fa;
+  --border:#e2e5ea; --border-faint:#eaecf0;
+  --text:#0f1114; --text-mid:#4a5260; --text-faint:#9aa0aa;
+  --riviera:#006B96; --riviera-mid:#0087bc; --riviera-pale:#e6f4fb; --riviera-bright:#0087bc;
+  --green:#1a9e5c; --green-pale:#e8f8f0;
+  --amber:#c47a0a; --amber-pale:#fdf3e3;
+  --red:#c0392b; --red-pale:#fdecea;
+  --purple:#6c3df0; --purple-pale:#f0ecff;
+  --shadow:0 4px 20px rgba(0,0,0,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--text);font-size:14px;line-height:1.6;transition:background .25s,color .25s;}
+button{cursor:pointer;font-family:inherit;}
+input,textarea,select{font-family:inherit;}
+a{text-decoration:none;color:inherit;}
+
+/* ── LOGIN ───────────────────────────────────────────────────── */
+#login-screen{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:0;}
+.login-box{width:360px;animation:fadeUp .5s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.login-logo{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:-0.5px;color:var(--text);margin-bottom:2.5rem;text-align:center;}
+.login-logo span{color:var(--riviera-bright);}
+.login-logo sub{display:block;font-family:'JetBrains Mono',monospace;font-size:0.55rem;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:var(--text-faint);margin-top:0.2rem;}
+.login-card{background:var(--ink-mid);border:1px solid var(--border);padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow);}
+.login-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:0.3rem;}
+.login-sub{font-size:0.72rem;color:var(--text-faint);margin-bottom:1.8rem;letter-spacing:0.3px;}
+.login-label{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);font-weight:500;display:block;margin-bottom:0.4rem;}
+.login-input{width:100%;background:var(--ink-sub);border:1px solid var(--border);color:var(--text);padding:0.65rem 0.9rem;font-size:0.82rem;outline:none;transition:border .2s;margin-bottom:1rem;border-radius:var(--radius-sm);}
+.login-input:focus{border-color:var(--riviera-bright);}
+.login-btn{width:100%;background:var(--riviera);color:#fff;border:none;padding:0.75rem;font-size:0.65rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:0.5rem;border-radius:var(--radius-sm);}
+.login-btn:hover{background:var(--riviera-mid);}
+.login-error{font-size:0.7rem;color:var(--red);margin-top:0.8rem;display:none;text-align:center;}
+
+/* ── SHELL ───────────────────────────────────────────────────── */
+#app{display:none;height:100vh;overflow:hidden;}
+.shell{display:flex;height:100%;}
+
+/* ── SIDEBAR ─────────────────────────────────────────────────── */
+.sidebar{width:var(--sidebar-w);background:var(--ink-mid);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;border-radius:0;}
+.sidebar-logo{padding:1.4rem 1.2rem 1rem;border-bottom:1px solid var(--border-faint);}
+.sidebar-logo-text{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:800;letter-spacing:-0.3px;}
+.sidebar-logo-text span{color:var(--riviera-bright);}
+.sidebar-logo-badge{font-family:var(--mono);font-size:0.48rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-faint);margin-top:0.15rem;}
+.sidebar-section{padding:1rem 0.8rem 0.4rem;font-family:var(--mono);font-size:0.48rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-faint);}
+.nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.55rem 1rem;margin:0.1rem 0.5rem;font-size:0.75rem;font-weight:500;color:var(--text-mid);cursor:pointer;transition:all .15s;border-left:none;border-radius:var(--radius-sm);position:relative;}
+.nav-item:hover{color:var(--text);background:var(--ink-sub);}
+.nav-item.active{color:var(--riviera-bright);background:var(--riviera-pale);}
+.nav-item .icon{font-size:0.9rem;width:16px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:var(--riviera);color:#fff;font-family:var(--mono);font-size:0.5rem;font-weight:600;padding:0.1rem 0.4rem;border-radius:20px;min-width:18px;text-align:center;}
+.nav-badge.amber{background:var(--amber);}
+.sidebar-bottom{margin-top:auto;padding:1rem;border-top:1px solid var(--border-faint);}
+.sidebar-user{display:flex;align-items:center;gap:0.7rem;}
+.sidebar-avatar{width:30px;height:30px;background:var(--riviera);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;flex-shrink:0;border-radius:50%;}
+.sidebar-user-name{font-size:0.72rem;font-weight:600;}
+.sidebar-user-role{font-size:0.58rem;color:var(--text-faint);font-family:var(--mono);letter-spacing:1px;}
+.logout-btn{margin-left:auto;background:none;border:none;color:var(--text-faint);font-size:0.8rem;padding:0.2rem;cursor:pointer;transition:color .2s;}
+.logout-btn:hover{color:var(--red);}
+
+/* ── MAIN ────────────────────────────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:52px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;flex-shrink:0;}
+.topbar-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;letter-spacing:-0.3px;}
+.topbar-sub{font-size:0.65rem;color:var(--text-faint);font-family:var(--mono);}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:0.8rem;}
+.topbar-time{font-family:var(--mono);font-size:0.62rem;color:var(--text-faint);}
+.theme-toggle{display:flex;align-items:center;background:var(--ink-sub);border:1px solid var(--border);border-radius:20px;padding:3px;gap:2px;}
+.theme-btn{width:28px;height:22px;border:none;background:transparent;border-radius:16px;font-size:0.65rem;color:var(--text-faint);cursor:pointer;transition:all .2s;}
+.theme-btn.active{background:var(--riviera);color:#fff;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.content{flex:1;overflow-y:auto;padding:1.5rem;}
+
+/* ── STATS ROW ───────────────────────────────────────────────── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:transparent;border:none;margin-bottom:1.5rem;}
+.stat-card{background:var(--ink-mid);padding:1.2rem 1.4rem;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);}
+.stat-label{font-family:var(--mono);font-size:0.52rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.5rem;}
+.stat-value{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;line-height:1;letter-spacing:-1px;}
+.stat-value.blue{color:var(--riviera-bright);}
+.stat-value.green{color:var(--green);}
+.stat-value.amber{color:var(--amber);}
+.stat-value.red{color:var(--red);}
+.stat-delta{font-size:0.62rem;color:var(--text-faint);margin-top:0.3rem;font-family:var(--mono);}
+
+/* ── SECTION HEADER ──────────────────────────────────────────── */
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;}
+.section-hdr-title{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:-0.2px;}
+.section-hdr-sub{font-size:0.62rem;color:var(--text-faint);font-family:var(--mono);}
+
+/* ── TABLE ───────────────────────────────────────────────────── */
+.table-wrap{background:var(--ink-mid);border:1px solid var(--border);overflow:hidden;margin-bottom:1.5rem;border-radius:var(--radius);box-shadow:var(--shadow);}
+.table-toolbar{padding:0.8rem 1rem;border-bottom:1px solid var(--border-faint);display:flex;align-items:center;gap:0.8rem;}
+.table-search{flex:1;background:var(--ink-sub);border:1px solid var(--border);color:var(--text);padding:0.4rem 0.7rem;font-size:0.72rem;outline:none;border-radius:var(--radius-sm);}
+.table-search:focus{border-color:var(--riviera-bright);}
+.table-search::placeholder{color:var(--text-faint);}
+.tbl-filter{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--text-mid);padding:0.35rem 0.7rem;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;border-radius:var(--radius-sm);}
+.tbl-filter:hover,.tbl-filter.active{background:var(--riviera-pale);border-color:var(--riviera);color:var(--riviera-bright);}
+table{width:100%;border-collapse:collapse;}
+thead tr{border-bottom:1px solid var(--border);}
+th{padding:0.65rem 1rem;text-align:left;font-family:var(--mono);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);font-weight:500;}
+td{padding:0.7rem 1rem;font-size:0.75rem;border-bottom:1px solid var(--border-faint);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--ink-sub);}
+.td-mono{font-family:var(--mono);font-size:0.68rem;}
+.td-name{font-weight:600;}
+.td-email{color:var(--text-mid);font-size:0.7rem;}
+
+/* ── STATUS PILLS ────────────────────────────────────────────── */
+.pill{display:inline-flex;align-items:center;gap:0.3rem;font-family:var(--mono);font-size:0.52rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:20px;}
+.pill::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.pill.pending{background:var(--amber-pale);color:var(--amber);}
+.pill.pending::before{background:var(--amber);}
+.pill.processing{background:var(--riviera-pale);color:var(--riviera-bright);}
+.pill.processing::before{background:var(--riviera-bright);}
+.pill.dispatched{background:var(--green-pale);color:var(--green);}
+.pill.dispatched::before{background:var(--green);}
+.pill.cancelled{background:var(--red-pale);color:var(--red);}
+.pill.cancelled::before{background:var(--red);}
+.pill.unread{background:var(--purple-pale);color:var(--purple);}
+.pill.unread::before{background:var(--purple);}
+.pill.replied{background:var(--green-pale);color:var(--green);}
+.pill.replied::before{background:var(--green);}
+
+/* ── ACTION BUTTONS ──────────────────────────────────────────── */
+.btn{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;border:none;padding:0.35rem 0.8rem;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;border-radius:var(--radius-sm);}
+.btn-primary{background:var(--riviera);color:#fff;}
+.btn-primary:hover{background:var(--riviera-mid);}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-mid);border-radius:var(--radius-sm);}
+.btn-ghost:hover{border-color:var(--riviera);color:var(--riviera-bright);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{opacity:0.85;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{opacity:0.85;}
+.btn-amber{background:var(--amber);color:#fff;}
+.btn-amber:hover{opacity:0.85;}
+.btn-row{display:flex;gap:0.4rem;}
+
+/* ── PANEL / MODAL ───────────────────────────────────────────── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:center;justify-content:center;}
+.overlay.show{display:flex;}
+.panel{background:var(--ink-mid);border:1px solid var(--border);width:540px;max-width:95vw;max-height:90vh;display:flex;flex-direction:column;animation:fadeUp .25s ease both;border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden;}
+.panel-header{padding:1.2rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.panel-title{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;}
+.panel-close{background:none;border:none;color:var(--text-faint);font-size:1.1rem;cursor:pointer;padding:0.2rem;}
+.panel-close:hover{color:var(--text);}
+.panel-body{padding:1.4rem;overflow-y:auto;flex:1;}
+.panel-footer{padding:1rem 1.4rem;border-top:1px solid var(--border);display:flex;gap:0.5rem;justify-content:flex-end;flex-shrink:0;}
+.field-label{font-family:var(--mono);font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.35rem;display:block;}
+.field-value{font-size:0.8rem;margin-bottom:1.1rem;color:var(--text);}
+.field-input{width:100%;background:var(--ink-sub);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;font-size:0.8rem;outline:none;margin-bottom:1.1rem;resize:vertical;border-radius:var(--radius-sm);}
+.field-input:focus{border-color:var(--riviera-bright);}
+.field-select{width:100%;background:var(--ink-sub);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.8rem;font-size:0.8rem;outline:none;margin-bottom:1.1rem;appearance:none;border-radius:var(--radius-sm);}
+.field-select:focus{border-color:var(--riviera-bright);}
+.field-group{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.divider{border:none;border-top:1px solid var(--border-faint);margin:1rem 0;}
+.order-items-list{background:var(--ink-sub);border:1px solid var(--border-faint);padding:0.8rem;margin-bottom:1.1rem;border-radius:var(--radius-sm);}
+.order-item-row{display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;padding:0.3rem 0;border-bottom:1px solid var(--border-faint);}
+.order-item-row:last-child{border-bottom:none;}
+.order-item-name{font-weight:600;}
+.order-item-qty{color:var(--text-faint);font-family:var(--mono);font-size:0.65rem;}
+.order-item-price{font-family:var(--mono);color:var(--riviera-bright);}
+.total-row{display:flex;justify-content:space-between;font-size:0.8rem;padding:0.4rem 0;}
+.total-row.grand{font-weight:700;font-family:'Syne',sans-serif;border-top:1px solid var(--border);padding-top:0.7rem;margin-top:0.3rem;}
+.message-bubble{background:var(--ink-sub);border:1px solid var(--border-faint);padding:0.9rem 1rem;font-size:0.78rem;line-height:1.8;color:var(--text-mid);margin-bottom:1rem;font-style:italic;border-radius:var(--radius-sm);}
+.reply-preview{background:var(--riviera-pale);border-left:2px solid var(--riviera-bright);padding:0.7rem 0.9rem;font-size:0.72rem;color:var(--text-mid);margin-bottom:1rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;}
+
+/* ── TRACKING INPUT ──────────────────────────────────────────── */
+.tracking-row{display:flex;gap:0.5rem;margin-bottom:1.1rem;}
+.tracking-row .field-input{margin-bottom:0;}
+
+/* ── TOAST ───────────────────────────────────────────────────── */
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ink-sub);border:1px solid var(--border);padding:0.7rem 1.2rem;font-size:0.72rem;z-index:999;display:none;animation:fadeUp .3s ease both;font-family:var(--mono);border-radius:var(--radius-sm);box-shadow:var(--shadow);}
+#toast.show{display:block;}
+#toast.success{border-color:var(--green);color:var(--green);}
+#toast.info{border-color:var(--riviera-bright);color:var(--riviera-bright);}
+
+/* ── PAGES ───────────────────────────────────────────────────── */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── DASHBOARD GRID ──────────────────────────────────────────── */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.recent-activity{background:var(--ink-mid);border:1px solid var(--border);padding:1rem;border-radius:var(--radius);box-shadow:var(--shadow);}
+.activity-item{display:flex;align-items:flex-start;gap:0.8rem;padding:0.7rem 0;border-bottom:1px solid var(--border-faint);}
+.activity-item:last-child{border-bottom:none;}
+.activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:0.35rem;}
+.activity-dot.blue{background:var(--riviera-bright);}
+.activity-dot.green{background:var(--green);}
+.activity-dot.amber{background:var(--amber);}
+.activity-dot.purple{background:var(--purple);}
+.activity-text{font-size:0.73rem;line-height:1.5;}
+.activity-time{font-family:var(--mono);font-size:0.58rem;color:var(--text-faint);margin-top:0.1rem;}
+.quick-actions{background:var(--ink-mid);border:1px solid var(--border);padding:1rem;border-radius:var(--radius);box-shadow:var(--shadow);}
+.quick-action-btn{display:flex;align-items:center;gap:0.8rem;width:100%;background:var(--ink-sub);border:1px solid var(--border-faint);padding:0.8rem 1rem;cursor:pointer;transition:all .15s;margin-bottom:0.5rem;color:var(--text);border-radius:var(--radius-sm);}
+.quick-action-btn:last-child{margin-bottom:0;}
+.quick-action-btn:hover{border-color:var(--riviera);background:var(--riviera-pale);}
+.quick-action-icon{font-size:1.1rem;width:24px;text-align:center;}
+.quick-action-label{font-size:0.75rem;font-weight:500;}
+.quick-action-sub{font-size:0.6rem;color:var(--text-faint);font-family:var(--mono);}
+
+/* ── EMPTY STATE ──────────────────────────────────────────────── */
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text-faint);}
+.empty-state-icon{font-size:2.5rem;margin-bottom:0.8rem;opacity:0.4;}
+.empty-state-text{font-size:0.78rem;}
+
+/* ── SCROLLBAR ───────────────────────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);}
+::-webkit-scrollbar-thumb:hover{background:var(--text-faint);}
+/* ── LIGHT THEME OVERRIDES ──────────────────────────────────── */
+[data-theme="light"] .sidebar{box-shadow:2px 0 12px rgba(0,0,0,.06);}
+[data-theme="light"] .topbar{box-shadow:0 2px 8px rgba(0,0,0,.05);}
+[data-theme="light"] #login-screen{background:var(--ink);}
+[data-theme="light"] tr:hover td{background:#f4f6f9;}
+[data-theme="light"] .nav-item:hover{background:#f0f2f5;}
+[data-theme="light"] .nav-item.active{background:var(--riviera-pale);}
+[data-theme="light"] .shell{background:var(--ink);}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      Peptide <span>Warehouse</span>
+      <sub>Admin Portal</sub>
+    </div>
+    <div class="login-card">
+      <div class="login-title">Sign In</div>
+      <div class="login-sub">Restricted access — authorised personnel only</div>
+      <label class="login-label">Username</label>
+      <input class="login-input" id="loginUser" type="text" placeholder="admin" autocomplete="off"/>
+      <label class="login-label">Password</label>
+      <input class="login-input" id="loginPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <button class="login-btn" onclick="doLogin()">Access Portal →</button>
+      <div class="login-error" id="loginError">Invalid credentials. Please try again.</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="shell">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">Peptide <span>Warehouse</span></div>
+        <div class="sidebar-logo-badge">Admin Portal</div>
+      </div>
+
+      <div class="sidebar-section">Main</div>
+      <div class="nav-item active" onclick="goPage('dashboard',this)"><span class="icon">⬛</span> Dashboard</div>
+      <div class="nav-item" onclick="goPage('orders',this)"><span class="icon">📦</span> Orders <span class="nav-badge amber" id="badge-orders">0</span></div>
+      <div class="nav-item" onclick="goPage('messages',this)"><span class="icon">✉️</span> Messages <span class="nav-badge" id="badge-messages">0</span></div>
+
+      <div class="sidebar-section">Store</div>
+      <div class="nav-item" onclick="goPage('products',this)"><span class="icon">🧪</span> Products</div>
+      <div class="nav-item" onclick="goPage('customers',this)"><span class="icon">👤</span> Customers</div>
+
+      <div class="sidebar-section">System</div>
+      <div class="nav-item" onclick="goPage('settings',this)"><span class="icon">⚙️</span> Settings</div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">AW</div>
+          <div>
+            <div class="sidebar-user-name">Admin</div>
+            <div class="sidebar-user-role">OWNER</div>
+          </div>
+          <button class="logout-btn" onclick="doLogout()" title="Logout">↩</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title" id="topbar-title">Dashboard</div>
+          <div class="topbar-sub" id="topbar-sub">Overview</div>
+        </div>
+        <div class="topbar-right">
+          <div class="theme-toggle">
+            <button class="theme-btn active" id="btn-dark" onclick="setTheme('dark')" title="Dark mode">☾</button>
+            <button class="theme-btn" id="btn-light" onclick="setTheme('light')" title="Light mode">☀</button>
+          </div>
+          <div class="status-dot"></div>
+          <div class="topbar-time" id="live-time"></div>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- DASHBOARD -->
+        <div class="page active" id="page-dashboard">
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-label">Total Orders</div>
+              <div class="stat-value blue" id="stat-total">0</div>
+              <div class="stat-delta">All time</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Pending Payment</div>
+              <div class="stat-value amber" id="stat-pending">0</div>
+              <div class="stat-delta">Awaiting confirmation</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Dispatched</div>
+              <div class="stat-value green" id="stat-dispatched">0</div>
+              <div class="stat-delta">Sent this month</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Revenue (AUD)</div>
+              <div class="stat-value blue" id="stat-revenue">$0</div>
+              <div class="stat-delta">All orders</div>
+            </div>
+          </div>
+
+          <div class="dash-grid">
+            <div>
+              <div class="section-hdr">
+                <div>
+                  <div class="section-hdr-title">Recent Orders</div>
+                  <div class="section-hdr-sub">Last 5 orders placed</div>
+                </div>
+                <button class="btn btn-ghost" onclick="goPage('orders',document.querySelector('[onclick*=orders]'))">View All</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Ref</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
+                  <tbody id="dash-recent-orders"></tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div class="section-hdr">
+                <div>
+                  <div class="section-hdr-title">Activity Feed</div>
+                  <div class="section-hdr-sub">Latest store events</div>
+                </div>
+              </div>
+              <div class="recent-activity" id="activity-feed"></div>
+              <div class="section-hdr" style="margin-top:1rem;">
+                <div>
+                  <div class="section-hdr-title">Quick Actions</div>
+                </div>
+              </div>
+              <div class="quick-actions">
+                <button class="quick-action-btn" onclick="goPage('orders',document.querySelectorAll('.nav-item')[1])">
+                  <span class="quick-action-icon">📦</span>
+                  <div><div class="quick-action-label">Fulfil Orders</div><div class="quick-action-sub">Review pending pre-orders</div></div>
+                </button>
+                <button class="quick-action-btn" onclick="goPage('messages',document.querySelectorAll('.nav-item')[2])">
+                  <span class="quick-action-icon">✉️</span>
+                  <div><div class="quick-action-label">Reply to Messages</div><div class="quick-action-sub">Respond to customer enquiries</div></div>
+                </button>
+                <button class="quick-action-btn" onclick="goPage('products',document.querySelectorAll('.nav-item')[4])">
+                  <span class="quick-action-icon">🧪</span>
+                  <div><div class="quick-action-label">Manage Products</div><div class="quick-action-sub">Update stock & pricing</div></div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORDERS -->
+        <div class="page" id="page-orders">
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input class="table-search" placeholder="Search orders, customers, refs…" oninput="filterOrders(this.value)"/>
+              <button class="tbl-filter active" onclick="filterOrderStatus('all',this)">All</button>
+              <button class="tbl-filter" onclick="filterOrderStatus('pending',this)">Pending</button>
+              <button class="tbl-filter" onclick="filterOrderStatus('processing',this)">Processing</button>
+              <button class="tbl-filter" onclick="filterOrderStatus('dispatched',this)">Dispatched</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Ref</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MESSAGES -->
+        <div class="page" id="page-messages">
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input class="table-search" placeholder="Search messages…" oninput="filterMessages(this.value)"/>
+              <button class="tbl-filter active" onclick="filterMsgStatus('all',this)">All</button>
+              <button class="tbl-filter" onclick="filterMsgStatus('unread',this)">Unread</button>
+              <button class="tbl-filter" onclick="filterMsgStatus('replied',this)">Replied</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>From</th>
+                  <th>Subject</th>
+                  <th>Preview</th>
+                  <th>Status</th>
+                  <th>Received</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="messages-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="page" id="page-products">
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input class="table-search" placeholder="Search products…" oninput="filterProducts(this.value)"/>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- CUSTOMERS -->
+        <div class="page" id="page-customers">
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input class="table-search" placeholder="Search customers…" oninput="filterCustomers(this.value)"/>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Orders</th>
+                  <th>Total Spent</th>
+                  <th>Last Order</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="customers-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="page" id="page-settings">
+          <div style="max-width:520px;">
+            <div class="table-wrap" style="margin-bottom:1rem;">
+              <div class="table-toolbar"><span style="font-family:var(--mono);font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);">Store Settings</span></div>
+              <div style="padding:1.2rem;">
+                <label class="field-label">Store Name</label>
+                <input class="field-input" value="Peptide Warehouse Australia"/>
+                <label class="field-label">Notification Email</label>
+                <input class="field-input" value="info@auspeptidewarehouse.au"/>
+                <label class="field-label">PayID Email</label>
+                <input class="field-input" value="info@auspeptidewarehouse.au"/>
+                <label class="field-label">Order Prefix</label>
+                <input class="field-input" value="PWA-"/>
+                <button class="btn btn-primary" onclick="toast('Settings saved','success')">Save Settings</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <div class="table-toolbar"><span style="font-family:var(--mono);font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);">Change Password</span></div>
+              <div style="padding:1.2rem;">
+                <label class="field-label">Current Password</label>
+                <input class="field-input" type="password" placeholder="••••••••"/>
+                <label class="field-label">New Password</label>
+                <input class="field-input" type="password" placeholder="••••••••"/>
+                <label class="field-label">Confirm New Password</label>
+                <input class="field-input" type="password" placeholder="••••••••"/>
+                <button class="btn btn-primary" onclick="toast('Password updated','success')">Update Password</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER DETAIL PANEL -->
+<div class="overlay" id="order-overlay" onclick="if(event.target===this)closePanel('order-overlay')">
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title" id="order-panel-title">Order Detail</div>
+      <button class="panel-close" onclick="closePanel('order-overlay')">✕</button>
+    </div>
+    <div class="panel-body" id="order-panel-body"></div>
+    <div class="panel-footer" id="order-panel-footer"></div>
+  </div>
+</div>
+
+<!-- MESSAGE REPLY PANEL -->
+<div class="overlay" id="msg-overlay" onclick="if(event.target===this)closePanel('msg-overlay')">
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title" id="msg-panel-title">Message</div>
+      <button class="panel-close" onclick="closePanel('msg-overlay')">✕</button>
+    </div>
+    <div class="panel-body" id="msg-panel-body"></div>
+    <div class="panel-footer" id="msg-panel-footer"></div>
+  </div>
+</div>
+
+<!-- PRODUCT EDIT PANEL -->
+<div class="overlay" id="product-overlay" onclick="if(event.target===this)closePanel('product-overlay')">
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title" id="product-panel-title">Edit Product</div>
+      <button class="panel-close" onclick="closePanel('product-overlay')">✕</button>
+    </div>
+    <div class="panel-body" id="product-panel-body"></div>
+    <div class="panel-footer" id="product-panel-footer"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+/* ─── AUTH ───────────────────────────────────────────────────── */
+const CREDS = { user: 'admin', pass: 'peptide2026' };
+
+function doLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if(u === CREDS.user && p === CREDS.pass){
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initApp();
+  } else {
+    const err = document.getElementById('loginError');
+    err.style.display = 'block';
+    setTimeout(()=>err.style.display='none', 3000);
+  }
+}
+
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('btn-dark').classList.toggle('active', t==='dark');
+  document.getElementById('btn-light').classList.toggle('active', t==='light');
+  // Also update login screen bg smoothly
+  document.getElementById('login-screen').style.background = t==='light' ? 'var(--ink)' : 'var(--ink)';
+}
+
+function doLogout(){
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('loginPass').value = '';
+}
+
+/* ─── LIVE CLOCK ─────────────────────────────────────────────── */
+function updateClock(){
+  const now = new Date();
+  document.getElementById('live-time').textContent =
+    now.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',second:'2-digit'}) + ' AEST';
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ─── SAMPLE DATA ─────────────────────────────────────────────── */
+const orders = [
+  { id:'PWA-X4K2R1', name:'James Wilson',   email:'james.w@email.com',   state:'VIC', items:[{name:'Retatrutide',qty:1,price:129.99},{name:'BAC Water',qty:2,price:19.99}], total:179.97, shipping:'Standard Post ($11.99)', shipCost:11.99, payment:'PayID',  status:'pending',    date:'2026-03-09', tracking:'' },
+  { id:'PWA-M9P3T7', name:'Sarah Chen',     email:'sarah.c@research.au', state:'NSW', items:[{name:'GHK-Cu',qty:2,price:94.99}],                                             total:201.97, shipping:'Standard Post (Free)', shipCost:0,     payment:'PayPal', status:'processing', date:'2026-03-08', tracking:'' },
+  { id:'PWA-Q1L8V2', name:'Michael Torres', email:'m.torres@uni.edu.au', state:'QLD', items:[{name:'Retatrutide Starter Bundle',qty:1,price:249.99}],                         total:249.99, shipping:'Express Post ($15.99)',  shipCost:15.99, payment:'PayID',  status:'dispatched', date:'2026-03-07', tracking:'EXP123456789AU' },
+  { id:'PWA-B6N0W5', name:'Emma Patel',     email:'emma.p@labs.com.au',  state:'SA',  items:[{name:'Semax',qty:1,price:69.99},{name:'KLOW Peptide Blend',qty:1,price:174.99}], total:256.97, shipping:'Express Post ($15.99)', shipCost:15.99, payment:'Bank Transfer', status:'pending', date:'2026-03-09', tracking:'' },
+  { id:'PWA-H3D5F9', name:'Ryan Brooks',    email:'r.brooks@email.com',  state:'WA',  items:[{name:'Melanotan I',qty:1,price:69.99}],                                         total:81.98,  shipping:'Standard Post ($11.99)',shipCost:11.99, payment:'PayID',  status:'processing', date:'2026-03-08', tracking:'' },
+  { id:'PWA-C7J2K4', name:'Olivia Zhang',   email:'o.zhang@med.edu.au',  state:'VIC', items:[{name:'GHK-Cu',qty:1,price:94.99},{name:'BAC Water',qty:1,price:19.99}],         total:126.97, shipping:'Standard Post ($11.99)',shipCost:11.99, payment:'PayPal', status:'dispatched', date:'2026-03-06', tracking:'STD987654321AU' },
+];
+
+const messages = [
+  { id:1, name:'James Wilson',   email:'james.w@email.com',   subject:'Question about Retatrutide dosing',       body:'Hi, I\'m researching the optimal reconstitution process for Retatrutide. Could you advise on the recommended solvent volume for the 10mg vial? Also, what are the storage requirements once reconstituted? Thanks in advance.',              status:'unread',  date:'2026-03-09 14:22', reply:'' },
+  { id:2, name:'Sarah Chen',     email:'sarah.c@research.au', subject:'Order PWA-M9P3T7 — payment sent',         body:'Hi, I\'ve just sent the PayPal payment for my order PWA-M9P3T7. The transaction ID is PP-123456789. Please let me know when it\'s confirmed and when I can expect dispatch. Thank you!',                                                   status:'unread',  date:'2026-03-09 11:05', reply:'' },
+  { id:3, name:'Dr. Alex Foster', email:'a.foster@research.org', subject:'Bulk order enquiry — GHK-Cu',          body:'Hello, I\'m looking to place a larger research order for GHK-Cu — approximately 10-20 units per month on an ongoing basis. Do you offer volume pricing for this? We\'re a registered research facility in Melbourne. Happy to provide documentation.',  status:'replied', date:'2026-03-08 09:15', reply:'Hi Dr. Foster, thank you for your interest! We do offer volume pricing for bulk research orders. I\'ll send you a custom quote within 24 hours. Could you let me know the exact quantities you\'re looking at each month?' },
+  { id:4, name:'Ryan Brooks',    email:'r.brooks@email.com',   subject:'Tracking number for PWA-H3D5F9',         body:'Hi, my order was placed 2 days ago and I haven\'t received a tracking number yet. Could you please provide an update on the dispatch status? Order reference is PWA-H3D5F9.',                                                                  status:'unread',  date:'2026-03-08 16:40', reply:'' },
+  { id:5, name:'Priya Nair',     email:'priya.n@biotech.com.au', subject:'COA request for Semax batch PW-260302', body:'Hi, I need the full COA PDF for the Semax batch PW-260302 for our lab records. Could you email it to me directly? The HPLC data on the website is great but we require the signed PDF version for our compliance records.',               status:'replied', date:'2026-03-07 10:30', reply:'Hi Priya, I\'ve attached the full signed COA PDF for batch PW-260302 to this email. Please let me know if you need anything else for your compliance records.' },
+];
+
+const products = [
+  { id:0, name:'Retatrutide',              spec:'10mg · Lyophilised',         price:129.99, cat:'Fat Loss',  status:'Pre-Order' },
+  { id:1, name:'Semax',                    spec:'10mg · Lyophilised',         price:69.99,  cat:'Nootropic', status:'Pre-Order' },
+  { id:2, name:'Melanotan I',              spec:'10mg · Lyophilised',         price:69.99,  cat:'Tanning',   status:'Pre-Order' },
+  { id:3, name:'GHK-Cu',                   spec:'50mg · Lyophilised',         price:94.99,  cat:'Healing',   status:'Pre-Order' },
+  { id:4, name:'BAC Water',                spec:'10mL · Bacteriostatic',      price:19.99,  cat:'Ancillary', status:'Pre-Order' },
+  { id:5, name:'KLOW Peptide Blend',       spec:'50mg · Lyophilised',         price:174.99, cat:'Blend',     status:'Pre-Order' },
+  { id:6, name:'Retatrutide Starter Bundle', spec:'Starter Kit',              price:249.99, cat:'Bundle',    status:'Pre-Order' },
+  { id:7, name:'Insulin Needles',          spec:'Packs of 10–100',            price:5.99,   cat:'Ancillary', status:'Pre-Order' },
+];
+
+/* derive customers from orders */
+function buildCustomers(){
+  const map = {};
+  orders.forEach(o => {
+    if(!map[o.email]) map[o.email] = { name:o.name, email:o.email, orders:0, spent:0, last:o.date };
+    map[o.email].orders++;
+    map[o.email].spent += o.total;
+    if(o.date > map[o.email].last) map[o.email].last = o.date;
+  });
+  return Object.values(map);
+}
+
+/* ─── NAVIGATION ─────────────────────────────────────────────── */
+const pageTitles = {
+  dashboard:['Dashboard','Overview'],
+  orders:['Orders','Manage & fulfil customer orders'],
+  messages:['Messages','Customer enquiries & support'],
+  products:['Products','Manage your product catalogue'],
+  customers:['Customers','Customer accounts & history'],
+  settings:['Settings','Store configuration'],
+};
+
+function goPage(name, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const [title, sub] = pageTitles[name] || [name,''];
+  document.getElementById('topbar-title').textContent = title;
+  document.getElementById('topbar-sub').textContent = sub;
+  if(name==='orders') renderOrders(orders);
+  if(name==='messages') renderMessages(messages);
+  if(name==='products') renderProducts(products);
+  if(name==='customers') renderCustomers(buildCustomers());
+}
+
+/* ─── INIT ───────────────────────────────────────────────────── */
+function initApp(){
+  updateStats();
+  renderDashboard();
+  updateBadges();
+}
+
+function updateStats(){
+  const total = orders.length;
+  const pending = orders.filter(o=>o.status==='pending').length;
+  const dispatched = orders.filter(o=>o.status==='dispatched').length;
+  const revenue = orders.reduce((s,o)=>s+o.total,0);
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-dispatched').textContent = dispatched;
+  document.getElementById('stat-revenue').textContent = '$'+revenue.toFixed(2);
+}
+
+function updateBadges(){
+  const pendingOrders = orders.filter(o=>o.status==='pending').length;
+  const unreadMsgs = messages.filter(m=>m.status==='unread').length;
+  document.getElementById('badge-orders').textContent = pendingOrders;
+  document.getElementById('badge-orders').style.display = pendingOrders ? '' : 'none';
+  document.getElementById('badge-messages').textContent = unreadMsgs;
+  document.getElementById('badge-messages').style.display = unreadMsgs ? '' : 'none';
+}
+
+function renderDashboard(){
+  // Recent orders
+  const tbody = document.getElementById('dash-recent-orders');
+  tbody.innerHTML = orders.slice(0,5).map(o=>`
+    <tr onclick="openOrder(${orders.indexOf(o)})" style="cursor:pointer;">
+      <td class="td-mono">${o.id}</td>
+      <td class="td-name">${o.name}</td>
+      <td class="td-mono">$${o.total.toFixed(2)}</td>
+      <td><span class="pill ${o.status}">${o.status}</span></td>
+    </tr>`).join('');
+
+  // Activity feed
+  const feed = document.getElementById('activity-feed');
+  const activities = [
+    {dot:'amber', text:`New order <strong>${orders[0].id}</strong> from ${orders[0].name}`, time:'2 min ago'},
+    {dot:'purple', text:`New message from <strong>${messages[0].name}</strong>: "${messages[0].subject}"`, time:'18 min ago'},
+    {dot:'blue',  text:`Order <strong>${orders[1].id}</strong> payment confirmed via PayPal`, time:'1 hr ago'},
+    {dot:'green', text:`Order <strong>${orders[2].id}</strong> dispatched with tracking`, time:'Yesterday'},
+    {dot:'amber', text:`New order <strong>${orders[3].id}</strong> from ${orders[3].name}`, time:'Yesterday'},
+  ];
+  feed.innerHTML = activities.map(a=>`
+    <div class="activity-item">
+      <div class="activity-dot ${a.dot}"></div>
+      <div>
+        <div class="activity-text">${a.text}</div>
+        <div class="activity-time">${a.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ─── ORDERS ─────────────────────────────────────────────────── */
+let orderFilter = 'all';
+let orderSearch = '';
+
+function renderOrders(list){
+  const filtered = list.filter(o=>{
+    const matchStatus = orderFilter === 'all' || o.status === orderFilter;
+    const matchSearch = !orderSearch || o.id.toLowerCase().includes(orderSearch) || o.name.toLowerCase().includes(orderSearch) || o.email.toLowerCase().includes(orderSearch);
+    return matchStatus && matchSearch;
+  });
+  const tbody = document.getElementById('orders-tbody');
+  if(!filtered.length){ tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">No orders found</div></div></td></tr>'; return; }
+  tbody.innerHTML = filtered.map(o => {
+    const idx = orders.indexOf(o);
+    return `<tr>
+      <td class="td-mono">${o.id}</td>
+      <td><div class="td-name">${o.name}</div><div class="td-email">${o.email}</div></td>
+      <td>${o.items.length} item${o.items.length>1?'s':''}</td>
+      <td class="td-mono">$${o.total.toFixed(2)}</td>
+      <td>${o.payment}</td>
+      <td><span class="pill ${o.status}">${o.status}</span></td>
+      <td class="td-mono">${o.date}</td>
+      <td><div class="btn-row">
+        <button class="btn btn-ghost" onclick="openOrder(${idx})">View</button>
+        ${o.status==='pending'?`<button class="btn btn-amber" onclick="updateOrderStatus(${idx},'processing')">Confirm</button>`:''}
+        ${o.status==='processing'?`<button class="btn btn-green" onclick="openDispatch(${idx})">Dispatch</button>`:''}
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterOrders(val){ orderSearch = val.toLowerCase(); renderOrders(orders); }
+function filterOrderStatus(status, btn){
+  orderFilter = status;
+  document.querySelectorAll('#page-orders .tbl-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderOrders(orders);
+}
+
+function updateOrderStatus(idx, status){
+  orders[idx].status = status;
+  renderOrders(orders);
+  updateStats();
+  updateBadges();
+  renderDashboard();
+  toast(`Order ${orders[idx].id} marked as ${status}`, 'success');
+}
+
+function openOrder(idx){
+  const o = orders[idx];
+  document.getElementById('order-panel-title').textContent = `Order ${o.id}`;
+  document.getElementById('order-panel-body').innerHTML = `
+    <div class="field-group">
+      <div><label class="field-label">Customer</label><div class="field-value">${o.name}</div></div>
+      <div><label class="field-label">Email</label><div class="field-value" style="color:var(--riviera-bright)">${o.email}</div></div>
+    </div>
+    <div class="field-group">
+      <div><label class="field-label">State</label><div class="field-value">${o.state}</div></div>
+      <div><label class="field-label">Date</label><div class="field-value td-mono">${o.date}</div></div>
+    </div>
+    <hr class="divider"/>
+    <label class="field-label">Order Items</label>
+    <div class="order-items-list">
+      ${o.items.map(i=>`<div class="order-item-row"><span class="order-item-name">${i.name}</span><span class="order-item-qty">×${i.qty}</span><span class="order-item-price">$${(i.price*i.qty).toFixed(2)}</span></div>`).join('')}
+    </div>
+    <div class="total-row"><span>Subtotal</span><span class="td-mono">$${(o.total - o.shipCost).toFixed(2)}</span></div>
+    <div class="total-row"><span>Shipping</span><span class="td-mono">${o.shipping}</span></div>
+    <div class="total-row grand"><span>Total (AUD incl. GST)</span><span style="color:var(--riviera-bright)">$${o.total.toFixed(2)}</span></div>
+    <hr class="divider"/>
+    <div class="field-group">
+      <div><label class="field-label">Payment</label><div class="field-value">${o.payment}</div></div>
+      <div><label class="field-label">Status</label><div class="field-value"><span class="pill ${o.status}">${o.status}</span></div></div>
+    </div>
+    ${o.tracking ? `<label class="field-label">Tracking Number</label><div class="field-value td-mono" style="color:var(--green)">${o.tracking}</div>` : ''}
+    <hr class="divider"/>
+    <label class="field-label">Update Status</label>
+    <select class="field-select" id="order-status-select-${idx}" onchange="updateOrderStatus(${idx},this.value)">
+      <option value="pending" ${o.status==='pending'?'selected':''}>Pending</option>
+      <option value="processing" ${o.status==='processing'?'selected':''}>Processing</option>
+      <option value="dispatched" ${o.status==='dispatched'?'selected':''}>Dispatched</option>
+      <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Cancelled</option>
+    </select>
+    <label class="field-label">Tracking Number</label>
+    <div class="tracking-row">
+      <input class="field-input" id="tracking-input-${idx}" placeholder="e.g. EXP123456789AU" value="${o.tracking}"/>
+      <button class="btn btn-green" onclick="saveTracking(${idx})">Save</button>
+    </div>
+    <label class="field-label">Internal Notes</label>
+    <textarea class="field-input" rows="3" placeholder="Add a note about this order…"></textarea>
+  `;
+  document.getElementById('order-panel-footer').innerHTML = `
+    <button class="btn btn-ghost" onclick="closePanel('order-overlay')">Close</button>
+    <button class="btn btn-primary" onclick="mailCustomer('${o.email}','Your Peptide Warehouse Order ${o.id}')">Email Customer</button>
+  `;
+  document.getElementById('order-overlay').classList.add('show');
+}
+
+function openDispatch(idx){
+  openOrder(idx);
+  setTimeout(()=>{
+    const input = document.getElementById(`tracking-input-${idx}`);
+    if(input){ input.focus(); input.scrollIntoView({behavior:'smooth'}); }
+  }, 100);
+}
+
+function saveTracking(idx){
+  const val = document.getElementById(`tracking-input-${idx}`).value.trim();
+  orders[idx].tracking = val;
+  if(val){ updateOrderStatus(idx,'dispatched'); }
+  else { toast('Enter a tracking number first','info'); }
+}
+
+/* ─── MESSAGES ───────────────────────────────────────────────── */
+let msgFilter = 'all';
+let msgSearch = '';
+
+function renderMessages(list){
+  const filtered = list.filter(m=>{
+    const matchStatus = msgFilter === 'all' || m.status === msgFilter;
+    const matchSearch = !msgSearch || m.name.toLowerCase().includes(msgSearch) || m.subject.toLowerCase().includes(msgSearch) || m.email.toLowerCase().includes(msgSearch);
+    return matchStatus && matchSearch;
+  });
+  const tbody = document.getElementById('messages-tbody');
+  if(!filtered.length){ tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">No messages found</div></div></td></tr>'; return; }
+  tbody.innerHTML = filtered.map(m=>{
+    const idx = messages.indexOf(m);
+    return `<tr style="${m.status==='unread'?'font-weight:500;':''};cursor:pointer;" onclick="openMessage(${idx})">
+      <td><div class="td-name">${m.name}</div><div class="td-email">${m.email}</div></td>
+      <td>${m.subject}</td>
+      <td style="color:var(--text-mid);font-size:0.7rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.body.substring(0,80)}…</td>
+      <td><span class="pill ${m.status}">${m.status}</span></td>
+      <td class="td-mono">${m.date}</td>
+      <td><button class="btn btn-ghost" onclick="event.stopPropagation();openMessage(${idx})">Reply</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterMessages(val){ msgSearch = val.toLowerCase(); renderMessages(messages); }
+function filterMsgStatus(status, btn){
+  msgFilter = status;
+  document.querySelectorAll('#page-messages .tbl-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMessages(messages);
+}
+
+function openMessage(idx){
+  const m = messages[idx];
+  m.status = 'unread' ? m.status : m.status; // mark read on open
+  document.getElementById('msg-panel-title').textContent = m.subject;
+  document.getElementById('msg-panel-body').innerHTML = `
+    <div class="field-group">
+      <div><label class="field-label">From</label><div class="field-value">${m.name}</div></div>
+      <div><label class="field-label">Email</label><div class="field-value" style="color:var(--riviera-bright)">${m.email}</div></div>
+    </div>
+    <label class="field-label">Received</label>
+    <div class="field-value td-mono">${m.date}</div>
+    <hr class="divider"/>
+    <label class="field-label">Message</label>
+    <div class="message-bubble">${m.body}</div>
+    ${m.reply ? `<label class="field-label">Previous Reply</label><div class="reply-preview">${m.reply}</div><hr class="divider"/>` : ''}
+    <label class="field-label">Reply</label>
+    <textarea class="field-input" id="reply-input-${idx}" rows="5" placeholder="Type your reply…">${m.reply||''}</textarea>
+  `;
+  document.getElementById('msg-panel-footer').innerHTML = `
+    <button class="btn btn-ghost" onclick="closePanel('msg-overlay')">Close</button>
+    <button class="btn btn-primary" onclick="sendReply(${idx})">Send Reply →</button>
+  `;
+  document.getElementById('msg-overlay').classList.add('show');
+}
+
+function sendReply(idx){
+  const reply = document.getElementById(`reply-input-${idx}`).value.trim();
+  if(!reply){ toast('Please type a reply first','info'); return; }
+  messages[idx].reply = reply;
+  messages[idx].status = 'replied';
+  closePanel('msg-overlay');
+  renderMessages(messages);
+  updateBadges();
+  toast(`Reply sent to ${messages[idx].email}`, 'success');
+}
+
+/* ─── PRODUCTS ───────────────────────────────────────────────── */
+let productSearch = '';
+
+function renderProducts(list){
+  const filtered = list.filter(p=>!productSearch || p.name.toLowerCase().includes(productSearch));
+  const tbody = document.getElementById('products-tbody');
+  tbody.innerHTML = filtered.map((p,i)=>`
+    <tr>
+      <td><div class="td-name">${p.name}</div><div class="td-email">${p.spec}</div></td>
+      <td>${p.cat}</td>
+      <td class="td-mono">$${p.price.toFixed(2)} AUD</td>
+      <td><span class="pill processing">${p.status}</span></td>
+      <td><button class="btn btn-ghost" onclick="openProduct(${i})">Edit</button></td>
+    </tr>`).join('');
+}
+
+function filterProducts(val){ productSearch = val.toLowerCase(); renderProducts(products); }
+
+function openProduct(i){
+  const p = products[i];
+  document.getElementById('product-panel-title').textContent = 'Edit — '+p.name;
+  document.getElementById('product-panel-body').innerHTML = `
+    <label class="field-label">Product Name</label>
+    <input class="field-input" id="prod-name-${i}" value="${p.name}"/>
+    <label class="field-label">Spec / Description</label>
+    <input class="field-input" id="prod-spec-${i}" value="${p.spec}"/>
+    <div class="field-group">
+      <div>
+        <label class="field-label">Price (AUD)</label>
+        <input class="field-input" id="prod-price-${i}" type="number" step="0.01" value="${p.price}"/>
+      </div>
+      <div>
+        <label class="field-label">Category</label>
+        <input class="field-input" id="prod-cat-${i}" value="${p.cat}"/>
+      </div>
+    </div>
+    <label class="field-label">Status</label>
+    <select class="field-select" id="prod-status-${i}">
+      <option value="Pre-Order" ${p.status==='Pre-Order'?'selected':''}>Pre-Order</option>
+      <option value="In Stock" ${p.status==='In Stock'?'selected':''}>In Stock</option>
+      <option value="Out of Stock" ${p.status==='Out of Stock'?'selected':''}>Out of Stock</option>
+      <option value="Discontinued" ${p.status==='Discontinued'?'selected':''}>Discontinued</option>
+    </select>
+  `;
+  document.getElementById('product-panel-footer').innerHTML = `
+    <button class="btn btn-ghost" onclick="closePanel('product-overlay')">Cancel</button>
+    <button class="btn btn-primary" onclick="saveProduct(${i})">Save Changes</button>
+  `;
+  document.getElementById('product-overlay').classList.add('show');
+}
+
+function saveProduct(i){
+  products[i].name   = document.getElementById(`prod-name-${i}`).value;
+  products[i].spec   = document.getElementById(`prod-spec-${i}`).value;
+  products[i].price  = parseFloat(document.getElementById(`prod-price-${i}`).value);
+  products[i].cat    = document.getElementById(`prod-cat-${i}`).value;
+  products[i].status = document.getElementById(`prod-status-${i}`).value;
+  closePanel('product-overlay');
+  renderProducts(products);
+  toast(`${products[i].name} updated`, 'success');
+}
+
+/* ─── CUSTOMERS ──────────────────────────────────────────────── */
+let customerSearch = '';
+
+function renderCustomers(list){
+  const filtered = list.filter(c=>!customerSearch || c.name.toLowerCase().includes(customerSearch) || c.email.toLowerCase().includes(customerSearch));
+  const tbody = document.getElementById('customers-tbody');
+  tbody.innerHTML = filtered.map(c=>`
+    <tr>
+      <td class="td-name">${c.name}</td>
+      <td class="td-email">${c.email}</td>
+      <td class="td-mono">${c.orders}</td>
+      <td class="td-mono">$${c.spent.toFixed(2)}</td>
+      <td class="td-mono">${c.last}</td>
+      <td><button class="btn btn-ghost" onclick="mailCustomer('${c.email}','')">Email</button></td>
+    </tr>`).join('');
+}
+
+function filterCustomers(val){ customerSearch = val.toLowerCase(); renderCustomers(buildCustomers()); }
+
+/* ─── HELPERS ────────────────────────────────────────────────── */
+function closePanel(id){ document.getElementById(id).classList.remove('show'); }
+
+function mailCustomer(email, subject){
+  window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}`);
+}
+
+function toast(msg, type='info'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  setTimeout(()=>{ t.className = ''; }, 3000);
+}
+</script>
+</body>
+</html>
