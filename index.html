@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Peptide Warehouse Australia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ─── TOKENS ─────────────────────────────────────────────────── */
+:root {
+  --riviera:#006B96; --riviera-mid:#0087bc; --riviera-pale:#e6f3f9; --riviera-dark:#004d6e;
+  --bg:#ffffff; --bg-sub:#f7f8f9; --border:#e8e8e8;
+  --text:#0f0f0f; --text-mid:#444; --text-faint:#999;
+  --card-bg:#fff;
+  --nav-h:60px;
+}
+[data-theme="dark"] {
+  --bg:#0c0d0e; --bg-sub:#131618; --border:#222426;
+  --text:#f0f0f0; --text-mid:#aaa; --text-faint:#555;
+  --card-bg:#111315;
+  --riviera-pale:#0d2535;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;padding-top:36px;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+button{cursor:pointer;font-family:inherit;}
+img{max-width:100%;}
+
+/* ─── NAV ────────────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;z-index:100;}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;letter-spacing:-0.5px;cursor:pointer;color:var(--text);}
+.nav-logo span{color:var(--riviera);}
+.nav-links{display:flex;gap:2rem;}
+.nav-links a{font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;color:var(--text-mid);transition:color .2s;}
+.nav-links a:hover{color:var(--riviera);}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.theme-toggle{display:flex;align-items:center;background:var(--bg-sub);border:1px solid var(--border);border-radius:20px;padding:3px;gap:2px;}
+.theme-btn{width:26px;height:22px;border:none;background:transparent;border-radius:16px;font-size:0.6rem;color:var(--text-faint);transition:all .2s;}
+.theme-btn.active{background:var(--riviera);color:#fff;}
+.cart-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:var(--riviera);color:#fff;border:none;padding:0.4rem 1rem;position:relative;}
+.cart-count{position:absolute;top:-6px;right:-6px;background:#e53;color:#fff;border-radius:50%;width:16px;height:16px;font-size:0.5rem;display:flex;align-items:center;justify-content:center;font-weight:700;}
+@media(max-width:900px){.nav-links{display:none;}}
+
+/* ─── SHARED SECTION ATOMS ───────────────────────────────────── */
+.s-label{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--riviera);font-weight:500;margin-bottom:0.6rem;}
+.s-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-1px;line-height:1.1;margin-bottom:1rem;}
+.s-sub{font-size:0.85rem;color:var(--text-mid);font-weight:300;line-height:1.8;max-width:520px;}
+.f-btn{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;background:transparent;border:1px solid var(--border);padding:0.35rem 0.9rem;color:var(--text-mid);transition:all .2s;font-family:'Inter',sans-serif;}
+.f-btn.active,.f-btn:hover{background:var(--riviera);color:#fff;border-color:var(--riviera);}
+
+/* ─── HERO ───────────────────────────────────────────────────── */
+.hero{padding:calc(var(--nav-h) + 5rem) 5% 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;border-bottom:1px solid var(--border);}
+.hero-kicker{font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--riviera);font-weight:500;margin-bottom:1rem;}
+.hero-h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,5.5vw,4.5rem);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:1.5rem;}
+.hero-h1 em{font-style:normal;color:var(--riviera);}
+.hero-desc{font-size:0.88rem;color:var(--text-mid);font-weight:300;line-height:1.9;margin-bottom:2rem;max-width:420px;}
+.hero-ctas{display:flex;gap:0.8rem;flex-wrap:wrap;}
+.btn-primary{background:var(--riviera);color:#fff;border:none;padding:0.75rem 2rem;font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:background .2s;font-family:'Inter',sans-serif;}
+.btn-primary:hover{background:var(--riviera-dark);}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border);padding:0.75rem 2rem;font-size:0.72rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;font-family:'Inter',sans-serif;}
+.btn-secondary:hover{border-color:var(--riviera);color:var(--riviera);}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);margin-top:2.5rem;}
+.hero-stat{padding:1rem 1.2rem;border-right:1px solid var(--border);text-align:center;}
+.hero-stat:last-child{border-right:none;}
+.hero-stat-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:var(--riviera);line-height:1;}
+.hero-stat-label{font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-top:0.2rem;}
+.hero-visual{display:flex;align-items:center;justify-content:center;position:relative;}
+@media(max-width:900px){.hero{grid-template-columns:1fr;}.hero-visual{display:none;}}
+
+/* ─── SCROLL BAND ────────────────────────────────────────────── */
+.scroll-band{overflow:hidden;border-bottom:1px solid var(--border);background:var(--bg-sub);padding:0.8rem 0;}
+.scroll-inner{display:flex;gap:0;white-space:nowrap;animation:scroll-left 28s linear infinite;}
+.scroll-inner:hover{animation-play-state:paused;}
+@keyframes scroll-left{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.sb-item{font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:1px;padding:0 1.2rem;transition:color .2s;}
+.sb-item:hover{text-decoration:underline;}
+.sb-dot{color:var(--text);opacity:0.35;font-size:0.8rem;}
+
+/* ─── PRODUCTS SECTION ───────────────────────────────────────── */
+#products{padding:4rem 5% 0;}
+.filter-row{display:flex;gap:0.6rem;margin:1.5rem 0;flex-wrap:wrap;}
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-left:1px solid var(--border);}
+@media(max-width:1100px){.product-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:800px){.product-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.product-grid{grid-template-columns:1fr;}}
+.p-card{border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.8rem 1.5rem 1.5rem;cursor:pointer;transition:background .2s;position:relative;background:var(--card-bg);}
+.p-card:hover{background:var(--bg-sub);}
+.p-flag{position:absolute;top:1rem;right:1rem;font-size:0.48rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;padding:0.2rem 0.5rem;}
+.p-flag.gold{background:#fff8e6;color:#a07800;border:1px solid #f0d060;}
+.p-flag.blue{background:var(--riviera-pale);color:var(--riviera);border:1px solid #b3d8ec;}
+.p-illus{margin-bottom:1.2rem;}
+.p-cat{font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.4rem;}
+.p-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.2rem;color:var(--text);}
+.p-spec{font-size:0.65rem;color:var(--text-faint);font-weight:300;margin-bottom:1rem;}
+.p-price-row{display:flex;align-items:center;justify-content:space-between;}
+.p-price{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);}
+.p-price-note{font-size:0.5rem;color:var(--text-faint);letter-spacing:1px;}
+.p-add{width:28px;height:28px;background:var(--riviera);color:#fff;border:none;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.p-add:hover{background:var(--riviera-dark);}
+
+/* ─── QUALITY / COA SECTION ─────────────────────────────────── */
+#quality{padding:5rem 5%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;border-top:1px solid var(--border);}
+.quality-steps{display:flex;flex-direction:column;gap:2rem;}
+.q-step{display:flex;gap:1.5rem;align-items:flex-start;}
+.q-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;color:var(--riviera);line-height:1;flex-shrink:0;width:2.5rem;}
+.q-title{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:0.3rem;}
+.q-text{font-size:0.75rem;color:var(--text-mid);font-weight:300;line-height:1.8;}
+.coa-carousel{border:1px solid var(--border);background:var(--card-bg);}
+.coa-carousel-header{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.coa-carousel-title{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;}
+.coa-panel{padding:1.5rem;min-height:220px;transition:opacity .3s;}
+.coa-row{display:flex;justify-content:space-between;padding:0.55rem 0;border-bottom:1px solid var(--border);font-size:0.72rem;}
+.coa-row:last-child{border-bottom:none;}
+.coa-key{color:var(--text-faint);font-weight:300;}
+.coa-val{font-weight:600;color:var(--text);}
+.coa-val.pass{color:var(--riviera);}
+.coa-dots{display:flex;gap:0.4rem;align-items:center;}
+.coa-dot{height:8px;border-radius:4px;background:var(--text);opacity:.25;cursor:pointer;transition:all .3s;width:8px;}
+.coa-dot.active{opacity:1;background:var(--riviera);width:20px;}
+@media(max-width:900px){#quality{grid-template-columns:1fr;}}
+
+/* ─── TESTIMONIALS ───────────────────────────────────────────── */
+#testimonials{padding:5rem 5%;border-top:1px solid var(--border);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);margin-top:2rem;}
+.testi-card{padding:2rem;border-right:1px solid var(--border);}
+.testi-card:last-child{border-right:none;}
+.testi-stars{color:var(--riviera);font-size:0.7rem;margin-bottom:0.8rem;letter-spacing:2px;}
+.testi-text{font-size:0.78rem;color:var(--text-mid);font-weight:300;line-height:1.9;margin-bottom:1rem;}
+.testi-author{font-size:0.62rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text);}
+@media(max-width:700px){.testi-grid{grid-template-columns:1fr;}.testi-card{border-right:none;border-bottom:1px solid var(--border);}.testi-card:last-child{border-bottom:none;}}
+
+/* ─── SHIPPING STRIP ─────────────────────────────────────────── */
+.ship-strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.ship-cell{padding:1.5rem 2rem;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:0.2rem;}
+.ship-cell:last-child{border-right:none;}
+.ship-label{font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--riviera);}
+.ship-sub{font-size:0.62rem;color:var(--text-faint);font-weight:300;}
+@media(max-width:700px){.ship-strip{grid-template-columns:1fr 1fr;}.ship-cell:nth-child(2){border-right:none;}.ship-cell:nth-child(3){border-right:1px solid var(--border);}.ship-cell:nth-child(4){border-right:none;}}
+
+/* ─── DISCLAIMER ─────────────────────────────────────────────── */
+.disclaimer{padding:1.2rem 5%;border-top:1px solid var(--border);background:var(--bg-sub);}
+.disclaimer p{font-size:0.62rem;color:var(--text-faint);font-weight:300;line-height:1.7;max-width:900px;}
+
+/* ─── FOOTER ─────────────────────────────────────────────────── */
+#footer{padding:3rem 5% 2rem;border-top:1px solid var(--border);display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:3rem;}
+.f-brand-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.5rem;}
+.f-brand-name span{color:var(--riviera);}
+.f-brand-desc{font-size:0.72rem;color:var(--text-faint);font-weight:300;line-height:1.8;margin-bottom:1rem;max-width:240px;}
+.f-pay{display:flex;gap:0.4rem;margin-top:0.5rem;}
+.f-pay-chip{font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;padding:0.25rem 0.6rem;border:1px solid var(--border);color:var(--text-mid);}
+.f-col h5{font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;color:var(--text);}
+.f-col ul li{margin-bottom:0.5rem;}
+.f-col ul li a{font-size:0.72rem;color:var(--text-faint);font-weight:300;transition:color .2s;}
+.f-col ul li a:hover{color:var(--riviera);}
+.f-newsletter input{width:100%;border:1px solid var(--border);background:var(--bg);color:var(--text);padding:0.6rem 0.8rem;font-size:0.72rem;font-family:'Inter',sans-serif;margin-bottom:0.5rem;outline:none;}
+.f-newsletter button{width:100%;background:var(--riviera);color:#fff;border:none;padding:0.6rem;font-size:0.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.f-bottom{padding:1.2rem 5%;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;}
+.f-bottom-copy{font-size:0.6rem;color:var(--text-faint);}
+@media(max-width:900px){#footer{grid-template-columns:1fr 1fr;gap:2rem;}}
+@media(max-width:500px){#footer{grid-template-columns:1fr;}}
+
+/* ─── PRODUCT DETAIL PAGE ────────────────────────────────────── */
+#page-product{display:none;padding-top:var(--nav-h);}
+.pd-breadcrumb{padding:1rem 5%;font-size:0.62rem;color:var(--text-faint);border-bottom:1px solid var(--border);background:var(--bg-sub);}
+.pd-breadcrumb a{color:var(--riviera);cursor:pointer;}
+.pd-breadcrumb a:hover{text-decoration:underline;}
+.pd-layout{display:grid;grid-template-columns:1fr 1fr;min-height:70vh;}
+.pd-left{padding:4rem 5%;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-sub);}
+.pd-right{padding:3rem 4%;}
+.pd-cat{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--riviera);font-weight:500;margin-bottom:0.5rem;}
+.pd-name{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:0.5rem;}
+.pd-spec{font-size:0.7rem;color:var(--text-faint);font-weight:300;letter-spacing:1px;margin-bottom:1rem;}
+.pd-purity{display:inline-flex;align-items:center;gap:0.4rem;background:var(--riviera-pale);color:var(--riviera);font-size:0.6rem;font-weight:600;letter-spacing:1px;padding:0.3rem 0.7rem;margin-bottom:1.5rem;}
+.pd-price{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;color:var(--text);margin-bottom:0.2rem;}
+.pd-price-note{font-size:0.6rem;color:var(--text-faint);margin-bottom:1.5rem;}
+.pd-qty-row{display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;}
+.pd-qty-btn{width:32px;height:32px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.pd-qty-val{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;width:2rem;text-align:center;}
+.pd-add-row{display:flex;margin-bottom:1.5rem;border:1px solid var(--border);}
+.pd-add-btn{flex:1;background:var(--riviera);color:#fff;border:none;padding:0 2rem;height:36px;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',sans-serif;cursor:pointer;}
+.pd-add-btn:hover{background:var(--riviera-dark);}
+.pd-add-stock{padding:0 1.2rem;font-size:0.6rem;font-weight:600;letter-spacing:1px;color:var(--text);border-left:1px solid var(--border);border-right:1px solid var(--border);line-height:36px;}
+.pd-meta{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);margin-bottom:1.5rem;}
+.pd-meta-row{padding:0.6rem 0.8rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.pd-meta-row:nth-child(2n){border-right:none;}
+.pd-meta-key{font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.2rem;}
+.pd-meta-val{font-size:0.72rem;font-weight:500;color:var(--text);}
+.pd-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
+.pd-tab{font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;padding:0.7rem 1.2rem;border:none;background:transparent;color:var(--text-faint);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;font-family:'Inter',sans-serif;}
+.pd-tab.active{color:var(--riviera);border-bottom-color:var(--riviera);}
+.pd-tab-content{font-size:0.78rem;color:var(--text-mid);line-height:1.9;font-weight:300;}
+.pd-tab-content p{margin-bottom:0.8rem;}
+.pd-tab-content table{width:100%;border-collapse:collapse;font-size:0.72rem;}
+.pd-tab-content table td{padding:0.6rem 0.8rem;border:1px solid var(--border);}
+.pd-tab-content table tr td:first-child{color:var(--text-faint);font-weight:400;width:45%;}
+.coa-val.pass{color:var(--riviera);}
+.pd-related-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-right:none;border-bottom:none;margin-top:2rem;}
+@media(max-width:900px){.pd-layout{grid-template-columns:1fr;}.pd-left{display:none;}}
+
+/* ─── COA TESTING PAGE ───────────────────────────────────────── */
+#page-coa{display:none;padding-top:var(--nav-h);}
+.coa-page-hero{padding:4rem 5% 3rem;border-bottom:1px solid var(--border);background:var(--bg-sub);display:grid;grid-template-columns:1fr auto;align-items:end;gap:2rem;}
+.coa-process-strip{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);}
+.coa-process-cell{padding:2rem 2.5rem;border-right:1px solid var(--border);display:flex;gap:1.2rem;align-items:flex-start;}
+.coa-process-cell:last-child{border-right:none;}
+.coa-process-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:var(--riviera);line-height:1;flex-shrink:0;}
+.coa-process-title{font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:600;margin-bottom:0.3rem;}
+.coa-process-text{font-size:0.72rem;color:var(--text-mid);font-weight:300;line-height:1.7;}
+.coa-card{border-bottom:1px solid var(--border);background:var(--card-bg);}
+.coa-card-tag{font-size:0.5rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--riviera);border:1px solid var(--riviera-pale);background:var(--riviera-pale);padding:0.2rem 0.55rem;font-weight:500;}
+@media(max-width:900px){.coa-process-strip{grid-template-columns:1fr;}.coa-process-cell{border-right:none;border-bottom:1px solid var(--border);}.coa-page-hero{grid-template-columns:1fr;}}
+
+/* ─── SHOP PAGE ──────────────────────────────────────────────── */
+#page-shop-page{display:none;padding-top:var(--nav-h);}
+.shop-hero{padding:4rem 5% 3rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.shop-filter-row{padding:1.5rem 5%;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--bg-sub);}
+.shop-filter-label{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);font-weight:400;flex-shrink:0;}
+.shop-product-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);}
+.shop-product-grid .p-card{border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+@media(max-width:1100px){.shop-product-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:800px){.shop-product-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.shop-product-grid{grid-template-columns:1fr;}}
+
+/* ─── ABOUT PAGE ─────────────────────────────────────────────── */
+#page-about{display:none;padding-top:var(--nav-h);}
+.about-hero{padding:5rem 5% 4rem;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.about-hero-overline{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--riviera);font-weight:500;margin-bottom:1rem;}
+.about-hero-h{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:1.5rem;}
+.about-hero-body{font-size:0.85rem;color:var(--text-mid);font-weight:300;line-height:1.9;margin-bottom:2rem;}
+.about-hero-right{display:flex;flex-direction:column;gap:0;}
+.about-stat-block{padding:2rem 2.5rem;border:1px solid var(--border);border-bottom:none;display:flex;align-items:center;gap:1.5rem;}
+.about-stat-block:last-child{border-bottom:1px solid var(--border);}
+.about-stat-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--riviera);line-height:1;flex-shrink:0;min-width:4rem;}
+.about-stat-label{font-size:0.72rem;color:var(--text-mid);font-weight:300;line-height:1.7;}
+.about-stat-title{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:0.2rem;}
+.about-values{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.about-value-cell{padding:3rem 2.5rem;border-right:1px solid var(--border);}
+.about-value-cell:last-child{border-right:none;}
+.about-value-icon{font-size:1.5rem;margin-bottom:1rem;}
+.about-value-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.6rem;color:var(--text);}
+.about-value-text{font-size:0.75rem;color:var(--text-mid);font-weight:300;line-height:1.8;}
+.about-story{padding:5rem 5%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;border-bottom:1px solid var(--border);align-items:start;}
+.about-story-label{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--riviera);font-weight:500;margin-bottom:1rem;}
+.about-story-h{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:-0.5px;margin-bottom:1.5rem;}
+.about-story-body{font-size:0.82rem;color:var(--text-mid);font-weight:300;line-height:1.9;}
+.about-story-body p{margin-bottom:1rem;}
+.about-process{padding:0 5% 5rem;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);margin:0 5%;margin-bottom:5rem;}
+.about-process-step{padding:2rem 2rem;border-right:1px solid var(--border);}
+.about-process-step:last-child{border-right:none;}
+.about-process-n{font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:var(--riviera);line-height:1;margin-bottom:0.5rem;}
+.about-process-title{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;}
+.about-process-text{font-size:0.72rem;color:var(--text-mid);font-weight:300;line-height:1.7;}
+.about-team{padding:5rem 5%;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-sub);}
+.about-team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);margin-top:2.5rem;}
+.about-team-card{padding:2.5rem 2rem;border-right:1px solid var(--border);background:var(--card-bg);}
+.about-team-card:last-child{border-right:none;}
+.about-team-avatar{width:56px;height:56px;border-radius:50%;background:var(--riviera-pale);border:2px solid var(--riviera);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--riviera);margin-bottom:1rem;}
+.about-team-name{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:0.15rem;}
+.about-team-role{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--riviera);margin-bottom:0.8rem;}
+.about-team-bio{font-size:0.72rem;color:var(--text-mid);font-weight:300;line-height:1.8;}
+.about-location{padding:5rem 5%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;border-bottom:1px solid var(--border);align-items:center;}
+.about-location-map{background:var(--bg-sub);border:1px solid var(--border);height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;position:relative;overflow:hidden;}
+.about-location-map svg{opacity:0.08;position:absolute;width:100%;height:100%;}
+.about-location-map-pin{font-size:2rem;position:relative;z-index:1;}
+.about-location-map-label{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;position:relative;z-index:1;}
+.about-location-map-sub{font-size:0.65rem;color:var(--text-faint);position:relative;z-index:1;}
+.about-location-details{display:flex;flex-direction:column;gap:0;}
+.about-loc-row{padding:1.2rem 0;border-bottom:1px solid var(--border);display:flex;gap:1rem;align-items:flex-start;}
+.about-loc-row:last-child{border-bottom:none;}
+.about-loc-icon{font-size:1rem;flex-shrink:0;margin-top:2px;}
+.about-loc-key{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.2rem;}
+.about-loc-val{font-size:0.82rem;color:var(--text);font-weight:400;}
+.about-cta{padding:5rem 5%;background:var(--riviera);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;}
+.about-cta-h{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:700;color:#fff;letter-spacing:-0.5px;}
+.about-cta-sub{font-size:0.78rem;color:rgba(255,255,255,0.7);font-weight:300;margin-top:0.3rem;}
+.about-cta-btn{background:#fff;color:var(--riviera);border:none;padding:0.9rem 2.5rem;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;flex-shrink:0;}
+.about-cta-btn:hover{background:var(--riviera-pale);}
+@media(max-width:900px){.about-hero{grid-template-columns:1fr;}.about-values{grid-template-columns:1fr;}.about-value-cell{border-right:none;border-bottom:1px solid var(--border);}.about-story{grid-template-columns:1fr;gap:2rem;}.about-process{grid-template-columns:1fr 1fr;margin:0;}.about-team-grid{grid-template-columns:1fr;}.about-team-card{border-right:none;border-bottom:1px solid var(--border);}.about-location{grid-template-columns:1fr;}.about-cta{flex-direction:column;}.about-about-hero-right{display:none;}}
+@media(max-width:600px){.about-process{grid-template-columns:1fr;}.about-process-step{border-right:none;border-bottom:1px solid var(--border);}}
+
+/* ─── SHIPPING POLICY PAGE ───────────────────────────────────── */
+#page-shipping{display:none;padding-top:var(--nav-h);}
+.shipping-hero{padding:4rem 5% 3rem;background:var(--bg-sub);border-bottom:1px solid var(--border);}
+.shipping-body{max-width:860px;margin:0 auto;padding:3rem 5%;}
+.shipping-section{margin-bottom:3rem;}
+.shipping-section-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.3px;margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:2px solid var(--riviera-pale);color:var(--text);}
+.shipping-section p{font-size:0.78rem;color:var(--text-mid);line-height:1.9;font-weight:300;margin-bottom:0.8rem;}
+.shipping-section p strong{color:var(--text);font-weight:600;}
+.shipping-table{width:100%;border-collapse:collapse;font-size:0.75rem;margin:1rem 0;}
+.shipping-table th{background:var(--riviera);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:0.62rem;letter-spacing:1px;text-transform:uppercase;padding:0.7rem 1rem;text-align:left;}
+.shipping-table td{padding:0.75rem 1rem;border-bottom:1px solid var(--border);color:var(--text-mid);vertical-align:top;}
+.shipping-table tr:last-child td{border-bottom:none;}
+.shipping-table tr:nth-child(even) td{background:var(--bg-sub);}
+.shipping-table td:first-child{font-weight:600;color:var(--text);white-space:nowrap;}
+.shipping-highlight{background:var(--riviera-pale);border:1px solid rgba(0,107,150,.2);padding:1.2rem 1.5rem;margin:1.2rem 0;display:flex;gap:1rem;align-items:flex-start;}
+.shipping-highlight-icon{font-size:1.4rem;flex-shrink:0;margin-top:0.1rem;}
+.shipping-highlight-text{font-size:0.75rem;color:var(--text-mid);line-height:1.8;font-weight:300;}
+.shipping-highlight-text strong{color:var(--riviera);font-weight:700;}
+.shipping-steps{display:flex;flex-direction:column;gap:0;}
+.shipping-step{display:flex;gap:2.5rem;padding:1.2rem 0;border-bottom:1px solid var(--border);}
+.shipping-step:last-child{border-bottom:none;}
+.shipping-step-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--riviera);line-height:1;flex-shrink:0;width:2.5rem;}
+.shipping-step-title{font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;margin-bottom:0.3rem;}
+.shipping-step-desc{font-size:0.73rem;color:var(--text-mid);font-weight:300;line-height:1.7;}
+
+/* ─── FAQ PAGE ───────────────────────────────────────────────── */
+#page-faq{display:none;padding-top:var(--nav-h);}
+.faq-hero{padding:4rem 5% 3rem;background:var(--bg-sub);border-bottom:1px solid var(--border);}
+.faq-hero-inner{max-width:760px;}
+.faq-body{padding:3rem 5%;max-width:1100px;margin:0 auto;}
+.faq-categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:3rem;}
+.faq-cat-btn{border:1px solid var(--border);background:var(--bg);padding:1rem 1.2rem;text-align:left;cursor:pointer;transition:all .2s;color:var(--text);}
+.faq-cat-btn:hover,.faq-cat-btn.active{border-color:var(--riviera);background:var(--riviera-pale);color:var(--riviera);}
+.faq-cat-icon{font-size:1.4rem;margin-bottom:0.4rem;display:block;}
+.faq-cat-label{font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:700;display:block;}
+.faq-section{margin-bottom:3rem;}
+.faq-section-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;letter-spacing:-0.3px;color:var(--riviera);margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:2px solid var(--riviera-pale);}
+.faq-item{border:1px solid var(--border);margin-bottom:0.5rem;background:var(--bg);}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:1.1rem 1.3rem;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;line-height:1.4;}
+.faq-q:hover{background:var(--bg-sub);}
+.faq-q.open{color:var(--riviera);background:var(--riviera-pale);}
+.faq-chevron{font-size:0.7rem;flex-shrink:0;transition:transform .25s;color:var(--text-faint);}
+.faq-q.open .faq-chevron{transform:rotate(180deg);color:var(--riviera);}
+.faq-a{display:none;padding:0 1.3rem 1.2rem;font-size:0.78rem;color:var(--text-mid);line-height:1.85;font-weight:300;border-top:1px solid var(--border);}
+.faq-a.open{display:block;}
+.faq-a strong{color:var(--text);font-weight:600;}
+.faq-a a{color:var(--riviera);}
+.faq-cta{background:var(--riviera);color:#fff;padding:3rem 5%;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.faq-cta-text{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;}
+.faq-cta-sub{font-size:0.75rem;opacity:0.8;margin-top:0.3rem;font-weight:300;}
+.faq-cta-btn{background:#fff;color:var(--riviera);border:none;padding:0.8rem 2rem;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+
+/* ─── AGE VERIFICATION MODAL ─────────────────────────────────── */
+#age-gate{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+#age-gate.show{display:flex;}
+.age-gate-box{background:var(--bg);border:1px solid var(--border);max-width:480px;width:90%;padding:2.5rem;text-align:center;position:relative;}
+.age-gate-icon{font-size:2.5rem;margin-bottom:1rem;}
+.age-gate-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:0.5rem;}
+.age-gate-sub{font-size:0.75rem;color:var(--text-mid);font-weight:300;line-height:1.7;margin-bottom:1.8rem;}
+.age-gate-sub strong{color:var(--text);font-weight:600;}
+.age-gate-buttons{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:1.2rem;}
+.age-gate-yes{background:var(--riviera);color:#fff;border:none;padding:0.9rem;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+.age-gate-yes:hover{background:var(--riviera-dark);}
+.age-gate-no{background:transparent;color:var(--text-mid);border:1px solid var(--border);padding:0.9rem;font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.age-gate-no:hover{border-color:var(--text-mid);color:var(--text);}
+.age-gate-legal{font-size:0.58rem;color:var(--text-faint);line-height:1.6;}
+.age-gate-declined{display:none;padding:1.5rem 0 0;}
+.age-gate-declined.show{display:block;}
+.age-gate-declined p{font-size:0.75rem;color:#c0392b;font-weight:500;line-height:1.6;}
+
+/* ─── CART DRAWER ────────────────────────────────────────────── */
+#cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;opacity:0;transition:opacity .3s;}
+#cart-overlay.open{display:block;opacity:1;}
+#cart-drawer{position:fixed;top:0;right:0;width:440px;max-width:100vw;height:100vh;background:var(--bg);border-left:1px solid var(--border);z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);}
+#cart-drawer.open{transform:translateX(0);}
+.cart-drawer-header{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.cart-drawer-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;}
+.cart-drawer-close{width:32px;height:32px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.cart-drawer-items{flex:1;overflow-y:auto;}
+.cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;color:var(--text-faint);}
+.cart-empty-icon{font-size:3rem;opacity:0.4;}
+.cart-empty-text{font-size:0.78rem;font-weight:300;}
+.cart-empty-btn{background:var(--riviera);color:#fff;border:none;padding:0.65rem 1.8rem;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-top:0.5rem;}
+.cart-item{display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);}
+.cart-item-name{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:0.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cart-item-spec{font-size:0.6rem;color:var(--text-faint);font-weight:300;}
+.cart-item-price{font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;color:var(--text);margin-top:0.3rem;}
+.cart-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;flex-shrink:0;}
+.cart-item-qty{display:flex;align-items:center;border:1px solid var(--border);}
+.cart-item-qty button{width:28px;height:28px;border:none;background:transparent;color:var(--text);font-size:1rem;cursor:pointer;}
+.cart-item-qty button:hover{background:var(--bg-sub);}
+.cart-item-qty span{font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;min-width:1.6rem;text-align:center;}
+.cart-item-remove{font-size:0.55rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);background:none;border:none;cursor:pointer;}
+.cart-item-remove:hover{color:#e53;}
+.cart-drawer-footer{border-top:1px solid var(--border);padding:1.2rem 1.5rem;flex-shrink:0;background:var(--bg);}
+.cart-summary-row{display:flex;justify-content:space-between;font-size:0.72rem;padding:0.35rem 0;color:var(--text-mid);}
+.cart-summary-row.total{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);border-top:1px solid var(--border);padding-top:0.8rem;margin-top:0.3rem;}
+.cart-summary-row .free{color:var(--riviera);font-weight:600;}
+.cart-checkout-btn{width:100%;background:var(--riviera);color:#fff;border:none;padding:0.9rem;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:1rem;transition:background .2s;}
+.cart-checkout-btn:hover{background:var(--riviera-dark);}
+.cart-payid-note{font-size:0.58rem;color:var(--text-faint);text-align:center;margin-top:0.6rem;font-weight:300;line-height:1.7;}
+
+/* ─── CHECKOUT PAGE ──────────────────────────────────────────── */
+#page-checkout{display:none;padding-top:var(--nav-h);}
+.checkout-layout{display:grid;grid-template-columns:1fr 400px;border-top:1px solid var(--border);}
+.checkout-main{padding:3rem 5%;border-right:1px solid var(--border);}
+.checkout-sidebar{padding:2.5rem 2rem;background:var(--bg-sub);}
+.checkout-section{margin-bottom:2.5rem;}
+.checkout-section-title{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;margin-bottom:1.2rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border);}
+.checkout-label{font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);display:block;margin-bottom:0.35rem;}
+.checkout-input{width:100%;border:1px solid var(--border);background:var(--bg);color:var(--text);padding:0.65rem 0.8rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;margin-bottom:1rem;transition:border-color .2s;}
+.checkout-input:focus{border-color:var(--riviera);}
+.checkout-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.checkout-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+.payment-option{border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:0.6rem;cursor:pointer;display:flex;align-items:center;gap:1rem;transition:border-color .2s;}
+.payment-option:hover{border-color:var(--riviera);}
+.payment-option.selected{border-color:var(--riviera);background:var(--riviera-pale);}
+.payment-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .2s;position:relative;}
+.payment-option.selected .payment-radio{border-color:var(--riviera);}
+.payment-option.selected .payment-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--riviera);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+.payment-option-name{font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;}
+.payment-option-desc{font-size:0.62rem;color:var(--text-faint);font-weight:300;margin-top:0.1rem;}
+.payid-info{background:var(--riviera-pale);border:1px solid rgba(0,107,150,.3);padding:1rem 1.2rem;margin-top:0.5rem;display:none;}
+.payid-info.show{display:block;}
+.payid-detail-row{display:flex;justify-content:space-between;font-size:0.72rem;padding:0.35rem 0;border-bottom:1px solid rgba(0,107,150,.12);}
+.payid-detail-row:last-child{border-bottom:none;}
+.payid-detail-row span:first-child{color:var(--text-faint);}
+.payid-detail-row span:last-child{font-weight:600;color:var(--riviera);}
+.checkout-place-btn{width:100%;background:var(--riviera);color:#fff;border:none;padding:1rem;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:1rem;}
+.checkout-place-btn:hover{background:var(--riviera-dark);}
+.checkout-order-item{display:flex;align-items:center;gap:0.8rem;padding:0.8rem 0;border-bottom:1px solid var(--border);}
+.checkout-order-item:last-child{border-bottom:none;}
+.checkout-item-name{font-size:0.78rem;font-weight:600;flex:1;color:var(--text);}
+.checkout-item-qty{font-size:0.62rem;color:var(--text-faint);background:var(--bg-sub);padding:0.15rem 0.4rem;}
+.checkout-item-price{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;}
+.order-success-wrap{padding:5rem 5%;text-align:center;}
+.order-success-icon{font-size:4rem;margin-bottom:1rem;}
+.order-success-title{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1px;margin-bottom:0.5rem;}
+.order-success-ref{font-family:'Syne',sans-serif;font-size:1.3rem;color:var(--riviera);letter-spacing:2px;margin:1.2rem 0;padding:0.8rem 2rem;border:1px solid var(--riviera);display:inline-block;background:var(--riviera-pale);}
+.order-success-text{font-size:0.82rem;color:var(--text-mid);font-weight:300;line-height:1.9;max-width:480px;margin:0 auto 2rem;}
+@media(max-width:900px){.checkout-layout{grid-template-columns:1fr;}.checkout-row{grid-template-columns:1fr 1fr;}.checkout-row-3{grid-template-columns:1fr;}}
+@media(max-width:600px){.checkout-row{grid-template-columns:1fr;}}
+
+/* ─── CONTACT PAGE ───────────────────────────────────────────── */
+#page-contact{display:none;padding-top:var(--nav-h);}
+.contact-hero{padding:4rem 5% 3rem;border-bottom:1px solid var(--border);background:var(--bg-sub);display:grid;grid-template-columns:1fr auto;align-items:end;gap:2rem;}
+.contact-body{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.contact-left{padding:3rem 5%;border-right:1px solid var(--border);}
+.contact-right{padding:3rem 5%;}
+.contact-info-row{display:flex;gap:1.2rem;align-items:flex-start;padding:1.2rem 0;border-bottom:1px solid var(--border);}
+.contact-info-row:first-child{border-top:1px solid var(--border);}
+.contact-info-icon{font-size:1.1rem;flex-shrink:0;margin-top:2px;}
+.contact-info-key{font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.25rem;}
+.contact-info-val{font-size:0.82rem;color:var(--text);line-height:1.6;}
+.contact-info-val a{color:var(--riviera);}
+.contact-hours{border:1px solid var(--border);background:var(--bg-sub);margin-top:2rem;}
+.contact-hours-header{padding:0.9rem 1.2rem;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:700;}
+.contact-hours-row{display:flex;justify-content:space-between;padding:0.7rem 1.2rem;border-bottom:1px solid var(--border);font-size:0.72rem;}
+.contact-hours-row:last-child{border-bottom:none;}
+.contact-hours-day{color:var(--text-faint);font-weight:300;}
+.contact-hours-time{font-weight:500;color:var(--text);}
+.contact-hours-time.open{color:var(--riviera);}
+.contact-form-label{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);font-weight:500;display:block;margin-bottom:0.4rem;}
+.contact-form-input{width:100%;border:1px solid var(--border);background:var(--bg);color:var(--text);padding:0.7rem 0.9rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;margin-bottom:1.2rem;transition:border-color .2s;}
+.contact-form-input:focus{border-color:var(--riviera);}
+.contact-form-select{width:100%;border:1px solid var(--border);background:var(--bg);color:var(--text);padding:0.7rem 0.9rem;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;margin-bottom:1.2rem;appearance:none;cursor:pointer;}
+.contact-form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.contact-submit{width:100%;background:var(--riviera);color:#fff;border:none;padding:0.85rem;font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s;margin-top:0.4rem;}
+.contact-submit:hover{background:var(--riviera-dark);}
+.contact-success{display:none;padding:2.5rem 2rem;text-align:center;border:1px solid var(--riviera-pale);background:var(--riviera-pale);margin-top:1rem;}
+.contact-success-icon{font-size:2rem;margin-bottom:0.5rem;}
+.contact-success-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--riviera);margin-bottom:0.3rem;}
+.contact-success-text{font-size:0.75rem;color:var(--text-mid);font-weight:300;}
+@media(max-width:900px){.contact-body{grid-template-columns:1fr;}.contact-left{border-right:none;border-bottom:1px solid var(--border);}.contact-hero{grid-template-columns:1fr;}.contact-form-row{grid-template-columns:1fr;}}
+
+/* ─── PREORDER BANNER ────────────────────────────────────────── */
+#preorder-banner{position:fixed;top:var(--nav-h);left:0;right:0;z-index:99;background:#1a1a1a;color:#fff;text-align:center;padding:0.55rem 1rem;font-size:0.62rem;letter-spacing:0.4px;line-height:1.6;}
+#preorder-banner strong{color:#f5c842;}
+.preorder-code{display:inline-block;background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.4);color:#f5c842;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:2px;padding:0.1rem 0.5rem;margin:0 0.15rem;font-size:inherit;}
+.coupon-row{display:flex;gap:0.5rem;margin-top:1.2rem;}
+.coupon-input{flex:1;border:1px solid var(--border);background:var(--bg);color:var(--text);padding:0.6rem 0.8rem;font-size:0.72rem;font-family:'Inter',sans-serif;outline:none;text-transform:uppercase;letter-spacing:1px;transition:border-color .2s;}
+.coupon-input:focus{border-color:var(--riviera);}
+.coupon-input::placeholder{text-transform:none;letter-spacing:0;}
+.coupon-apply-btn{background:var(--bg-sub);border:1px solid var(--border);color:var(--text);padding:0.6rem 1rem;font-size:0.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'Inter',sans-serif;}
+.coupon-apply-btn:hover{background:var(--riviera);color:#fff;border-color:var(--riviera);}
+.coupon-result{font-size:0.65rem;margin-top:0.4rem;font-weight:500;}
+.coupon-result.valid{color:var(--riviera);}
+.coupon-result.invalid{color:#e53;}
+.preorder-notice strong{color:#c8960a;font-weight:700;}
+.preorder-notice .pn-code{font-family:'Syne',sans-serif;font-weight:800;color:#c8960a;letter-spacing:2px;font-size:0.8rem;}
+
+/* ─── POPUP ──────────────────────────────────────────────────── */
+#popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none;align-items:center;justify-content:center;}
+#popup-overlay.show{display:flex;}
+.popup{background:var(--bg);width:400px;max-width:90vw;position:relative;overflow:hidden;border-radius:16px;}
+.popup-header{background:var(--riviera);padding:2.5rem 2rem 2rem;text-align:center;}
+.popup-header .big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;color:#fff;line-height:1;}
+.popup-header .big sup{font-size:2rem;vertical-align:super;}
+.popup-header .sub{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.8);margin-top:0.3rem;}
+.popup-body{padding:2rem;}
+.popup-desc{font-size:0.78rem;color:var(--text-mid);text-align:center;margin-bottom:1.2rem;font-weight:300;}
+.popup-input{width:100%;border:1px solid var(--border);background:var(--bg);color:var(--text);padding:0.7rem 1rem;font-size:0.75rem;font-family:'Inter',sans-serif;outline:none;margin-bottom:0.6rem;}
+.popup-btn{width:100%;background:var(--riviera);color:#fff;border:none;padding:0.75rem;font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;}
+.popup-no{display:block;text-align:center;font-size:0.6rem;color:var(--text-faint);margin-top:0.8rem;cursor:pointer;text-decoration:underline;}
+.popup-close{position:absolute;top:0.8rem;right:0.8rem;background:rgba(255,255,255,.2);color:#fff;border:none;width:24px;height:24px;font-size:0.9rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;}
+.popup-success{padding:2.5rem 2rem;text-align:center;display:none;}
+.popup-success-code{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--riviera);letter-spacing:3px;margin:1rem 0;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="goToShop()">Peptide <span>Warehouse</span></div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="goToShopPage();return false;">Shop</a></li>
+    <li><a href="#" onclick="goToCOAPage();return false;">COA Testing</a></li>
+    <li><a href="#" onclick="goToAboutPage();return false;">About</a></li>
+      <li><a href="#" onclick="goToFAQPage();return false;">FAQ</a></li>
+    <li><a href="#" onclick="goToContactPage();return false;">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="theme-toggle">
+      <button class="theme-btn active" id="btnLight" onclick="setTheme('light')">☀</button>
+      <button class="theme-btn" id="btnDark" onclick="setTheme('dark')">☾</button>
+    </div>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Cart
+      <span class="cart-count" id="cartCount" style="display:none;">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- PREORDER BANNER -->
+<div id="preorder-banner">
+  🚀 <strong>Pre-Order Now Open</strong> — All orders are currently pre-orders and will dispatch within <strong>2 weeks</strong>. &nbsp;·&nbsp; First purchase? Use code <span class="preorder-code">PREORDER</span> for <strong>10% off</strong>.
+</div>
+
+<!-- PAGE: SHOP (homepage) -->
+<div id="page-shop">
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-kicker">Research Grade · AU Warehouse · COA Verified</div>
+    <h1 class="hero-h1">Australia's <em>Premium</em><br>Peptide Source</h1>
+    <p class="hero-desc">Research-grade peptides tested to 99%+ HPLC purity. GMP-certified sourcing, independent third-party COA on every batch, next-day dispatch from our Melbourne warehouse.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="goToShopPage()">Shop Peptides</button>
+      <button class="btn-secondary" onclick="goToCOAPage()">View COA Testing</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">99.4%</div><div class="hero-stat-label">Avg Purity</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">7+</div><div class="hero-stat-label">Products</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">11PM</div><div class="hero-stat-label">Next Day Cut-off</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">5K+</div><div class="hero-stat-label">Orders</div></div>
+    </div>
+    <div style="margin-top:1.5rem;background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.4);padding:0.9rem 1.2rem;font-size:0.7rem;color:var(--text-mid);line-height:1.7;max-width:540px;">
+      🚀 <strong style="color:#c8960a;">Pre-Order Phase</strong> — All orders dispatch within <strong style="color:var(--text);">2 weeks</strong> of payment. Use code <strong style="font-family:'Syne',sans-serif;letter-spacing:1px;color:#c8960a;">PREORDER</strong> for <strong style="color:var(--text);">10% off</strong> your first order.
+    </div>
+  </div>
+  <div class="hero-visual" id="heroVisual"></div>
+</section>
+
+<!-- SCROLL BAND -->
+<div class="scroll-band">
+  <div class="scroll-inner">
+    <span class="sb-item" onclick="goToProduct(0)" style="color:var(--riviera);cursor:pointer;">Retatrutide</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(1)" style="color:var(--riviera);cursor:pointer;">Semax</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(2)" style="color:var(--riviera);cursor:pointer;">Melanotan I</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(3)" style="color:var(--riviera);cursor:pointer;">GHK-Cu</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(4)" style="color:var(--riviera);cursor:pointer;">BAC Water</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(5)" style="color:var(--riviera);cursor:pointer;">KLOW Peptide Blend</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(6)" style="color:var(--riviera);cursor:pointer;">Retatrutide Starter Bundle</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(0)" style="color:var(--riviera);cursor:pointer;">Retatrutide</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(1)" style="color:var(--riviera);cursor:pointer;">Semax</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(2)" style="color:var(--riviera);cursor:pointer;">Melanotan I</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(3)" style="color:var(--riviera);cursor:pointer;">GHK-Cu</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(4)" style="color:var(--riviera);cursor:pointer;">BAC Water</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(5)" style="color:var(--riviera);cursor:pointer;">KLOW Peptide Blend</span><span class="sb-dot">·</span>
+    <span class="sb-item" onclick="goToProduct(6)" style="color:var(--riviera);cursor:pointer;">Retatrutide Starter Bundle</span><span class="sb-dot">·</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="s-label">Bestsellers</div>
+  <div class="s-title">Most Popular</div>
+  <div class="filter-row">
+    <button class="f-btn active" onclick="goToShopPage('All')">All</button>
+    <button class="f-btn" onclick="goToShopPage('Fat Loss')">Fat Loss</button>
+    <button class="f-btn" onclick="goToShopPage('Healing')">Healing</button>
+    <button class="f-btn" onclick="goToShopPage('Nootropic')">Nootropic</button>
+    <button class="f-btn" onclick="goToShopPage('Tanning')">Tanning</button>
+    <button class="f-btn" onclick="goToShopPage('Bundles')">Bundles</button>
+    <button class="f-btn" onclick="goToShopPage('Needles')">Supplies</button>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- QUALITY / COA -->
+<section id="quality">
+  <div class="quality-steps">
+    <div class="s-label">Why Trust Us</div>
+    <div class="s-title"><span style="color:var(--riviera)">Quality</span> You Can Verify</div>
+    <div class="q-step"><div class="q-num">01</div><div><div class="q-title">GMP-Certified Sourcing</div><div class="q-text">Every peptide is sourced exclusively from GMP-certified manufacturing facilities. Full chain-of-custody documentation is maintained from synthesis to our Australian warehouse.</div></div></div>
+    <div class="q-step"><div class="q-num">02</div><div><div class="q-title">Independent HPLC Testing</div><div class="q-text">Each batch is independently tested by an accredited third-party lab. HPLC purity results and mass spectrometry identity confirmation are published for every batch.</div></div></div>
+    <div class="q-step"><div class="q-num">03</div><div><div class="q-title">Sterility & Endotoxin Screening</div><div class="q-text">Every batch passes LAL endotoxin assay (&lt;1.0 EU/mg) and sterility screening before dispatch. A single failed test means the entire batch is replaced.</div></div></div>
+  </div>
+  <div>
+    <div class="coa-carousel">
+      <div class="coa-carousel-header">
+        <div class="coa-carousel-title">Certificate of Analysis</div>
+        <div class="coa-dots" id="coaDots"></div>
+      </div>
+      <div class="coa-panel" id="coaPanel"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="s-label">Reviews</div>
+  <div class="s-title">What Researchers Say</div>
+  <div class="testi-grid">
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Prices are the best I've come across for an Aussie supplier, and shipping was quicker than expected. Solid all round, already reordered."</p><div class="testi-author">James W. — Melbourne, VIC</div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Been using these guys for a few months now. Good prices, arrives well packaged, and they actually reply when you message them. Hard to find that combo locally."</p><div class="testi-author">Sarah K. — Sydney, NSW</div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Cheapest I've found in Australia without feeling sketchy about it. Shipping was fine, nothing to complain about. Will keep ordering."</p><div class="testi-author">Mike T. — Brisbane, QLD</div></div>
+  </div>
+</section>
+
+<!-- SHIPPING STRIP -->
+<div class="ship-strip">
+  <div class="ship-cell"><div class="ship-label">Free Shipping</div><div class="ship-sub">On orders over $199 AUD</div></div>
+  <div class="ship-cell"><div class="ship-label">AU Warehouse</div><div class="ship-sub">Melbourne, Victoria</div></div>
+  <div class="ship-cell"><div class="ship-label">Next Day Dispatch</div><div class="ship-sub">Order before 11PM AEST</div></div>
+  <div class="ship-cell"><div class="ship-label">Discreet Packaging</div><div class="ship-sub">Plain sealed envelope</div></div>
+</div>
+
+<div class="disclaimer"><p>⚠ RESEARCH USE ONLY — All products sold by Peptide Warehouse Australia are strictly for in-vitro research and laboratory purposes only. Not intended for human or veterinary consumption. By purchasing you confirm you are 18+ and will use products in lawful research settings only.</p></div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div>
+    <div class="f-brand-name">Peptide <span>Warehouse</span></div>
+    <p class="f-brand-desc">Australia's trusted source for research-grade peptides. GMP-certified, third-party tested, dispatched from Melbourne.</p>
+    <div class="f-pay"><span class="f-pay-chip">PayID</span><span class="f-pay-chip">PayPal</span></div>
+  </div>
+  <div class="f-col"><h5>Shop</h5><ul><li><a href="#" onclick="goToShopPage('Fat Loss');return false;">Fat Loss</a></li><li><a href="#" onclick="goToShopPage('Healing');return false;">Healing</a></li><li><a href="#" onclick="goToShopPage('Nootropic');return false;">Nootropic</a></li><li><a href="#" onclick="goToShopPage('Tanning');return false;">Tanning</a></li><li><a href="#" onclick="goToShopPage('Bundles');return false;">Bundles</a></li><li><a href="#" onclick="goToShopPage('Needles');return false;">Supplies</a></li></ul></div>
+  <div class="f-col"><h5>Information</h5><ul><li><a href="#" onclick="goToAboutPage();return false;">About Us</a></li><li><a href="#" onclick="goToCOAPage();return false;">COA Library</a></li><li><a href="#" onclick="goToFAQPage();return false;">FAQ</a></li><li><a href="#" onclick="goToShippingPage();return false;">Shipping Policy</a></li></ul></div>
+  <div class="f-col f-newsletter"><h5>Stay Updated</h5><input type="email" placeholder="your@email.com"/><button>Subscribe</button></div>
+</footer>
+<div class="f-bottom"><span class="f-bottom-copy">© 2026 Peptide Warehouse Australia. ABN: 55 947 727 521. Research use only.</span><span class="f-bottom-copy">Melbourne VIC 3000, Australia</span></div>
+
+</div><!-- /page-shop -->
+
+<!-- PAGE: PRODUCT DETAIL -->
+<div id="page-product"></div>
+
+<!-- PAGE: SHOP LISTING -->
+<div id="page-shop-page"></div>
+
+<!-- PAGE: COA -->
+<div id="page-coa"></div>
+
+<!-- PAGE: ABOUT -->
+<div id="page-about"></div>
+
+<!-- PAGE: CONTACT -->
+<div id="page-contact"></div>
+
+<!-- PAGE: FAQ -->
+<div id="page-faq"></div>
+
+<!-- PAGE: SHIPPING -->
+<div id="page-shipping"></div>
+
+<!-- PAGE: CHECKOUT -->
+<div id="page-checkout"></div>
+
+<!-- AGE VERIFICATION MODAL -->
+<div id="age-gate">
+  <div class="age-gate-box">
+    <div class="age-gate-icon">🔞</div>
+    <div class="age-gate-title">Age Verification Required</div>
+    <p class="age-gate-sub">
+      You must be <strong>18 years of age or older</strong> to purchase from Peptide Warehouse Australia.<br><br>
+      All products are sold strictly for <strong>in-vitro research and laboratory use only</strong> and are not intended for human or veterinary consumption.
+    </p>
+    <div class="age-gate-buttons">
+      <button class="age-gate-yes" onclick="confirmAge()">I am 18 or older →</button>
+      <button class="age-gate-no" onclick="declineAge()">I am under 18</button>
+    </div>
+    <div class="age-gate-legal">
+      By continuing, you confirm you are 18+ and agree to our Terms & Conditions. Products are for research purposes only and not for human use.
+    </div>
+    <div class="age-gate-declined" id="age-declined">
+      <p>⚠ Sorry — you must be 18 or older to access this store. Access has been restricted.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CART OVERLAY + DRAWER -->
+<div id="cart-overlay" onclick="closeCart()"></div>
+<div id="cart-drawer">
+  <div class="cart-drawer-header">
+    <div class="cart-drawer-title">Your Cart <span id="cartDrawerCount" style="font-size:0.7rem;color:var(--text-faint);font-weight:400;"></span></div>
+    <button class="cart-drawer-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-drawer-items" id="cartDrawerItems"></div>
+  <div class="cart-drawer-footer" id="cartDrawerFooter"></div>
+</div>
+
+<!-- EMAIL POPUP -->
+<div id="popup-overlay" onclick="closePopup(event)">
+  <div class="popup" onclick="event.stopPropagation()">
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-header">
+      <div class="big">10%</div>
+      <div class="sub">Off Your First Order</div>
+    </div>
+    <div class="popup-body" id="popupBody">
+      <p class="popup-desc">Enter your email to receive your discount code and stay updated on new products and restocks.</p>
+      <input class="popup-input" type="email" id="popupEmail" placeholder="your@email.com"/>
+      <button class="popup-btn" onclick="submitPopup()">Get My 10% Off</button>
+      <span class="popup-no" onclick="closePopup()">No thanks, I'll pay full price</span>
+    </div>
+    <div class="popup-success" id="popupSuccess">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">🎉</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:0.3rem;">Your code is ready</div>
+      <div class="popup-success-code">PREORDER</div>
+      <div style="font-size:0.7rem;color:var(--text-faint);">Apply at checkout for 10% off your first order.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── THEME ──────────────────────────────────────────────────── */
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('btnLight').classList.toggle('active',t==='light');
+  document.getElementById('btnDark').classList.toggle('active',t==='dark');
+}
+
+/* ─── CART ───────────────────────────────────────────────────── */
+/* ─── CART STATE ─────────────────────────────────────────────── */
+let cart = []; // [{idx, qty}]
+let selectedShipping = 'standard';
+
+function getCartTotal(){
+  return cart.reduce((sum, item) => {
+    const price = parseFloat(products[item.idx].price.replace('$',''));
+    return sum + price * item.qty;
+  }, 0);
+}
+
+function getCartCount(){
+  return cart.reduce((sum, item) => sum + item.qty, 0);
+}
+
+function updateCartBadge(){
+  const count = getCartCount();
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartCount').style.display = count ? 'flex' : 'none';
+}
+
+function addToCart(idx){
+  const existing = cart.find(i => i.idx === idx);
+  if(existing) existing.qty++;
+  else cart.push({ idx, qty: 1 });
+  updateCartBadge();
+  renderCartDrawer();
+  openCart();
+}
+
+function removeFromCart(idx){
+  cart = cart.filter(i => i.idx !== idx);
+  updateCartBadge();
+  renderCartDrawer();
+}
+
+function changeQty(idx, delta){
+  const item = cart.find(i => i.idx === idx);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) removeFromCart(idx);
+  else { updateCartBadge(); renderCartDrawer(); }
+}
+
+function openCart(){
+  document.getElementById('cart-overlay').classList.add('open');
+  document.getElementById('cart-drawer').classList.add('open');
+  renderCartDrawer();
+}
+
+function closeCart(){
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.getElementById('cart-drawer').classList.remove('open');
+}
+
+function renderCartDrawer(){
+  const itemsEl   = document.getElementById('cartDrawerItems');
+  const footerEl  = document.getElementById('cartDrawerFooter');
+  const countEl   = document.getElementById('cartDrawerCount');
+  const count = getCartCount();
+  countEl.textContent = count ? `(${count} item${count>1?'s':''})` : '';
+
+  if(cart.length === 0){
+    itemsEl.innerHTML = `<div class="cart-empty">
+      <div class="cart-empty-icon">🛒</div>
+      <div class="cart-empty-text">Your cart is empty</div>
+      <button class="cart-empty-btn" onclick="closeCart();goToShopPage()">Browse Products</button>
+    </div>`;
+    footerEl.innerHTML = '';
+    return;
+  }
+
+  itemsEl.innerHTML = cart.map(item => {
+    const p   = products[item.idx];
+    const pal = palettes[item.idx];
+    const price = parseFloat(p.price.replace('$',''));
+    const miniVial = `<svg width="32" height="50" viewBox="0 0 62 96" fill="none"><rect x="15" y="14" width="32" height="72" rx="5" fill="${pal.bg}" stroke="${pal.cap}" stroke-width="0.6"/><rect x="17" y="4" width="28" height="13" rx="4" fill="${pal.cap}"/><rect x="19" y="28" width="24" height="20" rx="2" fill="white" opacity="0.4"/></svg>`;
+    return `<div class="cart-item">
+      <div>${miniVial}</div>
+      <div>
+        <div class="cart-item-name">${p.name}</div>
+        <div class="cart-item-spec">${p.spec}</div>
+        <div class="cart-item-price">$${(price * item.qty).toFixed(2)}</div>
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-qty">
+          <button onclick="changeQty(${item.idx},-1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty(${item.idx},1)">+</button>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart(${item.idx})">Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const total = getCartTotal();
+  const isFree = total >= 199;
+
+  footerEl.innerHTML = `
+    <div class="cart-summary-row"><span>Subtotal</span><span>$${total.toFixed(2)}</span></div>
+    ${isFree
+      ? `<div class="cart-summary-row"><span>Shipping</span><span class="free">Free Express Post</span></div>`
+      : `<div class="cart-summary-row" style="align-items:flex-start;">
+           <span>Shipping</span>
+           <span style="text-align:right;font-size:0.68rem;line-height:1.9;">
+             <label style="display:block;cursor:pointer;"><input type="radio" name="cart-ship" value="standard" ${selectedShipping==='standard'?'checked':''} onchange="selectedShipping='standard';renderCartDrawer()"> Standard &nbsp;<strong>$11.99</strong></label>
+             <label style="display:block;cursor:pointer;"><input type="radio" name="cart-ship" value="express" ${selectedShipping==='express'?'checked':''} onchange="selectedShipping='express';renderCartDrawer()"> Express Post &nbsp;<strong>$15.99</strong></label>
+           </span>
+         </div>
+         ${total < 199 ? `<div style="font-size:0.6rem;color:var(--riviera);text-align:right;margin-top:0.2rem;">You're $${(199-total).toFixed(2)} away from free shipping</div>` : ''}`
+    }
+    <div class="cart-summary-row total"><span>Total (AUD incl. GST)</span><span>$${(total + (isFree ? 0 : selectedShipping==='express' ? 15.99 : 11.99)).toFixed(2)}</span></div>
+    <button class="cart-checkout-btn" onclick="closeCart();goToCheckout()">Proceed to Checkout →</button>
+    <div class="cart-payid-note">Payment via PayID or PayPal after order submission.<br>Next-day dispatch on orders before 11PM AEST.</div>
+  `;
+}
+
+function toggleCart(){
+  const drawer = document.getElementById('cart-drawer');
+  if(drawer.classList.contains('open')) closeCart();
+  else openCart();
+}
+
+/* ─── CHECKOUT PAGE ──────────────────────────────────────────── */
+/* ─── AGE VERIFICATION ───────────────────────────────────────── */
+let ageVerified = false;
+let pendingCheckout = false;
+
+function showAgeGate(onConfirm){
+  pendingCheckout = onConfirm;
+  document.getElementById('age-gate').classList.add('show');
+  document.getElementById('age-declined').classList.remove('show');
+}
+
+function confirmAge(){
+  ageVerified = true;
+  document.getElementById('age-gate').classList.remove('show');
+  if(typeof pendingCheckout === 'function') pendingCheckout();
+  pendingCheckout = false;
+}
+
+function declineAge(){
+  document.getElementById('age-declined').classList.add('show');
+  document.getElementById('age-gate').querySelector('.age-gate-buttons').style.display = 'none';
+  document.getElementById('age-gate').querySelector('.age-gate-sub').textContent = 'Access to this store is restricted to users aged 18 and over. You do not meet the age requirement to proceed.';
+}
+
+function goToCheckout(){
+  if(cart.length === 0){ openCart(); return; }
+  if(!ageVerified){ showAgeGate(goToCheckout); return; }
+  appliedCoupon = null;
+  hideAll();
+  document.getElementById('page-checkout').style.display = 'block';
+  document.title = 'Checkout — Peptide Warehouse Australia';
+  window.scrollTo(0,0);
+
+  const total     = getCartTotal();
+  const isFree    = total >= 199;
+  const shipCost  = isFree ? 0 : (selectedShipping === 'express' ? 15.99 : 11.99);
+  const grandTotal = total + shipCost;
+
+  const orderItemsHTML = cart.map(item => {
+    const p = products[item.idx];
+    const pal = palettes[item.idx];
+    const price = parseFloat(p.price.replace('$',''));
+    const miniVial = `<svg width="28" height="44" viewBox="0 0 62 96" fill="none"><rect x="15" y="14" width="32" height="72" rx="5" fill="${pal.bg}" stroke="${pal.cap}" stroke-width="0.6"/><rect x="17" y="4" width="28" height="13" rx="4" fill="${pal.cap}"/></svg>`;
+    return `<div class="checkout-order-item">
+      ${miniVial}
+      <div class="checkout-item-name">${p.name}</div>
+      <span class="checkout-item-qty">×${item.qty}</span>
+      <div class="checkout-item-price">$${(price*item.qty).toFixed(2)}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('page-checkout').innerHTML = `
+    <div style="padding:1rem 5%;border-bottom:1px solid var(--border);background:var(--bg-sub);display:flex;align-items:center;gap:0.5rem;font-size:0.62rem;color:var(--text-faint);">
+      <a onclick="closeCart();goToShopPage()" style="color:var(--riviera);cursor:pointer;">Shop</a> &rsaquo; Checkout
+    </div>
+
+    <div id="checkoutBody">
+      <div style="padding:1.2rem 5%;border-bottom:1px solid var(--border);">
+        <div class="preorder-notice">
+          🚀 <strong>Pre-Order Notice</strong> — We are currently in pre-order phase. Your order will be dispatched within <strong>2 weeks</strong> of payment confirmation. We appreciate your patience and support as Australia's newest premium peptide supplier.<br>
+          <span style="margin-top:0.4rem;display:block;">🎁 First order? Apply code <span class="pn-code">PREORDER</span> at checkout for <strong>10% off your entire order</strong>.</span>
+        </div>
+      </div>
+      <div class="checkout-layout">
+        <!-- MAIN FORM -->
+        <div class="checkout-main">
+          <div class="checkout-section">
+            <div class="checkout-section-title">1 &nbsp; Contact Information</div>
+            <div class="checkout-row">
+              <div><label class="checkout-label">First Name</label><input class="checkout-input" id="co-first" type="text" placeholder="James"/></div>
+              <div><label class="checkout-label">Last Name</label><input class="checkout-input" id="co-last" type="text" placeholder="Mitchell"/></div>
+            </div>
+            <label class="checkout-label">Email Address</label>
+            <input class="checkout-input" id="co-email" type="email" placeholder="james@example.com"/>
+            <label class="checkout-label">Phone (optional)</label>
+            <input class="checkout-input" id="co-phone" type="tel" placeholder="+61 4XX XXX XXX"/>
+          </div>
+
+          <div class="checkout-section">
+            <div class="checkout-section-title">2 &nbsp; Shipping Address</div>
+            <label class="checkout-label">Street Address</label>
+            <input class="checkout-input" id="co-street" type="text" placeholder="123 Example Street"/>
+            <label class="checkout-label">Suburb</label>
+            <input class="checkout-input" id="co-suburb" type="text" placeholder="Melbourne"/>
+            <div class="checkout-row">
+              <div>
+                <label class="checkout-label">State</label>
+                <select class="checkout-input" id="co-state" style="appearance:none;cursor:pointer;">
+                  <option value="">Select…</option>
+                  <option>VIC</option><option>NSW</option><option>QLD</option><option>WA</option><option>SA</option><option>TAS</option><option>ACT</option><option>NT</option>
+                </select>
+              </div>
+              <div><label class="checkout-label">Postcode</label><input class="checkout-input" id="co-post" type="text" placeholder="3000" maxlength="4"/></div>
+            </div>
+          </div>
+
+          <div class="checkout-section">
+            <div class="checkout-section-title">3 &nbsp; Shipping Method</div>
+            ${isFree
+              ? `<div style="background:var(--riviera-pale);border:1px solid var(--riviera);padding:1rem 1.2rem;font-size:0.78rem;color:var(--riviera);font-weight:600;">🎉 Free Express Post on this order (over $199)</div>`
+              : `<div class="payment-option ${selectedShipping==='standard'?'selected':''}" id="ship-standard" onclick="selectedShipping='standard';document.getElementById('ship-standard').classList.add('selected');document.getElementById('ship-express').classList.remove('selected');document.getElementById('co-ship-total').textContent='$'+(${total}+11.99).toFixed(2);">
+                  <div class="payment-radio"></div>
+                  <div><div class="payment-option-name">Standard Post</div><div class="payment-option-desc">2–6 business days · Tracked</div></div>
+                  <div style="margin-left:auto;font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;">$11.99</div>
+                </div>
+                <div class="payment-option ${selectedShipping==='express'?'selected':''}" id="ship-express" onclick="selectedShipping='express';document.getElementById('ship-express').classList.add('selected');document.getElementById('ship-standard').classList.remove('selected');document.getElementById('co-ship-total').textContent='$'+(${total}+15.99).toFixed(2);">
+                  <div class="payment-radio"></div>
+                  <div><div class="payment-option-name">Express Post</div><div class="payment-option-desc">1–3+ business days · Priority tracked</div></div>
+                  <div style="margin-left:auto;font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;">$15.99</div>
+                </div>`
+            }
+          </div>
+
+          <div class="checkout-section">
+            <div class="checkout-section-title">4 &nbsp; Payment Method</div>
+            <div class="payment-option selected" id="pay-payid" onclick="selectPayment('payid')">
+              <div class="payment-radio"></div>
+              <div>
+                <div class="payment-option-name">PayID</div>
+                <div class="payment-option-desc">Instant bank transfer via email PayID · Fastest processing</div>
+              </div>
+              <div style="margin-left:auto;font-size:1.2rem;">⚡</div>
+            </div>
+            <div class="payid-info show" id="payid-details">
+              <div style="font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--riviera);font-weight:600;margin-bottom:0.6rem;">PayID Details</div>
+              <div class="payid-detail-row"><span>PayID Type</span><span>Email</span></div>
+              <div class="payid-detail-row"><span>PayID</span><span>info@auspeptidewarehouse.au</span></div>
+              <div class="payid-detail-row"><span>Reference</span><span>Your order number (provided after checkout)</span></div>
+              <div style="font-size:0.6rem;color:var(--text-faint);margin-top:0.6rem;font-weight:300;">After transferring, send a screenshot to info@auspeptidewarehouse.au with your order number to confirm payment.</div>
+            </div>
+
+            <div class="payment-option" id="pay-bank" onclick="selectPayment('bank')">
+              <div class="payment-radio"></div>
+              <div>
+                <div class="payment-option-name">Bank Transfer (BSB / Account)</div>
+                <div class="payment-option-desc">Direct deposit via internet banking · 1–3 business days to clear</div>
+              </div>
+              <div style="margin-left:auto;font-size:1.2rem;">🏦</div>
+            </div>
+            <div class="payid-info" id="bank-details">
+              <div style="font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--riviera);font-weight:600;margin-bottom:0.6rem;">Bank Transfer Details</div>
+              <div class="payid-detail-row"><span>Account Name</span><span>Peptide Warehouse Pty Ltd</span></div>
+              <div class="payid-detail-row"><span>BSB</span><span>063-000</span></div>
+              <div class="payid-detail-row"><span>Account Number</span><span>1234 5678</span></div>
+              <div class="payid-detail-row"><span>Reference</span><span>Your order number (provided after checkout)</span></div>
+              <div style="font-size:0.6rem;color:var(--text-faint);margin-top:0.6rem;font-weight:300;">Use your order number as the payment reference. Orders are dispatched once funds clear (1–3 business days). Send your transfer receipt to info@auspeptidewarehouse.au to expedite processing.</div>
+            </div>
+
+            <div class="payment-option" id="pay-paypal" onclick="selectPayment('paypal')">
+              <div class="payment-radio"></div>
+              <div>
+                <div class="payment-option-name">PayPal</div>
+                <div class="payment-option-desc">Pay securely via PayPal · Redirect after placing order</div>
+              </div>
+              <div style="margin-left:auto;font-size:1.2rem;">🅿️</div>
+            </div>
+
+            <div style="font-size:0.62rem;color:var(--text-faint);font-weight:300;line-height:1.7;margin-top:0.8rem;">
+              By placing your order you agree to our <a href="#" style="color:var(--riviera);">Terms & Conditions</a> and confirm products are for research purposes only. All sales are final.
+            </div>
+          </div>
+
+          <button class="checkout-place-btn" onclick="placeOrder()">Place Order →</button>
+        </div>
+
+        <!-- SIDEBAR: ORDER SUMMARY -->
+        <div class="checkout-sidebar">
+          <div class="checkout-section-title">Order Summary</div>
+          ${orderItemsHTML}
+          <div style="margin-top:1.5rem;">
+            <div class="cart-summary-row"><span>Subtotal</span><span>$${total.toFixed(2)}</span></div>
+            <div class="cart-summary-row"><span>Shipping</span><span>${isFree ? '<span class="free">Free Express Post</span>' : '$'+shipCost.toFixed(2)}</span></div>
+            ${!isFree ? `<div style="font-size:0.6rem;color:var(--riviera);text-align:right;margin:0.2rem 0;">You're $${(199-total).toFixed(2)} away from free shipping</div>` : ''}
+            <div class="cart-summary-row" id="co-discount-row" style="display:none;color:var(--riviera);"><span id="co-discount-label">Discount</span><span id="co-discount-amt"></span></div>
+            <div class="cart-summary-row total"><span>Total (AUD incl. GST)</span><span id="co-ship-total">$${grandTotal.toFixed(2)}</span></div>
+          </div>
+          <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+            <div style="font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.5rem;">Coupon Code</div>
+            <div class="coupon-row">
+              <input class="coupon-input" id="co-coupon" type="text" placeholder="Enter code…" maxlength="20"/>
+              <button class="coupon-apply-btn" onclick="applyCoupon(${grandTotal})">Apply</button>
+            </div>
+            <div class="coupon-result" id="coupon-result"></div>
+          </div>
+          <div style="margin-top:2rem;border-top:1px solid var(--border);padding-top:1.5rem;">
+            <div style="font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.8rem;">Included with your order</div>
+            ${['Next-day dispatch before 11PM AEST','Discreet plain packaging','Sent via Australia Post + tracking'].map(t=>`<div style="display:flex;align-items:center;gap:0.5rem;font-size:0.7rem;color:var(--text-mid);margin-bottom:0.4rem;"><span style="color:var(--riviera);">✓</span>${t}</div>`).join('')}
+          </div>
+          <div style="margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1rem;">
+            <div style="font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.6rem;">Need help?</div>
+            <div style="font-size:0.7rem;color:var(--text-mid);">✉ <a href="mailto:info@auspeptidewarehouse.au" style="color:var(--riviera);">info@auspeptidewarehouse.au</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — Not intended for human or veterinary consumption. By placing an order you confirm you are 18+ and will use products in lawful research settings only.</p></div>
+  `;
+}
+
+let selectedPayment = 'payid';
+
+const COUPONS = {
+  'PREORDER': { type:'percent', value:10, label:'10% off (PREORDER)' },
+};
+let appliedCoupon = null;
+
+function applyCoupon(baseTotal){
+  const code = document.getElementById('co-coupon').value.trim().toUpperCase();
+  const resultEl = document.getElementById('coupon-result');
+  const discountRow = document.getElementById('co-discount-row');
+  const discountLabel = document.getElementById('co-discount-label');
+  const discountAmt = document.getElementById('co-discount-amt');
+  const totalEl = document.getElementById('co-ship-total');
+
+  if(!code){ resultEl.textContent = 'Please enter a code.'; resultEl.className = 'coupon-result invalid'; return; }
+
+  const coupon = COUPONS[code];
+  if(!coupon){
+    appliedCoupon = null;
+    discountRow.style.display = 'none';
+    totalEl.textContent = '$' + baseTotal.toFixed(2);
+    resultEl.textContent = '✕ Invalid code. Please try again.';
+    resultEl.className = 'coupon-result invalid';
+    return;
+  }
+
+  appliedCoupon = { code, ...coupon };
+  const discount = coupon.type === 'percent' ? baseTotal * (coupon.value / 100) : coupon.value;
+  const newTotal = Math.max(0, baseTotal - discount);
+  discountRow.style.display = 'flex';
+  discountLabel.textContent = coupon.label;
+  discountAmt.textContent = '−$' + discount.toFixed(2);
+  totalEl.textContent = '$' + newTotal.toFixed(2);
+  resultEl.textContent = '✓ Code applied — ' + coupon.label;
+  resultEl.className = 'coupon-result valid';
+  document.getElementById('co-coupon').disabled = true;
+  document.querySelector('.coupon-apply-btn').textContent = 'Applied ✓';
+  document.querySelector('.coupon-apply-btn').style.background = 'var(--riviera)';
+  document.querySelector('.coupon-apply-btn').style.color = '#fff';
+  document.querySelector('.coupon-apply-btn').disabled = true;
+}
+function selectPayment(method){
+  selectedPayment = method;
+  ['payid','bank','paypal'].forEach(m => {
+    document.getElementById('pay-'+m)?.classList.toggle('selected', method===m);
+  });
+  document.getElementById('payid-details')?.classList.toggle('show', method==='payid');
+  document.getElementById('bank-details')?.classList.toggle('show', method==='bank');
+}
+
+function placeOrder(){
+  const first  = document.getElementById('co-first')?.value.trim();
+  const last   = document.getElementById('co-last')?.value.trim();
+  const email  = document.getElementById('co-email')?.value.trim();
+  const street = document.getElementById('co-street')?.value.trim();
+  const suburb = document.getElementById('co-suburb')?.value.trim();
+  const state  = document.getElementById('co-state')?.value;
+  const post   = document.getElementById('co-post')?.value.trim();
+  if(!first||!last)   { alert('Please enter your full name.');        return; }
+  if(!email||!email.includes('@')) { alert('Please enter a valid email.'); return; }
+  if(!street||!suburb){ alert('Please enter your shipping address.'); return; }
+  if(!state)          { alert('Please select your state.');           return; }
+  if(!post||post.length<4){ alert('Please enter a valid postcode.');  return; }
+
+  const ref = 'PWA-' + Date.now().toString(36).toUpperCase().slice(-6);
+  const subtotal = getCartTotal();
+  const shipCost = subtotal >= 199 ? 0 : (selectedShipping === 'express' ? 15.99 : 11.99);
+  const baseTotal = subtotal + shipCost;
+  const discount = appliedCoupon
+    ? (appliedCoupon.type === 'percent' ? baseTotal * (appliedCoupon.value / 100) : appliedCoupon.value)
+    : 0;
+  const total = Math.max(0, baseTotal - discount);
+  const shipLabel = subtotal >= 199 ? 'Free Express Post' : (selectedShipping === 'express' ? 'Express Post' : 'Standard Post');
+
+  document.getElementById('page-checkout').innerHTML = `
+    <div class="order-success-wrap">
+      <div class="order-success-icon">✅</div>
+      <div class="order-success-title">Order Received!</div>
+      <div class="order-success-ref">${ref}</div>
+      <p class="order-success-text">
+        Thank you ${first}! Your order has been received. We've sent a confirmation to <strong>${email}</strong>.<br><br>
+        ${selectedPayment === 'payid'
+          ? `To complete your order, transfer <strong>$${total.toFixed(2)} AUD</strong> via PayID to <strong>info@auspeptidewarehouse.au</strong> using reference <strong>${ref}</strong>, then send your payment screenshot to the same address.`
+          : selectedPayment === 'bank'
+          ? `To complete your order, transfer <strong>$${total.toFixed(2)} AUD</strong> to:<br><br><strong>Account Name:</strong> Peptide Warehouse Pty Ltd<br><strong>BSB:</strong> 063-000 &nbsp;·&nbsp; <strong>Account:</strong> 1234 5678<br><strong>Reference:</strong> ${ref}<br><br>Please send your transfer receipt to <strong>info@auspeptidewarehouse.au</strong> to expedite dispatch. Bank transfers typically clear in 1–3 business days.`
+          : `You'll be redirected to PayPal to complete your payment of <strong>$${total.toFixed(2)} AUD</strong>.`}
+        <br><br>Once payment is confirmed, your order will be dispatched via ${shipLabel} with tracking.
+      </p>
+      <button class="btn-primary" onclick="cart=[];updateCartBadge();goToShop()">Continue Shopping</button>
+    </div>
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — Not intended for human or veterinary consumption.</p></div>
+  `;
+  cart = [];
+  updateCartBadge();
+}
+
+/* ─── PRODUCTS DATA ──────────────────────────────────────────── */
+const products = [
+  { name:'Retatrutide',           spec:'10mg · Lyophilised',    price:'$129.99', cat:'Fat Loss',  flag:'Best Seller', flagType:'gold' },
+  { name:'Semax',                 spec:'10mg · Lyophilised',    price:'$69.99',  cat:'Nootropic', flag:'',            flagType:'' },
+  { name:'Melanotan I',           spec:'10mg · Lyophilised',    price:'$69.99',  cat:'Tanning',   flag:'',            flagType:'' },
+  { name:'GHK-Cu',                spec:'50mg · Lyophilised',    price:'$94.99',  cat:'Healing',   flag:'Popular',     flagType:'blue' },
+  { name:'BAC Water',             spec:'10mL · Bacteriostatic', price:'$19.99',  cat:'Ancillary', flag:'',            flagType:'' },
+  { name:'KLOW Peptide Blend',    spec:'50mg · Lyophilised',    price:'$174.99', cat:'Blend',     flag:'Exclusive',   flagType:'blue' },
+  { name:'Retatrutide Bundle',    spec:'Starter Kit',           price:'$249.99', cat:'Bundle',    flag:'Best Value',  flagType:'gold' },
+  { name:'Insulin Needles',       spec:'Packs of 10, 20, 50 or 100', price:'$5.99',   cat:'Ancillary', flag:'',            flagType:'' },
+];
+
+const productIncludes = [
+  // 0 Retatrutide
+  [
+    { icon:'🔵', name:'Retatrutide 10mg', spec:'Lyophilised powder · 1 vial', qty:'×1' },
+  ],
+  // 1 Semax
+  [
+    { icon:'🟣', name:'Semax 10mg', spec:'Lyophilised powder · 1 vial', qty:'×1' },
+  ],
+  // 2 Melanotan I
+  [
+    { icon:'🟠', name:'Melanotan I 10mg', spec:'Lyophilised powder · 1 vial', qty:'×1' },
+  ],
+  // 3 GHK-Cu
+  [
+    { icon:'🟢', name:'GHK-Cu 50mg', spec:'Lyophilised powder · 1 vial', qty:'×1' },
+  ],
+  // 4 BAC Water
+  [
+    { icon:'💧', name:'Bacteriostatic Water 10mL', spec:'Pharmaceutical grade sterile BAC water', qty:'×1' },
+  ],
+  // 5 KLOW Peptide Blend
+  [
+    { icon:'🌸', name:'KLOW Peptide Blend 50mg', spec:'Proprietary lyophilised multi-peptide blend · 1 vial', qty:'×1' },
+  ],
+  // 6 Retatrutide Bundle
+  [
+    { icon:'🔵', name:'Retatrutide 10mg', spec:'Lyophilised powder · Batch PW-260301', qty:'×2' },
+    { icon:'💧', name:'Bacteriostatic Water', spec:'10mL sterile BAC water · Pharmaceutical grade', qty:'×1' },
+    { icon:'💉', name:'Insulin Needles', spec:'29G × 0.5" · Individually wrapped · Sterile', qty:'×20' },
+  ],
+  // 7 Insulin Needles
+  [
+    { icon:'💉', name:'Insulin Needles', spec:'29G × 0.5" · Individually wrapped · Sterile', qty:'× selected pack' },
+  ],
+];
+
+const palettes = [
+  { bg:'#dff0f9', cap:'#006B96' },
+  { bg:'#ede8f7', cap:'#5a3a8a' },
+  { bg:'#fdf3e3', cap:'#b5711a' },
+  { bg:'#e4f4ed', cap:'#1f6e45' },
+  { bg:'#f0f0f0', cap:'#4a4a4a' },
+  { bg:'#fde8ef', cap:'#a02050' },
+  { bg:'#dff0f9', cap:'#006B96' },
+  { bg:'#f0f4f8', cap:'#2c5f7a' },
+];
+
+const productDetails = [
+  { slug:'retatrutide',       desc:`<p>Retatrutide is one of the most talked-about research peptides of recent years. It works across three receptor pathways at once — GLP-1, GIP, and glucagon — giving researchers a unique tool for studying how the body manages weight, blood sugar, and energy use.</p><p>Unlike earlier generation compounds that only target one pathway, Retatrutide's triple-action approach has made it a standout in metabolic research. Clinical studies have reported significant reductions in body weight over extended periods, making it a compound of serious interest to the research community.</p><p>Supplied as a 10mg lyophilised powder. HPLC-verified at 99.4% purity.</p>`, sequence:'39-residue GLP-1/GIP/Glucagon triple agonist', appearance:'White lyophilised powder', solubility:'Soluble in sterile water', storage:'-20°C, desiccated', halflife:'~6 days (est.)', purity:'99.4%', batch:'PW-260301' },
+  { slug:'semax',             desc:`<p>Semax is a synthetic heptapeptide derived from a fragment of ACTH. It's widely studied for its influence on the BDNF pathway, which plays a central role in neuronal growth, learning, and memory consolidation.</p><p>Research suggests Semax may support neuroprotection, enhance cognitive function under stress, and modulate the dopaminergic and serotonergic systems. It's been used in clinical settings in Russia for decades, and has attracted growing interest from Western researchers.</p><p>Supplied as a 10mg lyophilised powder. HPLC-verified at 99.1% purity.</p>`, sequence:'Met-Glu-His-Phe-Pro-Gly-Pro', appearance:'White lyophilised powder', solubility:'Soluble in sterile saline', storage:'-20°C, desiccated', halflife:'~20 min', purity:'99.1%', batch:'PW-260302' },
+  { slug:'melanotan-i',       desc:`<p>Melanotan I (afamelanotide) is a synthetic analogue of alpha-MSH that acts on melanocortin receptors to stimulate melanin production. It's been studied clinically for photoprotection in conditions like erythropoietic protoporphyria.</p><p>As a research compound, Melanotan I is valuable for studying the melanocortin system, UV protection mechanisms, and pigmentation biology. It differs from Melanotan II in that it lacks the aphrodisiac side effects associated with that compound.</p><p>Supplied as a 10mg lyophilised powder. HPLC-verified at 99.2% purity.</p>`, sequence:'Ac-Ser-Tyr-Ser-Nle-Glu-His-D-Phe-Arg-Trp-Gly-Lys-Pro-Val-NH₂', appearance:'White lyophilised powder', solubility:'Soluble in sterile water', storage:'-20°C, desiccated', halflife:'~2 hrs', purity:'99.2%', batch:'PW-260303' },
+  { slug:'ghk-cu',            desc:`<p>GHK-Cu (copper peptide GHK) is a naturally occurring tripeptide found in human plasma that has been extensively studied for its role in tissue repair, anti-inflammatory signalling, and collagen synthesis regulation.</p><p>Research has shown GHK-Cu to upregulate genes involved in tissue repair and antioxidant response while downregulating inflammatory pathways. It's one of the most studied peptides in dermatological and wound healing research.</p><p>Supplied as a 50mg lyophilised powder. HPLC-verified at 99.3% purity.</p>`, sequence:'Gly-His-Lys · Cu²⁺', appearance:'Blue lyophilised powder', solubility:'Soluble in sterile water', storage:'-20°C, desiccated', halflife:'N/A (tripeptide)', purity:'99.3%', batch:'PW-260304' },
+  { slug:'bac-water',         desc:`<p>Bacteriostatic Water (BAC Water) is sterile water preserved with 0.9% benzyl alcohol, which prevents bacterial growth across multiple uses. It is the standard reconstitution medium for lyophilised research peptides.</p><p>Unlike plain sterile water, BAC water allows multi-draw use from a single vial without compromising sterility, making it essential for research protocols requiring repeated access.</p><p>Pharmaceutical grade. Sterility and endotoxin tested below 0.5 EU/mg.</p>`, sequence:'0.9% Benzyl Alcohol in WFI', appearance:'Clear, colourless liquid', solubility:'Miscible', storage:'+4°C, protect from light', halflife:'N/A', purity:'Pharm.', batch:'PW-260305' },
+  { slug:'klow-peptide-blend',desc:`<p>The KLOW Peptide Blend is Peptide Warehouse Australia's proprietary research formulation, combining multiple compounds studied for their complementary tissue repair and systemic recovery properties.</p><p>Developed in-house, this blend is designed for researchers who want to study synergistic peptide activity within a single formulation. Full composition disclosed on request.</p><p>Supplied as a 50mg lyophilised powder. HPLC-verified at 99.0% purity.</p>`, sequence:'Proprietary multi-peptide blend', appearance:'White lyophilised powder', solubility:'Soluble in BAC water', storage:'-20°C, desiccated', halflife:'Compound-dependent', purity:'99.0%', batch:'PW-260306' },
+  { slug:'retatrutide-bundle',desc:`<p>The Retatrutide Starter Bundle has everything you need to hit the ground running — two 10mg vials of Retatrutide, one 10mL vial of Bacteriostatic Water for reconstitution, and 20 insulin needles included.</p><p>Bought separately, that's $289.96 (2× Retatrutide $259.98 + BAC Water $19.99 + 20 needles $9.99). The bundle comes in at $249.99 — saving you $39.97. Both peptide and BAC water are independently tested, and the whole kit ships together from our Melbourne warehouse.</p>`, sequence:'2× Retatrutide 10mg + BAC Water 10mL + 20× Insulin Needles', appearance:'White powder + clear liquid', solubility:'See individual products', storage:'-20°C (peptide), +4°C (BAC)', halflife:'See individual products', purity:'99.4% (Retatrutide)', batch:'PW-260307' },
+  { slug:'insulin-needles',   desc:`<p>29G × 0.5" (13mm) sterile insulin needles. Thin-walled, ultra-sharp tip with a silicone coating for smooth, consistent penetration. Each needle is individually blister-packed and sterile.</p><p>Compatible with all standard 1mL insulin syringes. Single use only — do not reuse. Store at room temperature, keep dry and away from direct sunlight.</p>`, sequence:'29G × 0.5" (13mm) · Individual blister pack', appearance:'Sterile, individually wrapped', solubility:'N/A', storage:'Room temperature · Keep dry', halflife:'N/A', purity:'N/A', batch:'NW-260301' },
+];
+
+/* ─── VIAL SVG ───────────────────────────────────────────────── */
+function vial(pal, id='v'){
+  return `<svg width="62" height="96" viewBox="0 0 62 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="15" y="14" width="32" height="72" rx="5" fill="${pal.bg}" stroke="${pal.cap}" stroke-width="0.6" stroke-opacity="0.3"/>
+    <rect x="17" y="4" width="28" height="13" rx="4" fill="${pal.cap}"/>
+    <rect x="19" y="28" width="24" height="20" rx="2" fill="white" opacity="0.45"/>
+    <rect x="15" y="70" width="32" height="16" rx="0 0 5 5" fill="${pal.cap}" opacity="0.08"/>
+    <line x1="19" y1="54" x2="43" y2="54" stroke="${pal.cap}" stroke-width="0.5" opacity="0.3"/>
+    <line x1="19" y1="60" x2="43" y2="60" stroke="${pal.cap}" stroke-width="0.5" opacity="0.2"/>
+  </svg>`;
+}
+
+function vialLarge(pal, id='vl'){
+  return `<svg width="120" height="185" viewBox="0 0 62 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="15" y="14" width="32" height="72" rx="5" fill="${pal.bg}" stroke="${pal.cap}" stroke-width="0.6" stroke-opacity="0.3"/>
+    <rect x="17" y="4" width="28" height="13" rx="4" fill="${pal.cap}"/>
+    <rect x="19" y="28" width="24" height="20" rx="2" fill="white" opacity="0.45"/>
+    <rect x="15" y="70" width="32" height="16" rx="0 0 5 5" fill="${pal.cap}" opacity="0.08"/>
+    <line x1="19" y1="54" x2="43" y2="54" stroke="${pal.cap}" stroke-width="0.5" opacity="0.3"/>
+    <line x1="19" y1="60" x2="43" y2="60" stroke="${pal.cap}" stroke-width="0.5" opacity="0.2"/>
+  </svg>`;
+}
+
+function needleSVG(pal, id='n'){
+  return `<svg width="62" height="96" viewBox="0 0 62 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- barrel body -->
+    <rect x="24" y="10" width="14" height="58" rx="3" fill="${pal.bg}" stroke="${pal.cap}" stroke-width="0.6" stroke-opacity="0.35"/>
+    <!-- plunger flange top -->
+    <rect x="18" y="8" width="26" height="5" rx="2" fill="${pal.cap}"/>
+    <!-- plunger rod -->
+    <rect x="29" y="2" width="4" height="10" rx="1" fill="${pal.cap}"/>
+    <!-- fluid fill -->
+    <rect x="25" y="36" width="12" height="28" rx="2" fill="${pal.cap}" opacity="0.15"/>
+    <!-- graduation marks -->
+    <line x1="38" y1="28" x2="41" y2="28" stroke="${pal.cap}" stroke-width="0.8" opacity="0.45"/>
+    <line x1="38" y1="36" x2="41" y2="36" stroke="${pal.cap}" stroke-width="0.8" opacity="0.45"/>
+    <line x1="38" y1="44" x2="41" y2="44" stroke="${pal.cap}" stroke-width="0.8" opacity="0.45"/>
+    <line x1="38" y1="52" x2="41" y2="52" stroke="${pal.cap}" stroke-width="0.8" opacity="0.45"/>
+    <!-- needle hub -->
+    <rect x="26" y="68" width="10" height="6" rx="1" fill="${pal.cap}" opacity="0.55"/>
+    <!-- needle -->
+    <line x1="31" y1="74" x2="31" y2="92" stroke="${pal.cap}" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="31" y1="90" x2="33" y2="94" stroke="${pal.cap}" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+  </svg>`;
+}
+
+function needleSVGLarge(pal, id='nl'){
+  return `<svg width="120" height="185" viewBox="0 0 62 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="24" y="10" width="14" height="58" rx="3" fill="${pal.bg}" stroke="${pal.cap}" stroke-width="0.6" stroke-opacity="0.35"/>
+    <rect x="18" y="8" width="26" height="5" rx="2" fill="${pal.cap}"/>
+    <rect x="29" y="2" width="4" height="10" rx="1" fill="${pal.cap}"/>
+    <rect x="25" y="36" width="12" height="28" rx="2" fill="${pal.cap}" opacity="0.15"/>
+    <line x1="38" y1="28" x2="41" y2="28" stroke="${pal.cap}" stroke-width="0.8" opacity="0.45"/>
+    <line x1="38" y1="36" x2="41" y2="36" stroke="${pal.cap}" stroke-width="0.8" opacity="0.45"/>
+    <line x1="38" y1="44" x2="41" y2="44" stroke="${pal.cap}" stroke-width="0.8" opacity="0.45"/>
+    <line x1="38" y1="52" x2="41" y2="52" stroke="${pal.cap}" stroke-width="0.8" opacity="0.45"/>
+    <rect x="26" y="68" width="10" height="6" rx="1" fill="${pal.cap}" opacity="0.55"/>
+    <line x1="31" y1="74" x2="31" y2="92" stroke="${pal.cap}" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="31" y1="90" x2="33" y2="94" stroke="${pal.cap}" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+  </svg>`;
+}
+
+
+function bundleIllustration(){
+  return `<svg width="190" height="108" viewBox="0 0 190 108" fill="none">
+    <g transform="translate(0,6)"><rect x="15" y="14" width="32" height="72" rx="5" fill="#dff0f9" stroke="#006B96" stroke-width="0.6" stroke-opacity="0.3"/><rect x="17" y="4" width="28" height="13" rx="4" fill="#006B96"/><rect x="19" y="28" width="24" height="20" rx="2" fill="white" opacity="0.45"/></g>
+    <g transform="translate(55,0)"><rect x="15" y="14" width="32" height="72" rx="5" fill="#dff0f9" stroke="#006B96" stroke-width="0.6" stroke-opacity="0.3"/><rect x="17" y="4" width="28" height="13" rx="4" fill="#006B96"/><rect x="19" y="28" width="24" height="20" rx="2" fill="white" opacity="0.45"/></g>
+    <g transform="translate(110,6)"><rect x="15" y="14" width="32" height="72" rx="5" fill="#f0f0f0" stroke="#4a4a4a" stroke-width="0.6" stroke-opacity="0.3"/><rect x="17" y="4" width="28" height="13" rx="4" fill="#4a4a4a"/><rect x="19" y="28" width="24" height="20" rx="2" fill="white" opacity="0.45"/></g>
+  </svg>`;
+}
+
+function vialHero(pal, id='vh'){
+  return `<svg width="110" height="170" viewBox="0 0 62 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="15" y="14" width="32" height="72" rx="5" fill="${pal.bg}" stroke="${pal.cap}" stroke-width="0.6" stroke-opacity="0.3"/>
+    <rect x="17" y="4" width="28" height="13" rx="4" fill="${pal.cap}"/>
+    <rect x="19" y="28" width="24" height="20" rx="2" fill="white" opacity="0.45"/>
+    <rect x="15" y="70" width="32" height="16" rx="0 0 5 5" fill="${pal.cap}" opacity="0.08"/>
+    <line x1="19" y1="54" x2="43" y2="54" stroke="${pal.cap}" stroke-width="0.5" opacity="0.3"/>
+    <line x1="19" y1="60" x2="43" y2="60" stroke="${pal.cap}" stroke-width="0.5" opacity="0.2"/>
+  </svg>`;
+}
+
+
+function cardHTML(p, i){
+  const pal = palettes[i];
+  const illus = i === 6 ? bundleIllustration() : i === 7 ? needleSVG(pal, 'p'+i) : vial(pal, 'p'+i);
+  const flagHTML = p.flag ? `<span class="p-flag ${p.flagType}">${p.flag}</span>` : '';
+  return `<div class="p-card" onclick="goToProduct(${i})">
+    ${flagHTML}
+    <div class="p-illus">${illus}</div>
+    <div class="p-cat">${p.cat}</div>
+    <div class="p-name">${p.name}</div>
+    <div class="p-spec">${p.spec}</div>
+    <div class="p-price-row">
+      <div>
+        <div class="p-price">${p.price}</div>
+        <div class="p-price-note">AUD incl. GST</div>
+      </div>
+      <button class="p-add" onclick="event.stopPropagation();addToCart(${i})">+</button>
+    </div>
+  </div>`;
+}
+
+/* ─── RENDER HOMEPAGE GRID ───────────────────────────────────── */
+function render(){
+  document.getElementById('productGrid').innerHTML = products.map((p,i) => cardHTML(p,i)).join('');
+}
+
+function tab(btn, filter){
+  document.querySelectorAll('.filter-row .f-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  let filtered;
+  if(filter === 'All') filtered = products.map((p,i)=>({p,i}));
+  else if(filter === 'Fat Loss') filtered = products.map((p,i)=>({p,i})).filter(({p}) => p.cat === 'Fat Loss');
+  else if(filter === 'Healing') filtered = products.map((p,i)=>({p,i})).filter(({p}) => p.cat === 'Healing' || p.cat === 'Blend');
+  else if(filter === 'Bundles') filtered = products.map((p,i)=>({p,i})).filter(({p}) => p.cat === 'Bundle');
+  else filtered = products.map((p,i)=>({p,i})).filter(({p}) => p.cat === filter);
+  document.getElementById('productGrid').innerHTML = filtered.map(({p,i}) => cardHTML(p,i)).join('');
+}
+
+render();
+
+/* ─── HERO VISUAL ────────────────────────────────────────────── */
+document.getElementById('heroVisual').innerHTML = `<div style="display:flex;gap:2.5rem;align-items:flex-end;">
+  ${vialHero(palettes[0],'h0')}
+  <div style="transform:scale(1.18);transform-origin:bottom center;">${vialHero(palettes[3],'h3')}</div>
+  ${vialHero(palettes[1],'h1')}
+</div>`;
+
+/* ─── COA CAROUSEL ───────────────────────────────────────────── */
+const coaData = [
+  { name:'Retatrutide',        compound:'Retatrutide',        purity:'99.4%', appearance:'White lyophilised powder', batch:'PW-260301' },
+  { name:'Semax',              compound:'Semax',              purity:'99.1%', appearance:'White lyophilised powder', batch:'PW-260302' },
+  { name:'Melanotan I',        compound:'Melanotan I',        purity:'99.2%', appearance:'White lyophilised powder', batch:'PW-260303' },
+  { name:'GHK-Cu',             compound:'GHK-Cu',             purity:'99.3%', appearance:'Blue lyophilised powder',  batch:'PW-260304' },
+  { name:'BAC Water',          compound:'Bacteriostatic Water',purity:'Pharm.',appearance:'Clear colourless liquid',  batch:'PW-260305' },
+  { name:'KLOW Peptide Blend', compound:'KLOW Blend',         purity:'99.0%', appearance:'White lyophilised powder', batch:'PW-260306' },
+];
+let coaIdx = 0; let coaTimer;
+function renderCOA(idx, animate=false){
+  const c = coaData[idx];
+  const panel = document.getElementById('coaPanel');
+  if(animate){ panel.style.opacity='0'; setTimeout(()=>{ fillCOA(c,panel); panel.style.opacity='1'; },250); }
+  else fillCOA(c,panel);
+  document.querySelectorAll('.coa-dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===idx);
+    d.style.width = i===idx ? '20px' : '8px';
+  });
+}
+function fillCOA(c,panel){
+  panel.innerHTML = `
+    <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--riviera);margin-bottom:1rem;">${c.name}</div>
+    <div class="coa-row"><span class="coa-key">Compound</span><span class="coa-val">${c.compound}</span></div>
+    <div class="coa-row"><span class="coa-key">HPLC Purity</span><span class="coa-val pass">${c.purity} — Pass</span></div>
+    <div class="coa-row"><span class="coa-key">Appearance</span><span class="coa-val">${c.appearance}</span></div>
+    <div class="coa-row"><span class="coa-key">Sterility</span><span class="coa-val pass">Pass</span></div>
+    <div class="coa-row"><span class="coa-key">Batch</span><span class="coa-val">${c.batch}</span></div>`;
+}
+function jumpCOA(idx){ coaIdx=idx; clearInterval(coaTimer); renderCOA(idx,true); coaTimer=setInterval(advanceCOA,4000); }
+function advanceCOA(){ coaIdx=(coaIdx+1)%coaData.length; renderCOA(coaIdx,true); }
+
+const dotsEl = document.getElementById('coaDots');
+coaData.forEach((_,i)=>{ const d=document.createElement('div'); d.className='coa-dot'+(i===0?' active':''); d.onclick=()=>jumpCOA(i); dotsEl.appendChild(d); });
+renderCOA(0);
+coaTimer = setInterval(advanceCOA,4000);
+
+/* ─── ROUTING ────────────────────────────────────────────────── */
+const shopPage    = document.getElementById('page-shop');
+const productPage = document.getElementById('page-product');
+const shopPageEl  = document.getElementById('page-shop-page');
+const coaPageEl   = document.getElementById('page-coa');
+const aboutPageEl   = document.getElementById('page-about');
+const contactPageEl = document.getElementById('page-contact');
+
+const checkoutPageEl = document.getElementById('page-checkout');
+const faqPageEl      = document.getElementById('page-faq');
+const shippingPageEl = document.getElementById('page-shipping');
+
+function hideAll(){
+  shopPage.style.display        = 'none';
+  productPage.style.display     = 'none';
+  shopPageEl.style.display      = 'none';
+  coaPageEl.style.display       = 'none';
+  aboutPageEl.style.display     = 'none';
+  contactPageEl.style.display   = 'none';
+  checkoutPageEl.style.display  = 'none';
+  faqPageEl.style.display       = 'none';
+  shippingPageEl.style.display  = 'none';
+}
+
+function goToShop(){
+  hideAll();
+  shopPage.style.display = 'block';
+  document.title = 'Peptide Warehouse Australia';
+  window.scrollTo(0,0);
+}
+
+/* ─── PRODUCT PAGE ───────────────────────────────────────────── */
+function goToProduct(idx){
+  hideAll();
+  productPage.style.display = 'block';
+  window.scrollTo(0,0);
+  const p = products[idx]; const det = productDetails[idx]; const pal = palettes[idx];
+  document.title = p.name + ' — Peptide Warehouse Australia';
+  const related = products.map((rp,i)=>({rp,i})).filter(({i})=>i!==idx).slice(0,3);
+  productPage.innerHTML = `
+    <div class="pd-breadcrumb"><a onclick="goToShopPage()">Shop</a> &rsaquo; ${p.name}</div>
+    <div class="pd-layout">
+      <div class="pd-left">${idx===6 ? bundleIllustration() : idx===7 ? needleSVGLarge(pal,'det') : vialLarge(pal,'det')}</div>
+      <div class="pd-right">
+        <div class="pd-cat">${p.cat}</div>
+        <div class="pd-name">${p.name}</div>
+        <div class="pd-spec">${p.spec}</div>
+        ${idx !== 7 ? `<span class="pd-purity">✓ ${det.purity} HPLC Purity</span>` : `<span class="pd-purity">✓ Sterile · Single Use · Individually Packed</span>`}
+        ${idx === 7 ? `
+        <div style="margin-bottom:1rem;">
+          <div style="font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);font-weight:500;margin-bottom:0.6rem;">Pack Size</div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" id="packSizeRow">
+            ${[{qty:10,price:'$5.99',ppu:'$0.60ea'},{qty:20,price:'$9.99',ppu:'$0.50ea'},{qty:50,price:'$19.99',ppu:'$0.40ea'},{qty:100,price:'$34.99',ppu:'$0.35ea'}].map((pk,i)=>`
+            <button onclick="selectPack(this,${pk.price.replace('$','')},${pk.qty})" style="border:1px solid var(--border);background:var(--bg);color:var(--text);padding:0.5rem 0.9rem;font-size:0.7rem;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;text-align:center;" data-pack="${pk.qty}">
+              <div style="font-weight:700;">×${pk.qty}</div>
+              <div style="font-size:0.65rem;margin-top:0.1rem;">${pk.price}</div>
+              <div style="font-size:0.55rem;opacity:0.7;">${pk.ppu}</div>
+            </button>`).join('')}
+          </div>
+        </div>
+        <div class="pd-price" id="pdPriceDisplay">—</div>` : `<div class="pd-price">${p.price}</div>`}
+        <div class="pd-price-note">AUD · includes GST · Free shipping over $199</div>
+        <div class="pd-qty-row">
+          <button class="pd-qty-btn" onclick="this.nextElementSibling.nextElementSibling.textContent=Math.max(1,+this.nextElementSibling.nextElementSibling.textContent-1)">−</button>
+          <div></div>
+          <div class="pd-qty-val">1</div>
+          <button class="pd-qty-btn" onclick="this.previousElementSibling.previousElementSibling.textContent=+this.previousElementSibling.previousElementSibling.textContent+1">+</button>
+        </div>
+        <div class="pd-add-row">
+          <button class="pd-add-btn" onclick="addToCart(${idx})">Add to Cart</button>
+          <div class="pd-add-stock">In Stock</div>
+        </div>
+        <div class="pd-meta">
+          <div class="pd-meta-row"><div class="pd-meta-key">Purity</div><div class="pd-meta-val">${det.purity}</div></div>
+          <div class="pd-meta-row"><div class="pd-meta-key">Storage</div><div class="pd-meta-val">${det.storage}</div></div>
+          <div class="pd-meta-row"><div class="pd-meta-key">Appearance</div><div class="pd-meta-val">${det.appearance}</div></div>
+          <div class="pd-meta-row"><div class="pd-meta-key">Batch</div><div class="pd-meta-val">${det.batch}</div></div>
+        </div>
+        <div class="pd-tabs">
+          <button class="pd-tab active" onclick="pdTab(this,'desc')">Description</button>
+          <button class="pd-tab" onclick="pdTab(this,'spec')">Specifications</button>
+          <button class="pd-tab" onclick="pdTab(this,'coa')" ${idx===7?'style="display:none;"':''}>COA</button>
+        </div>
+        <div class="pd-tab-content" id="pdTabContent">
+          ${det.desc}
+        </div>
+        <div style="margin-top:2rem;" id="whatsIncludedBlock">
+          <div style="font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:0.5rem;margin-bottom:1.2rem;">What's Included</div>
+          <div style="display:flex;flex-direction:column;gap:0.6rem;" id="whatsIncludedList">
+            ${productIncludes[idx].map(item =>
+              '<div style="display:flex;align-items:center;gap:1rem;padding:0.9rem 1rem;border:1px solid var(--border);background:var(--bg-sub);">' +
+              '<div style="font-size:1.4rem;flex-shrink:0;">' + item.icon + '</div>' +
+              '<div style="flex:1;">' +
+              '<div style="font-family:\'Syne\',sans-serif;font-size:0.8rem;font-weight:700;">' + item.name + '</div>' +
+              '<div style="font-size:0.62rem;color:var(--text-faint);font-weight:300;margin-top:0.1rem;">' + item.spec + '</div>' +
+              '</div>' +
+              '<div style="font-family:\'Syne\',sans-serif;font-size:1rem;font-weight:700;color:var(--riviera);flex-shrink:0;">' + item.qty + '</div>' +
+              '</div>'
+            ).join('')}
+          </div>
+        </div>
+        <div style="font-size:0.62rem;color:var(--text-faint);margin-top:1.5rem;font-weight:300;line-height:1.7;">⚠ Research use only. Not for human consumption.</div>
+        <div style="margin-top:2rem;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">Related Products</div>
+        <div class="pd-related-grid">
+          ${related.map(({rp,i})=>`<div class="p-card" style="border-bottom:1px solid var(--border);" onclick="goToProduct(${i})">${vial(palettes[i],'r'+i)}<div class="p-cat">${rp.cat}</div><div class="p-name" style="font-size:0.85rem;">${rp.name}</div><div class="p-spec">${rp.spec}</div><div class="p-price">${rp.price}</div></div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — Not intended for human or veterinary consumption.</p></div>`;
+
+  window._pdData = { det, p };
+}
+
+function selectPack(btn, price, qty){
+  document.querySelectorAll('#packSizeRow button').forEach(b=>{
+    b.style.background = 'var(--bg)'; b.style.color = 'var(--text)';
+  });
+  btn.style.background = 'var(--riviera)'; btn.style.color = '#fff';
+  const priceEl = document.getElementById('pdPriceDisplay');
+  if(priceEl) priceEl.textContent = '$' + price.toFixed(2);
+  products[7].price = '$' + price.toFixed(2);
+  products[7].spec = qty + ' needles · 29G × 0.5" · Sterile';
+  // Update What's Included dynamically
+  const list = document.getElementById('whatsIncludedList');
+  if(list){
+    list.innerHTML = '<div style="display:flex;align-items:center;gap:1rem;padding:0.9rem 1rem;border:1px solid var(--border);background:var(--bg-sub);">' +
+      '<div style="font-size:1.4rem;flex-shrink:0;">💉</div>' +
+      '<div style="flex:1;">' +
+      '<div style="font-family:\'Syne\',sans-serif;font-size:0.8rem;font-weight:700;">Insulin Needles</div>' +
+      '<div style="font-size:0.62rem;color:var(--text-faint);font-weight:300;margin-top:0.1rem;">29G × 0.5" · Individually wrapped · Sterile</div>' +
+      '</div>' +
+      '<div style="font-family:\'Syne\',sans-serif;font-size:1rem;font-weight:700;color:var(--riviera);flex-shrink:0;">×' + qty + '</div>' +
+      '</div>';
+  }
+}
+
+function pdTab(btn, tab){
+  document.querySelectorAll('.pd-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const {det} = window._pdData;
+  const cont = document.getElementById('pdTabContent');
+  if(tab==='desc') cont.innerHTML = det.desc;
+  else if(tab==='spec') cont.innerHTML = `<table>
+    <tr><td>Sequence / Composition</td><td>${det.sequence}</td></tr>
+    <tr><td>Appearance</td><td>${det.appearance}</td></tr>
+    <tr><td>Solubility</td><td>${det.solubility}</td></tr>
+    <tr><td>Storage</td><td>${det.storage}</td></tr>
+    <tr><td>Half-life</td><td>${det.halflife}</td></tr>
+    <tr><td>Purity</td><td>${det.purity}</td></tr>
+    <tr><td>Batch</td><td>${det.batch}</td></tr>
+  </table>`;
+  else cont.innerHTML = `
+    <div class="coa-row"><span class="coa-key">HPLC Purity</span><span class="coa-val pass">${det.purity} — Pass</span></div>
+    <div class="coa-row"><span class="coa-key">Appearance</span><span class="coa-val">${det.appearance}</span></div>
+    <div class="coa-row"><span class="coa-key">Sterility</span><span class="coa-val pass">Pass</span></div>
+    <div class="coa-row"><span class="coa-key">Endotoxin</span><span class="coa-val">&lt;1.0 EU/mg</span></div>
+    <div class="coa-row"><span class="coa-key">Batch</span><span class="coa-val">${det.batch}</span></div>`;
+}
+
+/* ─── SHOP PAGE ──────────────────────────────────────────────── */
+function goToShopPage(initialFilter){
+  hideAll();
+  shopPageEl.style.display = 'block';
+  document.title = 'Shop — Peptide Warehouse Australia';
+  window.scrollTo(0,0);
+  const activeFilter = initialFilter || 'All';
+  shopPageEl.innerHTML = `
+    <div class="shop-hero">
+      <div>
+        <div class="s-label">All Products</div>
+        <div class="s-title" style="margin-bottom:0.5rem">Shop Peptides</div>
+        <p class="s-sub">Research-grade compounds independently tested to 99%+ HPLC purity.</p>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(3.5rem,8vw,7rem);font-weight:700;color:var(--border);line-height:1;letter-spacing:-3px;flex-shrink:0;">${products.length}</div>
+    </div>
+    <div class="shop-filter-row">
+      <span class="shop-filter-label">Filter</span>
+      <button class="f-btn ${activeFilter==='All'?'active':''}" onclick="shopTab(this,'All')">All</button>
+      <button class="f-btn ${activeFilter==='Fat Loss'?'active':''}" onclick="shopTab(this,'Fat Loss')">Fat Loss</button>
+      <button class="f-btn ${activeFilter==='Healing'?'active':''}" onclick="shopTab(this,'Healing')">Healing</button>
+      <button class="f-btn ${activeFilter==='Nootropic'?'active':''}" onclick="shopTab(this,'Nootropic')">Nootropic</button>
+      <button class="f-btn ${activeFilter==='Tanning'?'active':''}" onclick="shopTab(this,'Tanning')">Tanning</button>
+      <button class="f-btn ${activeFilter==='Bundles'?'active':''}" onclick="shopTab(this,'Bundles')">Bundles</button>
+      <button class="f-btn ${activeFilter==='Needles'?'active':''}" onclick="shopTab(this,'Needles')">Supplies</button>
+    </div>
+    <div class="shop-product-grid" id="shopGrid">
+      ${products.map((p,i)=>cardHTML(p,i)).join('')}
+    </div>
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — All products sold by Peptide Warehouse Australia are strictly for in-vitro research and laboratory purposes only.</p></div>`;
+  if(activeFilter !== 'All'){
+    const activeBtn = shopPageEl.querySelector('.shop-filter-row .f-btn.active');
+    if(activeBtn) shopTab(activeBtn, activeFilter);
+  }
+}
+
+function shopTab(btn, filter){
+  document.querySelectorAll('.shop-filter-row .f-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = filter === 'All' ? products.map((p,i)=>({p,i}))
+    : products.map((p,i)=>({p,i})).filter(({p})=>{
+        if(filter==='Fat Loss') return p.cat==='Fat Loss';
+        if(filter==='Healing')  return p.cat==='Healing'||p.cat==='Blend';
+        if(filter==='Bundles')  return p.cat==='Bundle';
+        if(filter==='Needles')  return p.name==='Insulin Needles';
+        return p.cat===filter;
+      });
+  document.getElementById('shopGrid').innerHTML = filtered.map(({p,i})=>cardHTML(p,i)).join('');
+}
+
+/* ─── COA PAGE ───────────────────────────────────────────────── */
+const coaFullData = [
+  { idx:0, purity:'99.4%', purityNum:99.4, appearance:'White lyophilised powder', sterility:'Pass', endotoxin:'<1.0 EU/mg', netContent:'98.1%', batch:'PW-260301', date:'01 Mar 2026', lab:'Independent Laboratory', retentionTime:'14.83 min', massSpec:'Pass', theoreticalMW:'4810.6 Da', observedMW:'4811.2 Da', saltForm:'TFA salt', storage:'-20°C, desiccated', peakPos:155, peakWidth:22, impurity1Pos:195, tags:['HPLC','MS Identity','Sterility','Endotoxin LAL'] },
+  { idx:1, purity:'99.1%', purityNum:99.1, appearance:'White lyophilised powder', sterility:'Pass', endotoxin:'<1.0 EU/mg', netContent:'97.8%', batch:'PW-260302', date:'02 Mar 2026', lab:'Independent Laboratory', retentionTime:'11.24 min', massSpec:'Pass', theoreticalMW:'857.0 Da',  observedMW:'857.3 Da',  saltForm:'TFA salt', storage:'-20°C, desiccated', peakPos:135, peakWidth:18, impurity1Pos:180, tags:['HPLC','MS Identity','Sterility','Endotoxin LAL'] },
+  { idx:2, purity:'99.2%', purityNum:99.2, appearance:'White lyophilised powder', sterility:'Pass', endotoxin:'<1.0 EU/mg', netContent:'97.5%', batch:'PW-260303', date:'03 Mar 2026', lab:'Independent Laboratory', retentionTime:'13.61 min', massSpec:'Pass', theoreticalMW:'1646.9 Da', observedMW:'1647.4 Da', saltForm:'Acetate salt', storage:'-20°C, desiccated', peakPos:148, peakWidth:20, impurity1Pos:200, tags:['HPLC','MS Identity','Sterility','Endotoxin LAL'] },
+  { idx:3, purity:'99.3%', purityNum:99.3, appearance:'Blue lyophilised powder',  sterility:'Pass', endotoxin:'<1.0 EU/mg', netContent:'97.9%', batch:'PW-260304', date:'04 Mar 2026', lab:'Independent Laboratory', retentionTime:'10.07 min', massSpec:'Pass', theoreticalMW:'1038.2 Da', observedMW:'1038.5 Da', saltForm:'Acetate salt', storage:'-20°C, desiccated', peakPos:128, peakWidth:17, impurity1Pos:175, tags:['HPLC','MS Identity','Sterility','Endotoxin LAL'] },
+  { idx:4, purity:'Pharm.', purityNum:null, appearance:'Clear, colourless liquid', sterility:'Pass', endotoxin:'<0.5 EU/mg', netContent:'N/A', batch:'PW-260305', date:'05 Mar 2026', lab:'TGA Registered Supplier', retentionTime:'N/A', massSpec:'N/A', theoreticalMW:'N/A', observedMW:'N/A', saltForm:'N/A', storage:'+4°C', peakPos:null, peakWidth:null, impurity1Pos:null, tags:['Pharm. Grade','Sterility','Endotoxin LAL','TGA Registered'] },
+  { idx:5, purity:'99.0%', purityNum:99.0, appearance:'White lyophilised powder', sterility:'Pass', endotoxin:'<1.0 EU/mg', netContent:'97.2%', batch:'PW-260306', date:'06 Mar 2026', lab:'Independent Laboratory', retentionTime:'15.42 min', massSpec:'Pass', theoreticalMW:'6200.4 Da', observedMW:'6201.1 Da', saltForm:'TFA salt', storage:'-20°C, desiccated', peakPos:162, peakWidth:24, impurity1Pos:210, tags:['HPLC','MS Identity','Sterility','Endotoxin LAL'] },
+];
+
+function chromSVG(c, capCol){
+  const W=520, H=130, base=H-14, peakH=105;
+  const pts=[];
+  for(let x=0;x<=W;x+=2){
+    let y=base;
+    const d1=x-c.peakPos; y -= peakH*Math.exp(-(d1*d1)/(2*c.peakWidth*c.peakWidth));
+    const d2=x-c.impurity1Pos; y -= 8*Math.exp(-(d2*d2)/80);
+    y += Math.sin(x*0.4)*0.6;
+    pts.push(`${x},${Math.max(6,Math.min(base,y)).toFixed(1)}`);
+  }
+  const linePath='M'+pts.join(' L');
+  const fillPath=`M0,${base} L${pts.join(' L')} L${W},${base} Z`;
+  const rtX=c.peakPos, rtY=Math.max(12,base-peakH-8);
+  const gridLines=[0.25,0.5,0.75].map(f=>{const gy=(base*(1-f)).toFixed(0);return `<line x1="30" y1="${gy}" x2="${W}" y2="${gy}" stroke="var(--border)" stroke-width="0.6" stroke-dasharray="4,4"/><text x="24" y="${parseFloat(gy)+2}" font-size="7" fill="var(--text-faint)" font-family="Inter,sans-serif" text-anchor="end">${Math.round(f*100)}</text>`;}).join('');
+  const timeTicks=[0,100,200,300,400,520].map(tx=>{const t=((tx/W)*25).toFixed(1);return `<line x1="${tx+30}" y1="${base}" x2="${tx+30}" y2="${base+4}" stroke="var(--border)" stroke-width="0.8"/><text x="${tx+30}" y="${base+12}" font-size="7" fill="var(--text-faint)" font-family="Inter,sans-serif" text-anchor="middle">${t}</text>`;}).join('');
+  return `<svg viewBox="-10 0 ${W+50} ${H+20}" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+    <line x1="30" y1="0" x2="30" y2="${base}" stroke="var(--border)" stroke-width="0.8"/>
+    <line x1="30" y1="${base}" x2="${W}" y2="${base}" stroke="var(--border)" stroke-width="0.8"/>
+    <text transform="rotate(-90)" x="${-base/2}" y="8" font-size="7" fill="var(--text-faint)" font-family="Inter,sans-serif" text-anchor="middle">mAU (220nm)</text>
+    ${gridLines}${timeTicks}
+    <text x="${W/2+30}" y="${H+18}" font-size="7" fill="var(--text-faint)" font-family="Inter,sans-serif" text-anchor="middle">Retention time (min)</text>
+    <path d="${fillPath}" fill="${capCol}" opacity="0.07" transform="translate(30,0)"/>
+    <path d="${linePath}" stroke="${capCol}" stroke-width="1.5" fill="none" stroke-linejoin="round" transform="translate(30,0)"/>
+    <line x1="${rtX+30}" y1="${rtY+2}" x2="${rtX+30}" y2="${base}" stroke="${capCol}" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
+    <rect x="${rtX-18+30}" y="${rtY-14}" width="46" height="14" rx="2" fill="${capCol}" opacity="0.12"/>
+    <text x="${rtX+5+30}" y="${rtY-4}" font-size="8.5" fill="${capCol}" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">${c.purity}</text>
+    <text x="${rtX+30}" y="${base+22}" font-size="6.5" fill="${capCol}" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">▲ ${c.retentionTime}</text>
+  </svg>`;
+}
+
+function goToCOAPage(){
+  hideAll();
+  coaPageEl.style.display = 'block';
+  document.title = 'COA Testing — Peptide Warehouse Australia';
+  window.scrollTo(0,0);
+  const cardsHTML = coaFullData.map(c => {
+    const p=products[c.idx], pal=palettes[c.idx], isBac=c.idx===4;
+    const miniVial=`<svg width="38" height="58" viewBox="0 0 62 96" fill="none"><rect x="15" y="14" width="32" height="72" rx="5" fill="${pal.bg}" stroke="${pal.cap}" stroke-width="0.6" stroke-opacity="0.3"/><rect x="17" y="4" width="28" height="13" rx="4" fill="${pal.cap}"/><rect x="19" y="28" width="24" height="20" rx="2" fill="white" opacity="0.45"/></svg>`;
+    return `<div class="coa-card">
+      <div style="padding:1.6rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+        <div style="display:flex;align-items:center;gap:1rem;">${miniVial}<div><div style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:0.15rem;">${p.name}</div><div style="font-size:0.63rem;color:var(--text-faint);font-weight:300;letter-spacing:1px;text-transform:uppercase;">${p.spec}</div></div></div>
+        <div style="text-align:right;flex-shrink:0;"><div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.2rem;">Batch ${c.batch}</div><div style="font-size:0.6rem;font-weight:600;color:var(--riviera);letter-spacing:1px;">✓ Third-Party Verified</div><div style="font-size:0.55rem;color:var(--text-faint);margin-top:0.15rem;">${c.lab}</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--border);">
+        ${[['HPLC Purity',c.purity,true],['Net Peptide Content',c.netContent,false],['Sterility',c.sterility,true],['Endotoxin (LAL)',c.endotoxin,false],['Mass Spec',c.massSpec,c.massSpec==='Pass']].map(([k,v,isPass],i)=>`<div style="padding:1.1rem 1.2rem;${i<4?'border-right:1px solid var(--border);':''}"><div style="font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);font-weight:400;margin-bottom:0.4rem;">${k}</div><div style="font-family:'Syne',sans-serif;font-size:${v&&v.length>6?'0.78':'0.9'}rem;font-weight:700;color:${isPass?'var(--riviera)':'var(--text)'};">${v}</div></div>`).join('')}
+      </div>
+      ${!isBac?`<div style="padding:1.5rem 2rem;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+          <div><div style="font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);font-weight:500;margin-bottom:0.2rem;">HPLC Chromatogram · RP-C18 · UV 220nm</div><div style="font-size:0.65rem;color:var(--text-mid);">Main peak RT: <strong style="color:var(--text)">${c.retentionTime}</strong> &nbsp;·&nbsp; Observed MW: <strong style="color:var(--text)">${c.observedMW}</strong> &nbsp;·&nbsp; Theoretical: <strong style="color:var(--text)">${c.theoreticalMW}</strong></div></div>
+        </div>
+        ${chromSVG(c,pal.cap)}
+      </div>`:''}
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);">
+        ${[['Appearance',c.appearance],['Salt Form',c.saltForm],['Storage',c.storage],['Test Date',c.date]].map(([k,v],i)=>`<div style="padding:0.9rem 1.2rem;${i<3?'border-right:1px solid var(--border);':''}"><div style="font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.3rem;">${k}</div><div style="font-size:0.72rem;color:var(--text);font-weight:400;">${v}</div></div>`).join('')}
+      </div>
+      <div style="padding:0.85rem 1.8rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;background:var(--bg-sub);">
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">${c.tags.map(t=>`<span class="coa-card-tag">${t}</span>`).join('')}</div>
+        <button onclick="goToProduct(${c.idx})" style="font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--riviera);background:none;border:1px solid var(--riviera);padding:0.3rem 0.8rem;cursor:pointer;font-weight:600;font-family:Inter,sans-serif;">View Product →</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  coaPageEl.innerHTML = `
+    <div class="coa-page-hero">
+      <div>
+        <div class="s-label">Full Transparency</div>
+        <div class="s-title" style="margin-bottom:0.7rem;">COA Testing Library</div>
+        <p class="s-sub" style="max-width:560px;">Every product batch is independently tested by an accredited third-party laboratory before dispatch. HPLC purity, mass spectrometry identity, sterility, and endotoxin results published in full — no exceptions.</p>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:700;color:var(--riviera);line-height:1;letter-spacing:-3px;flex-shrink:0;text-align:right;">99.4%<br><span style="font-size:0.25em;letter-spacing:2px;color:var(--text-faint);">AVG PURITY</span></div>
+    </div>
+    <div class="coa-process-strip">
+      <div class="coa-process-cell"><div class="coa-process-num">01</div><div><div class="coa-process-title">GMP-Certified Sourcing</div><div class="coa-process-text">All peptides sourced from GMP-certified manufacturers only. Full chain-of-custody documentation retained for every batch.</div></div></div>
+      <div class="coa-process-cell"><div class="coa-process-num">02</div><div><div class="coa-process-title">Independent HPLC + MS Testing</div><div class="coa-process-text">Every batch tested via RP-HPLC (UV 220nm, C18 column) and ESI mass spectrometry by an accredited independent laboratory.</div></div></div>
+      <div class="coa-process-cell"><div class="coa-process-num">03</div><div><div class="coa-process-title">Sterility & Endotoxin Screening</div><div class="coa-process-text">Every batch passes LAL endotoxin assay (&lt;1.0 EU/mg) and sterility screening before release. Failed batches are quarantined.</div></div></div>
+    </div>
+    <div style="padding:1.2rem 5%;border-bottom:1px solid var(--border);background:var(--bg-sub);display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
+      ${[['Products Tested',coaFullData.length],['Avg HPLC Purity','99.4%'],['Batches Released',coaFullData.length],['Failed Batches','0']].map(([k,v],i)=>`<div style="padding:0.8rem 1.4rem;${i<3?'border-right:1px solid var(--border);':''}text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:var(--riviera);line-height:1;margin-bottom:0.2rem;">${v}</div><div style="font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);">${k}</div></div>`).join('')}
+    </div>
+    <div style="border-top:1px solid var(--border);">${cardsHTML}</div>
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — COA results reflect batch-specific testing. Chromatograms are representative SVG illustrations generated from real test parameters. Request batch-specific PDF COA via email.</p></div>`;
+}
+
+/* ─── ABOUT PAGE ─────────────────────────────────────────────── */
+function goToAboutPage(){
+  hideAll();
+  aboutPageEl.style.display = 'block';
+  document.title = 'About — Peptide Warehouse Australia';
+  window.scrollTo(0,0);
+
+  aboutPageEl.innerHTML = `
+    <!-- HERO -->
+    <div class="about-hero">
+      <div>
+        <div class="about-hero-overline">Our Story</div>
+        <h1 class="about-hero-h">Sick of waiting<br><span style="color:var(--riviera);">three weeks</span> for an order?</h1>
+        <p class="about-hero-body">Same. We got tired of ordering from overseas suppliers, watching tracking numbers sit in customs for weeks, and having no idea what purity we were actually getting. There had to be a better way for Australian researchers.</p>
+        <p class="about-hero-body">So we built it ourselves. Everything ships out of Melbourne, usually the next day. Every batch gets tested by an independent lab before it leaves the warehouse — and we post the full results publicly, no sign-up required. If it doesn't pass, it doesn't ship. Simple as that.</p>
+        <button class="btn-primary" onclick="goToShopPage()">Explore Our Products</button>
+      </div>
+      <div class="about-hero-right">
+        <div class="about-stat-block">
+          <div class="about-stat-num">99.4%</div>
+          <div><div class="about-stat-title">Average HPLC Purity</div><div class="about-stat-label">Independently verified by an accredited third-party lab on every batch before dispatch</div></div>
+        </div>
+        <div class="about-stat-block">
+          <div class="about-stat-num">5K+</div>
+          <div><div class="about-stat-title">Orders Dispatched</div><div class="about-stat-label">Thousands of <span style="color:var(--riviera);">researchers</span> across Australia trust us for their peptide supply</div></div>
+        </div>
+        <div class="about-stat-block">
+          <div class="about-stat-num">11PM</div>
+          <div><div class="about-stat-title">Same-Day Cut-off</div><div class="about-stat-label">Order before 11PM AEST and your peptides ship the very next business day</div></div>
+        </div>
+        <div class="about-stat-block">
+          <div class="about-stat-num">0</div>
+          <div><div class="about-stat-title">Failed Batches Released</div><div class="about-stat-label">Every failed batch is quarantined and replaced. No exceptions, ever.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALUES -->
+    <div class="about-values">
+      <div class="about-value-cell">
+        <div class="about-value-icon">🔬</div>
+        <div class="about-value-title">No Dodgy Batches</div>
+        <div class="about-value-text">Every batch gets independent HPLC testing before it ships. Our minimum is 99% purity — and our average across all products sits at 99.4%. If a batch doesn't pass, it gets binned. Not discounted, not quietly shipped. Binned.</div>
+      </div>
+      <div class="about-value-cell">
+        <div class="about-value-icon">📋</div>
+        <div class="about-value-title">Nothing to Hide</div>
+        <div class="about-value-text">Our full COA library is right there on the site — no account needed, no "email us for results" runaround. Every batch, every number: HPLC chromatogram, mass spec, sterility, endotoxin. All of it, before you buy.</div>
+      </div>
+      <div class="about-value-cell">
+        <div class="about-value-icon">🌏</div>
+        <div class="about-value-title">Proudly Australian</div>
+        <div class="about-value-text">We're based in Melbourne, stock locally, and ship in AUD. No currency conversion surprises, no customs drama, no waiting on a slow boat from overseas. Just fast, straightforward service from an Aussie supplier who actually picks up the phone.</div>
+      </div>
+    </div>
+
+    <!-- PROCESS -->
+    <div style="padding:0 5% 5rem;">
+      <div style="margin-bottom:2rem;padding-top:1rem;">
+        <div class="s-label">How It Works</div>
+        <div class="s-title">From Synthesis to Your Door</div>
+      </div>
+      <div class="about-process" style="margin:0;">
+        <div class="about-process-step">
+          <div class="about-process-n">01</div>
+          <div class="about-process-title">GMP-Certified Sourcing</div>
+          <div class="about-process-text">We source exclusively from manufacturers with verified GMP certification. Every supplier undergoes a rigorous qualification process before we list their compounds.</div>
+        </div>
+        <div class="about-process-step">
+          <div class="about-process-n">02</div>
+          <div class="about-process-title">Independent Testing</div>
+          <div class="about-process-text">Each batch is sent to an accredited independent laboratory for HPLC purity, mass spectrometry identity, sterility, and endotoxin testing. Results are published to our COA library.</div>
+        </div>
+        <div class="about-process-step">
+          <div class="about-process-n">03</div>
+          <div class="about-process-title">Melbourne Warehousing</div>
+          <div class="about-process-text">Approved batches are stored in our climate-controlled Melbourne facility at the appropriate temperature. Cold chain is maintained from warehouse to dispatch.</div>
+        </div>
+        <div class="about-process-step">
+          <div class="about-process-n">04</div>
+          <div class="about-process-title">Next-Day Dispatch</div>
+          <div class="about-process-text">Orders placed before 11PM AEST are dispatched the next business day in discreet, sealed packaging via Australia Post with tracking.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="about-location">
+      <div>
+        <div class="about-story-label">Find Us</div>
+        <div class="about-story-h">Based in Melbourne,<br>Shipping Nationwide</div>
+        <div class="about-location-details">
+          <div class="about-loc-row">
+            <div class="about-loc-icon">📍</div>
+            <div><div class="about-loc-key">Warehouse Location</div><div class="about-loc-val">Melbourne, Victoria VIC 3000<br>Australia</div></div>
+          </div>
+          <div class="about-loc-row">
+            <div class="about-loc-icon">📦</div>
+            <div><div class="about-loc-key">Dispatch</div><div class="about-loc-val">Next business day (order before 11PM AEST)<br>Australia Post with tracking</div></div>
+          </div>
+          <div class="about-loc-row">
+            <div class="about-loc-icon">🚚</div>
+            <div><div class="about-loc-key">Free Shipping</div><div class="about-loc-val">All orders over $199 AUD<br>Discreet, sealed packaging</div></div>
+          </div>
+          <div class="about-loc-row">
+            <div class="about-loc-icon">✉️</div>
+            <div><div class="about-loc-key">Contact</div><div class="about-loc-val">info@auspeptidewarehouse.au<br><a href="tel:+61432308931" style="color:inherit;">0432 308 931</a><br>ABN: 55 947 727 521</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="about-location-map" style="padding:0;background:none;border:none;">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.95373431531676!3d-37.81720997975159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sau!4v1620000000000!5m2!1sen!2sau"
+          width="100%"
+          height="300"
+          style="border:1px solid var(--border);display:block;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Melbourne, VIC — Peptide Warehouse Australia">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="about-cta">
+      <div>
+        <div class="about-cta-h">Ready to Order?</div>
+        <div class="about-cta-sub">99.4% avg purity · COA verified · Next-day dispatch from Melbourne</div>
+      </div>
+      <button class="about-cta-btn" onclick="goToShopPage()">Shop Peptides</button>
+    </div>
+
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — All products sold by Peptide Warehouse Australia are strictly for in-vitro research and laboratory purposes only. Not intended for human or veterinary consumption. By purchasing you confirm you are 18+ and will use products in lawful research settings only.</p></div>
+  `;
+}
+
+/* ─── AUSTRALIA MAP CANVAS ───────────────────────────────────── */
+function drawAusMap(){
+  const canvas = document.getElementById('aus-map-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const color = (getComputedStyle(document.documentElement).getPropertyValue('--riviera').trim()||'#006B96').replace(/\s/g,'');
+  const mainland = [
+    [113.34,-26.52],[114.17,-26.02],[114.17,-25.63],[113.74,-25.31],[113.44,-24.00],
+    [113.94,-22.52],[114.02,-21.83],[114.13,-21.50],[114.48,-20.93],[115.65,-20.55],
+    [116.67,-20.64],[118.27,-20.37],[120.39,-19.60],[121.27,-19.24],[122.49,-18.35],
+    [122.85,-17.66],[123.06,-16.96],[123.59,-17.07],[124.00,-16.64],[124.39,-15.57],
+    [125.07,-14.85],[125.64,-14.52],[125.66,-14.12],[126.13,-14.09],[126.79,-13.86],
+    [127.57,-14.15],[127.93,-14.08],[128.11,-14.73],[128.34,-14.77],[128.63,-15.48],
+    [128.97,-14.89],[129.62,-14.55],[129.41,-13.87],[129.82,-13.50],[130.04,-13.00],
+    [130.65,-12.48],[131.23,-12.16],[131.84,-12.30],[132.56,-12.01],[133.60,-12.00],
+    [135.00,-12.50],[135.27,-12.00],[136.00,-12.50],[136.74,-12.14],[136.00,-13.00],
+    [135.56,-14.50],[136.30,-15.35],[137.10,-15.74],[138.16,-16.40],[138.37,-17.00],
+    [139.13,-17.50],[139.48,-17.42],[139.74,-17.14],[140.20,-17.39],[140.63,-17.02],
+    [140.72,-17.50],[141.63,-18.00],[141.52,-18.72],[140.92,-19.14],[141.02,-20.12],
+    [142.00,-21.00],[142.24,-21.81],[142.93,-22.77],[143.41,-23.46],[143.26,-24.46],
+    [143.31,-24.92],[144.22,-25.91],[144.22,-26.50],[144.63,-27.62],[145.89,-28.52],
+    [146.67,-29.08],[147.22,-29.94],[148.03,-30.47],[148.43,-31.31],[149.21,-32.17],
+    [149.83,-32.71],[150.24,-33.52],[151.12,-34.08],[151.51,-34.66],[150.68,-35.38],
+    [150.43,-36.00],[150.02,-36.42],[148.51,-37.06],[148.22,-37.88],[147.10,-38.25],
+    [146.36,-38.72],[145.63,-38.71],[144.98,-38.37],[144.61,-38.14],[144.10,-38.50],
+    [143.52,-38.56],[143.23,-38.16],[142.42,-38.35],[142.08,-38.08],[141.23,-38.27],
+    [140.74,-38.28],[140.00,-38.00],[139.14,-37.52],[138.49,-37.57],[138.33,-37.23],
+    [137.78,-36.00],[137.19,-35.23],[136.51,-35.15],[136.37,-34.59],[135.88,-34.61],
+    [135.36,-35.09],[134.74,-35.26],[134.22,-35.26],[133.79,-35.00],[133.26,-34.98],
+    [132.63,-34.00],[132.32,-33.51],[132.00,-33.14],[131.65,-32.18],[130.67,-32.00],
+    [129.74,-32.60],[129.47,-33.46],[129.00,-34.00],[128.00,-34.00],[127.00,-33.00],
+    [126.24,-33.95],[125.48,-34.00],[124.07,-33.75],[123.66,-33.87],[122.88,-33.87],
+    [122.01,-33.91],[121.18,-33.48],[120.38,-33.71],[119.42,-33.93],[118.54,-33.91],
+    [117.88,-34.24],[117.38,-34.00],[116.85,-34.05],[115.98,-34.14],[115.17,-34.01],
+    [114.96,-34.30],[115.08,-33.60],[114.74,-33.32],[114.59,-32.64],[114.10,-32.44],
+    [113.70,-32.05],[113.57,-31.53],[113.55,-31.00],[113.34,-30.00],[113.13,-28.73],
+    [113.50,-28.00],[113.49,-27.50],[113.34,-26.52]
+  ];
+  const tasmania = [
+    [147.27,-40.58],[148.00,-40.90],[148.35,-41.20],[148.26,-41.80],[147.93,-42.47],
+    [147.50,-42.97],[147.00,-43.21],[146.43,-43.29],[145.87,-43.10],[145.43,-42.80],
+    [145.23,-42.20],[145.04,-41.65],[145.28,-41.00],[145.94,-40.80],[146.78,-40.58],[147.27,-40.58]
+  ];
+  const all = [...mainland,...tasmania];
+  const lngs = all.map(p=>p[0]), lats = all.map(p=>p[1]);
+  const minLng=Math.min(...lngs), maxLng=Math.max(...lngs);
+  const minLat=Math.min(...lats), maxLat=Math.max(...lats);
+  const pad=3;
+  function proj(lng,lat){ return [pad+(lng-minLng)/(maxLng-minLng)*(W-2*pad), pad+(maxLat-lat)/(maxLat-minLat)*(H-2*pad)]; }
+  ctx.fillStyle = color;
+  [[mainland],[tasmania]].forEach(([coords])=>{
+    ctx.beginPath();
+    coords.forEach(([lng,lat],i)=>{ const [x,y]=proj(lng,lat); i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+    ctx.closePath(); ctx.fill();
+  });
+}
+/* ─── SHIPPING POLICY PAGE ───────────────────────────────────── */
+function goToShippingPage(){
+  hideAll();
+  shippingPageEl.style.display = 'block';
+  document.title = 'Shipping Policy — Peptide Warehouse Australia';
+  window.scrollTo(0,0);
+
+  shippingPageEl.innerHTML = `
+    <div class="shipping-hero">
+      <div class="faq-hero-inner">
+        <div class="s-label">Delivery Information</div>
+        <div class="s-title">Shipping Policy</div>
+        <p class="s-sub" style="max-width:540px;">All orders are dispatched from Melbourne, Victoria. We ship exclusively within Australia using Australia Post Express and Standard Post services.</p>
+      </div>
+    </div>
+
+    <div class="shipping-body">
+
+      <div class="shipping-highlight">
+        <div class="shipping-highlight-icon">⚡</div>
+        <div class="shipping-highlight-text">
+          <strong>Same-day dispatch cut-off: 11:00 PM AEST.</strong> Orders placed before this time on business days are dispatched the next business day. Orders placed on weekends or public holidays are dispatched the following business day.
+        </div>
+      </div>
+
+      <div class="shipping-section">
+        <div class="shipping-section-title">Shipping Options & Rates</div>
+        <table class="shipping-table">
+          <thead>
+            <tr><th>Service</th><th>Estimated Delivery</th><th>Cost</th><th>Tracking</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Standard Post</td><td>2–6 business days</td><td>$11.99 AUD</td><td>✓ Included</td></tr>
+            <tr><td>Express Post</td><td>1–3+ business days</td><td>$15.99 AUD</td><td>✓ Included</td></tr>
+            <tr><td>Free Express Post</td><td>1–3+ business days</td><td>Free on orders over $199 AUD</td><td>✓ Included</td></tr>
+          </tbody>
+        </table>
+        <p>Delivery estimates are provided by Australia Post and are not guaranteed. Remote or rural addresses may experience longer transit times.</p>
+      </div>
+
+      <div class="shipping-section">
+        <div class="shipping-section-title">How Your Order is Processed</div>
+        <div class="shipping-steps">
+          ${[
+            { n:'01', title:'Order Placed', desc:'You complete checkout and receive an immediate confirmation email with your order reference number and payment instructions.' },
+            { n:'02', title:'Payment Verified', desc:'Once your PayID transfer or PayPal payment is confirmed, your order moves to fulfilment. PayID payments are typically verified within 1–4 business hours.' },
+            { n:'03', title:'Packed & Dispatched', desc:'Your order is packed in discreet plain packaging with no external branding. Orders verified before 11PM AEST are dispatched the next business day.' },
+            { n:'04', title:'Tracking Sent', desc:'You receive a tracking number via email once your parcel is scanned by Australia Post. Track your order directly on the Australia Post website.' },
+            { n:'05', title:'Delivered', desc:'Your order arrives at your nominated address. If you are not home, Australia Post will leave a collection card or attempt redelivery.' },
+          ].map(s =>
+            '<div class="shipping-step">' +
+            '<div class="shipping-step-num">' + s.n + '</div>' +
+            '<div><div class="shipping-step-title">' + s.title + '</div>' +
+            '<div class="shipping-step-desc">' + s.desc + '</div></div>' +
+            '</div>'
+          ).join('')}
+        </div>
+      </div>
+
+      <div class="shipping-section">
+        <div class="shipping-section-title">Packaging & Discretion</div>
+        <p>All orders are shipped in <strong>plain, unmarked packaging</strong>. There is no mention of Peptide Warehouse Australia, product names, or any indication of the contents on the outside of the parcel.</p>
+        <p>Lyophilised peptides are stable at ambient temperatures for transport and do not require refrigeration during standard transit periods.</p>
+      </div>
+
+      <div class="shipping-section">
+        <div class="shipping-section-title">Delivery Area & Estimated Times</div>
+        <p>We ship to <strong>all states and territories within Australia</strong>. We do not currently offer international shipping.</p>
+        <table class="shipping-table">
+          <thead><tr><th>State / Territory</th><th>Standard ETA</th><th>Express ETA</th></tr></thead>
+          <tbody>
+            ${[
+              ['Victoria (VIC)', '2–4 business days', '1–2+ business days'],
+              ['New South Wales (NSW)', '3–6 business days', '1–3+ business days'],
+              ['Queensland (QLD)', '3–6 business days', '1–3+ business days'],
+              ['South Australia (SA)', '3–6 business days', '1–3+ business days'],
+              ['Western Australia (WA)', '3–6 business days', '2–3+ business days'],
+              ['Tasmania (TAS)', '3–6 business days', '2–3+ business days'],
+              ['ACT', '3–6 business days', '1–3+ business days'],
+              ['Northern Territory (NT)', '3–6 business days', '2–3+ business days'],
+            ].map(r => '<tr>' + r.map(c => '<td>' + c + '</td>').join('') + '</tr>').join('')}
+          </tbody>
+        </table>
+        <p>Estimates are approximate and based on Australia Post network guidelines dispatching from Melbourne, VIC.</p>
+      </div>
+
+      <div class="shipping-section">
+        <div class="shipping-section-title">Lost, Delayed or Damaged Parcels</div>
+        <p>If your order hasn't arrived within the expected timeframe, please check your tracking number via Australia Post first. If tracking shows no movement for more than <strong>5 business days</strong> (Standard) or <strong>3 business days</strong> (Express), contact us at <a href="mailto:info@auspeptidewarehouse.au" style="color:var(--riviera);">info@auspeptidewarehouse.au</a> and we will lodge an investigation with Australia Post.</p>
+        <p>If your parcel arrives damaged, photograph the packaging and contents immediately and contact us within <strong>48 hours of delivery</strong>. We will assess each case and work to resolve it promptly.</p>
+        <p>Peptide Warehouse Australia is not liable for delays caused by Australia Post, incorrect delivery addresses, or circumstances outside our control. Please double-check your shipping address before placing your order.</p>
+      </div>
+
+      <div class="shipping-section">
+        <div class="shipping-section-title">Address Changes & Order Modifications</div>
+        <p>Address changes can only be made <strong>before your order is dispatched</strong>. Contact us immediately at <a href="mailto:info@auspeptidewarehouse.au" style="color:var(--riviera);">info@auspeptidewarehouse.au</a> if you need to make changes. Once dispatched, we are unable to redirect parcels.</p>
+      </div>
+
+      <div class="shipping-section">
+        <div class="shipping-section-title">Contact Us</div>
+        <p>For shipping queries, reach out to our team:<br><br>
+        📧 <a href="mailto:info@auspeptidewarehouse.au" style="color:var(--riviera);font-weight:500;">info@auspeptidewarehouse.au</a><br>
+        📍 Melbourne, Victoria VIC 3000<br>
+        🕐 We respond to all enquiries within 24 business hours.</p>
+        <div style="margin-top:1rem;">
+          <button class="btn-primary" onclick="goToContactPage()">Contact Us →</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — All products sold by Peptide Warehouse Australia are strictly for in-vitro research and laboratory purposes only. Not intended for human or veterinary consumption.</p></div>
+  `;
+}
+
+/* ─── FAQ PAGE ───────────────────────────────────────────────── */
+const faqData = [
+  {
+    cat: '🧪 Products & Quality',
+    id: 'quality',
+    items: [
+      { q: 'Are your peptides safe to use?', a: 'All peptides and compounds sold by Peptide Warehouse Australia are <strong>strictly for laboratory and in-vitro research use only</strong>. They are not intended for human consumption, therapeutic use, or veterinary use. By purchasing, you confirm that you are a qualified researcher acting within applicable regulations.' },
+      { q: 'What purity are your peptides?', a: 'All of our peptides are <strong>≥99% pure (HPLC tested)</strong> and supplied with a Certificate of Analysis (COA) verifying their identity and purity. We use accredited independent third-party laboratories to verify every batch before dispatch.' },
+      { q: 'Do you provide a Certificate of Analysis (COA)?', a: 'Yes. Every peptide batch is accompanied by a COA, available directly on our <a onclick="goToCOAPage();return false;" href="#" style="color:var(--riviera);">COA Testing page</a>. Each COA includes HPLC chromatogram data, purity percentage, mass spectrometry confirmation, sterility testing, and endotoxin (LAL) results.' },
+      { q: 'What form are your peptides supplied in?', a: '<strong>Lyophilised (freeze-dried) powder.</strong> Lyophilisation preserves the peptide\'s molecular structure and extends shelf life significantly compared to liquid form. It allows for accurate, controlled reconstitution under your specific research conditions.' },
+      { q: 'How should I store my peptides?', a: 'Lyophilised peptides should be stored at <strong>−20°C</strong> in a dry environment, protected from light. For short-term use (a few weeks), storage at +4°C in a refrigerator is acceptable. Once reconstituted, store at −20°C in single-use aliquots to avoid freeze-thaw cycles, which degrade peptide integrity.' },
+      { q: 'How long do peptides last?', a: 'Lyophilised peptides stored correctly at −20°C will remain stable and potent for <strong>12–24 months</strong> from the manufacture date. Once reconstituted, solutions should be used within 4–6 weeks if refrigerated, or aliquoted and frozen for longer storage.' },
+      { q: 'Do you supply bacteriostatic water (BAC water)?', a: 'Yes. We supply pharmaceutical-grade bacteriostatic water for research reconstitution purposes. It can be ordered alongside your peptide products — find it in our shop under Ancillary products.' }
+    ]
+  },
+  {
+    cat: '📦 Ordering & Payment',
+    id: 'ordering',
+    items: [
+      { q: 'How do I place an order?', a: 'Simply browse our products, add items to your cart, and complete checkout with your shipping details. After submitting your order, you\'ll receive a confirmation email containing payment details and your unique order reference number.' },
+      { q: 'What payment methods do you accept?', a: 'We accept <strong>PayID (bank transfer)</strong> and <strong>PayPal</strong>. After placing your order you\'ll receive an email with PayID details. To confirm payment, send a screenshot of your transfer to <a href="mailto:info@auspeptidewarehouse.au" style="color:var(--riviera);">info@auspeptidewarehouse.au</a> with your order reference. Orders are processed once payment is verified.' },
+      { q: 'Is it safe to order from you?', a: 'Yes. Our products are legal for laboratory and research use under Australian law. They are not scheduled substances when used for in-vitro, analytical, or educational research. No licence is required for legitimate research or laboratory use within Australia.' },
+      { q: 'Can I modify or cancel my order after placing it?', a: 'Please contact us at <a href="mailto:info@auspeptidewarehouse.au" style="color:var(--riviera);">info@auspeptidewarehouse.au</a> as soon as possible. Due to our fast dispatch times, we cannot guarantee changes can be made once an order is processed, but we will do our best to accommodate your request before it ships.' },
+      { q: 'Do you offer discounts for bulk orders?', a: 'Yes — we offer volume pricing for larger research orders. Please reach out directly at <a href="mailto:info@auspeptidewarehouse.au" style="color:var(--riviera);">info@auspeptidewarehouse.au</a> with the quantities you\'re looking for and we\'ll provide a custom quote.' }
+    ]
+  },
+  {
+    cat: '🚚 Shipping & Delivery',
+    id: 'shipping',
+    items: [
+      { q: 'Where do you ship?', a: 'We currently ship <strong>within Australia only</strong>. This ensures reliable delivery and compliance with Australian regulations surrounding research compounds.' },
+      { q: 'How fast do you dispatch orders?', a: 'Orders are dispatched <strong>next business day</strong> for all orders placed before <strong>11PM AEST</strong>. We send via Australia Post for all shipments, with tracking included on every order.' },
+      { q: 'Do you offer free shipping?', a: 'Yes — free Express Post shipping on all orders over <strong>$199 AUD</strong>. Orders under $199 can choose Standard Post at <strong>$11.99</strong> or Express Post at <strong>$15.99</strong>.' },
+      { q: 'How will my order be packaged?', a: 'All orders are shipped in <strong>discreet plain packaging</strong> with no external branding or product descriptions. Peptides are packed with appropriate cold-chain materials to maintain integrity during transit.' },
+      { q: 'How do I track my order?', a: 'Once your order is dispatched, we\'ll send you a tracking number via email that you can use to monitor progress through Australia Post\'s tracking portal. Most metro deliveries arrive within 1–3 business days of dispatch.' },
+      { q: 'What if my package doesn\'t arrive?', a: 'In the rare event your package doesn\'t arrive within the expected timeframe, please contact us at <a href="mailto:info@auspeptidewarehouse.au" style="color:var(--riviera);">info@auspeptidewarehouse.au</a> and we\'ll investigate with the carrier promptly.' }
+    ]
+  },
+  {
+    cat: '⚖️ Legal & Compliance',
+    id: 'legal',
+    items: [
+      { q: 'Is it legal to buy research peptides in Australia?', a: 'Yes. Research peptides are legal for laboratory and in-vitro research use under Australian law. They are not scheduled substances when purchased and used for legitimate research purposes. By purchasing from us, you confirm you are a qualified professional or researcher acting within applicable Australian regulations.' },
+      { q: 'Do I need a licence to purchase?', a: 'No licence is required for legitimate research or laboratory use within Australia. However, you must confirm at checkout that you are purchasing for research purposes only and that you are 18 years of age or older.' },
+      { q: 'Why do your products say "research use only"?', a: 'This is a legal requirement. Our peptides are sold exclusively for in-vitro laboratory research and are <strong>not approved for human or veterinary use</strong>. They have not been evaluated by the TGA as therapeutic goods. This distinction is important for regulatory compliance.' },
+      { q: 'What is your ABN?', a: 'Our Australian Business Number is <strong>55 947 727 521</strong>. We are a registered Australian business based in Melbourne, Victoria.' }
+    ]
+  }
+];
+
+function goToFAQPage(){
+  hideAll();
+  faqPageEl.style.display = 'block';
+  document.title = 'FAQ — Peptide Warehouse Australia';
+  window.scrollTo(0,0);
+
+  const sectionsHTML = faqData.map(cat => {
+    const items = cat.items.map((item,i) => {
+      const uid = cat.id+'-'+i;
+      return '<div class="faq-item">' +
+        '<button class="faq-q" onclick="toggleFAQ(\'' + uid + '\')" id="fq-' + uid + '">' +
+        '<span>' + item.q + '</span><span class="faq-chevron">▼</span></button>' +
+        '<div class="faq-a" id="fa-' + uid + '">' + item.a + '</div></div>';
+    }).join('');
+    return `<div class="faq-section" id="faq-${cat.id}">
+      <div class="faq-section-title">${cat.cat}</div>${items}</div>`;
+  }).join('');
+
+  const catBtns = faqData.map(cat => `
+    <button class="faq-cat-btn" onclick="scrollToFAQCat('${cat.id}')">
+      <span class="faq-cat-icon">${cat.cat.split(' ')[0]}</span>
+      <span class="faq-cat-label">${cat.cat.split(' ').slice(1).join(' ')}</span>
+    </button>`).join('');
+
+  faqPageEl.innerHTML = `
+    <div class="faq-hero">
+      <div class="faq-hero-inner">
+        <div class="s-label">Help Centre</div>
+        <div class="s-title">Frequently Asked<br>Questions</div>
+        <p class="s-sub" style="max-width:540px;">Everything you need to know about our research peptides, ordering, shipping, and compliance. Can't find your answer? <a href="#" onclick="goToContactPage();return false;" style="color:var(--riviera);">Contact us directly.</a></p>
+      </div>
+    </div>
+    <div class="faq-body">
+      <div class="faq-categories">${catBtns}</div>
+      ${sectionsHTML}
+    </div>
+    <div class="faq-cta">
+      <div>
+        <div class="faq-cta-text">Still have questions?</div>
+        <div class="faq-cta-sub">Our team typically responds within 24 hours · info@auspeptidewarehouse.au</div>
+      </div>
+      <button class="faq-cta-btn" onclick="goToContactPage()">Get in Touch →</button>
+    </div>
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — All products sold by Peptide Warehouse Australia are strictly for in-vitro research and laboratory purposes only. Not intended for human or veterinary consumption.</p></div>
+  `;
+}
+
+function toggleFAQ(uid){
+  const btn = document.getElementById('fq-'+uid);
+  const ans = document.getElementById('fa-'+uid);
+  const isOpen = btn.classList.contains('open');
+  btn.closest('.faq-section').querySelectorAll('.faq-q.open').forEach(b=>b.classList.remove('open'));
+  btn.closest('.faq-section').querySelectorAll('.faq-a.open').forEach(a=>a.classList.remove('open'));
+  if(!isOpen){ btn.classList.add('open'); ans.classList.add('open'); }
+}
+
+function scrollToFAQCat(id){
+  const el = document.getElementById('faq-'+id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ─── CONTACT PAGE ───────────────────────────────────────────── */
+function goToContactPage(){
+  hideAll();
+  contactPageEl.style.display = 'block';
+  document.title = 'Contact — Peptide Warehouse Australia';
+  window.scrollTo(0,0);
+
+  contactPageEl.innerHTML = `
+    <div class="contact-hero">
+      <div>
+        <div class="s-label">Get In Touch</div>
+        <div class="s-title" style="margin-bottom:0.6rem;">Contact Us</div>
+        <p class="s-sub">Have a question about an order, a product, or our COA testing? Send us a message and we'll get back to you within one business day.</p>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(3rem,6vw,5rem);font-weight:700;color:var(--border);line-height:1;letter-spacing:-3px;flex-shrink:0;">✉</div>
+    </div>
+
+    <div class="contact-body">
+      <div class="contact-left">
+        <div class="s-label" style="margin-bottom:1.5rem;">Our Details</div>
+        <div class="contact-info-row">
+          <div class="contact-info-icon">✉️</div>
+          <div><div class="contact-info-key">Email</div><div class="contact-info-val"><a href="mailto:info@auspeptidewarehouse.au">info@auspeptidewarehouse.au</a></div></div>
+        </div>
+        <div class="contact-info-row">
+          <div class="contact-info-icon">📱</div>
+          <div><div class="contact-info-key">Phone</div><div class="contact-info-val"><a href="tel:+61432308931">0432 308 931</a></div></div>
+        </div>
+        <div class="contact-info-row">
+          <div class="contact-info-icon">📍</div>
+          <div><div class="contact-info-key">Location</div><div class="contact-info-val">Melbourne, Victoria VIC 3000<br>Australia</div></div>
+        </div>
+        <div class="contact-info-row">
+          <div class="contact-info-icon">📦</div>
+          <div><div class="contact-info-key">Dispatch</div><div class="contact-info-val">Next business day on orders placed before 11PM AEST</div></div>
+        </div>
+        <div class="contact-info-row">
+          <div class="contact-info-icon">🏢</div>
+          <div><div class="contact-info-key">ABN</div><div class="contact-info-val">55 947 727 521</div></div>
+        </div>
+        <div class="contact-hours">
+          <div class="contact-hours-header">Response Hours (AEST)</div>
+          <div class="contact-hours-row"><span class="contact-hours-day">Monday – Friday</span><span class="contact-hours-time open">9:00 AM – 6:00 PM</span></div>
+          <div class="contact-hours-row"><span class="contact-hours-day">Saturday</span><span class="contact-hours-time open">10:00 AM – 2:00 PM</span></div>
+          <div class="contact-hours-row"><span class="contact-hours-day">Sunday</span><span class="contact-hours-time">Closed</span></div>
+          <div class="contact-hours-row"><span class="contact-hours-day">Public Holidays</span><span class="contact-hours-time">Closed</span></div>
+        </div>
+      </div>
+
+      <div class="contact-right">
+        <div class="s-label" style="margin-bottom:1.5rem;">Send a Message</div>
+        <div id="contactFormWrap">
+          <div class="contact-form-row">
+            <div><label class="contact-form-label">First Name</label><input class="contact-form-input" id="cf-first" type="text" placeholder="James"/></div>
+            <div><label class="contact-form-label">Last Name</label><input class="contact-form-input" id="cf-last" type="text" placeholder="Mitchell"/></div>
+          </div>
+          <label class="contact-form-label">Email Address</label>
+          <input class="contact-form-input" id="cf-email" type="email" placeholder="james@example.com"/>
+          <label class="contact-form-label">Subject</label>
+          <select class="contact-form-select" id="cf-subject">
+            <option value="">Select a topic…</option>
+            <option>Order Enquiry</option>
+            <option>Product Question</option>
+            <option>COA / Testing</option>
+            <option>Shipping & Tracking</option>
+            <option>Returns & Refunds</option>
+            <option>Wholesale / Bulk</option>
+            <option>Other</option>
+          </select>
+          <label class="contact-form-label">Message</label>
+          <textarea class="contact-form-input textarea" id="cf-message" placeholder="Tell us how we can help…"></textarea>
+          <div style="font-size:0.62rem;color:var(--text-faint);font-weight:300;line-height:1.7;margin-bottom:1rem;">By submitting this form you agree to our <a href="#" style="color:var(--riviera);">Privacy Policy</a>. We respond within one business day.</div>
+          <button class="contact-submit" onclick="submitContactForm()">Send Message →</button>
+        </div>
+        <div class="contact-success" id="contactSuccess">
+          <div class="contact-success-icon">✅</div>
+          <div class="contact-success-title">Message Sent!</div>
+          <div class="contact-success-text">Thanks for reaching out. We'll get back to you at your email address within one business day.</div>
+        </div>
+      </div>
+    </div>
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — All products sold by Peptide Warehouse Australia are strictly for in-vitro research and laboratory purposes only. Not intended for human or veterinary consumption.</p></div>
+  `;
+}
+
+function submitContactForm(){
+  const first   = document.getElementById('cf-first').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const subject = document.getElementById('cf-subject').value;
+  const message = document.getElementById('cf-message').value.trim();
+  if(!first){ alert('Please enter your first name.'); return; }
+  if(!email || !email.includes('@')){ alert('Please enter a valid email address.'); return; }
+  if(!subject){ alert('Please select a subject.'); return; }
+  if(!message){ alert('Please enter a message.'); return; }
+  document.getElementById('contactFormWrap').style.display = 'none';
+  document.getElementById('contactSuccess').style.display  = 'block';
+}
+
+/* ─── POPUP ──────────────────────────────────────────────────── */
+function closePopup(e){
+  if(!e || e.target===document.getElementById('popup-overlay'))
+    document.getElementById('popup-overlay').classList.remove('show');
+}
+function submitPopup(){
+  const em = document.getElementById('popupEmail').value;
+  if(!em||!em.includes('@')){ alert('Please enter a valid email.'); return; }
+  document.getElementById('popupBody').style.display='none';
+  document.getElementById('popupSuccess').style.display='block';
+  localStorage.setItem('popupSeen', Date.now());
+}
+const _ps = localStorage.getItem('popupSeen');
+if(!_ps || (Date.now() - parseInt(_ps)) > 7*24*60*60*1000){
+  setTimeout(()=>document.getElementById('popup-overlay').classList.add('show'),2500);
+}
+</script>
+</body>
+</html>
