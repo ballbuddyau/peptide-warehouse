@@ -721,7 +721,7 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--bg)
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyCobOW2L2jfdOFR1LF606BVzLngHOedhUY",
@@ -735,7 +735,27 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--bg)
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Expose saveOrder globally so placeOrder() can call it
+  // Load prices from Firebase on startup
+  async function loadPricesFromFirebase() {
+    try {
+      const snap = await getDocs(collection(db, 'products'));
+      if(snap.empty) return;
+      snap.docs.forEach(d => {
+        const data = d.data();
+        if(window.products) {
+          const idx = window.products.findIndex(p => p.name === data.name);
+          if(idx !== -1) {
+            if(data.price) window.products[idx].price = '$' + parseFloat(data.price).toFixed(2);
+            if(data.spec) window.products[idx].spec = data.spec;
+          }
+        }
+      });
+      if(window.render) window.render();
+    } catch(e) { console.log('Using default prices'); }
+  }
+  window.addEventListener('load', () => setTimeout(loadPricesFromFirebase, 200));
+
+  // Save order to Firebase
   window._saveOrderToFirebase = async function(orderData) {
     try {
       const docRef = await addDoc(collection(db, 'orders'), {
@@ -743,11 +763,26 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--bg)
         createdAt: serverTimestamp(),
         status: 'pending'
       });
-      console.log('Order saved:', docRef.id);
       return docRef.id;
     } catch(e) {
-      console.error('Firebase error:', e);
+      console.error('Firebase order error:', e);
       return null;
+    }
+  };
+
+  // Save contact message to Firebase
+  window._saveMessageToFirebase = async function(msgData) {
+    try {
+      await addDoc(collection(db, 'messages'), {
+        ...msgData,
+        createdAt: serverTimestamp(),
+        read: false,
+        replied: false
+      });
+      return true;
+    } catch(e) {
+      console.error('Firebase message error:', e);
+      return false;
     }
   };
 </script>
@@ -2280,8 +2315,9 @@ function goToContactPage(){
   `;
 }
 
-function submitContactForm(){
+async function submitContactForm(){
   const first   = document.getElementById('cf-first').value.trim();
+  const last    = document.getElementById('cf-last').value.trim();
   const email   = document.getElementById('cf-email').value.trim();
   const subject = document.getElementById('cf-subject').value;
   const message = document.getElementById('cf-message').value.trim();
@@ -2289,6 +2325,13 @@ function submitContactForm(){
   if(!email || !email.includes('@')){ alert('Please enter a valid email address.'); return; }
   if(!subject){ alert('Please select a subject.'); return; }
   if(!message){ alert('Please enter a message.'); return; }
+  // Save to Firebase
+  if(window._saveMessageToFirebase){
+    await window._saveMessageToFirebase({
+      name: first + (last ? ' ' + last : ''),
+      email, subject, message
+    });
+  }
   document.getElementById('contactFormWrap').style.display = 'none';
   document.getElementById('contactSuccess').style.display  = 'block';
 }
