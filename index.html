@@ -718,6 +718,43 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--bg)
   </div>
 </div>
 
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCobOW2L2jfdOFR1LF606BVzLngHOedhUY",
+    authDomain: "peptide-warehouse.firebaseapp.com",
+    projectId: "peptide-warehouse",
+    storageBucket: "peptide-warehouse.firebasestorage.app",
+    messagingSenderId: "900140364299",
+    appId: "1:900140364299:web:eecb3d4c55c8d694bf0d0e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Expose saveOrder globally so placeOrder() can call it
+  window._saveOrderToFirebase = async function(orderData) {
+    try {
+      const docRef = await addDoc(collection(db, 'orders'), {
+        ...orderData,
+        createdAt: serverTimestamp(),
+        status: 'pending'
+      });
+      console.log('Order saved:', docRef.id);
+      return docRef.id;
+    } catch(e) {
+      console.error('Firebase error:', e);
+      return null;
+    }
+  };
+</script>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AVWUdjIy5TdT8zXucOhasNzcqNH9HmoL2Y7vDqnP5yzRj_w-KU1Kefq2Rkh_r_BRB94gY1W0WjA8rZ7v&currency=AUD" defer></script>
+
 <script>
 /* ─── THEME ──────────────────────────────────────────────────── */
 function setTheme(t){
@@ -1012,7 +1049,8 @@ function goToCheckout(){
             </div>
           </div>
 
-          <button class="checkout-place-btn" onclick="placeOrder()">Place Order →</button>
+          <div id="paypal-btn-container" style="display:none;margin-bottom:1rem;"></div>
+          <button class="checkout-place-btn" id="checkout-place-btn" onclick="placeOrder()">Place Order →</button>
         </div>
 
         <!-- SIDEBAR: ORDER SUMMARY -->
@@ -1101,7 +1139,7 @@ function selectPayment(method){
   document.getElementById('bank-details')?.classList.toggle('show', method==='bank');
 }
 
-function placeOrder(){
+function validateCheckoutForm(){
   const first  = document.getElementById('co-first')?.value.trim();
   const last   = document.getElementById('co-last')?.value.trim();
   const email  = document.getElementById('co-email')?.value.trim();
@@ -1109,11 +1147,42 @@ function placeOrder(){
   const suburb = document.getElementById('co-suburb')?.value.trim();
   const state  = document.getElementById('co-state')?.value;
   const post   = document.getElementById('co-post')?.value.trim();
-  if(!first||!last)   { alert('Please enter your full name.');        return; }
-  if(!email||!email.includes('@')) { alert('Please enter a valid email.'); return; }
-  if(!street||!suburb){ alert('Please enter your shipping address.'); return; }
-  if(!state)          { alert('Please select your state.');           return; }
-  if(!post||post.length<4){ alert('Please enter a valid postcode.');  return; }
+  if(!first||!last)   { alert('Please enter your full name.');        return null; }
+  if(!email||!email.includes('@')) { alert('Please enter a valid email.'); return null; }
+  if(!street||!suburb){ alert('Please enter your shipping address.'); return null; }
+  if(!state)          { alert('Please select your state.');           return null; }
+  if(!post||post.length<4){ alert('Please enter a valid postcode.');  return null; }
+  return { first, last, email,
+    phone: document.getElementById('co-phone')?.value.trim() || '',
+    address: `${street}, ${suburb} ${state} ${post}` };
+}
+
+function showOrderSuccess(ref, first, email, total, shipLabel, paymentMethod){
+  document.getElementById('page-checkout').innerHTML = `
+    <div class="order-success-wrap">
+      <div class="order-success-icon">✅</div>
+      <div class="order-success-title">Order Received!</div>
+      <div class="order-success-ref">${ref}</div>
+      <p class="order-success-text">
+        Thank you ${first}! Your order has been received.<br><br>
+        ${paymentMethod === 'payid'
+          ? `Transfer <strong>$${total.toFixed(2)} AUD</strong> via PayID to <strong>info@auspeptidewarehouse.au</strong> using reference <strong>${ref}</strong>, then send your screenshot to confirm.`
+          : paymentMethod === 'bank'
+          ? `Transfer <strong>$${total.toFixed(2)} AUD</strong> to:<br><br><strong>Account Name:</strong> Peptide Warehouse Pty Ltd<br><strong>BSB:</strong> 063-000 &nbsp;·&nbsp; <strong>Account:</strong> 1234 5678<br><strong>Reference:</strong> ${ref}`
+          : `Payment confirmed via PayPal ✓`}
+        <br><br>Your order will be dispatched via ${shipLabel} once payment is confirmed.
+      </p>
+      <button class="btn-primary" onclick="cart=[];updateCartBadge();goToShop()">Continue Shopping</button>
+    </div>
+    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — Not intended for human or veterinary consumption.</p></div>
+  `;
+  cart = [];
+  updateCartBadge();
+}
+
+async function placeOrder(){
+  const formData = validateCheckoutForm();
+  if(!formData) return;
 
   const ref = 'PWA-' + Date.now().toString(36).toUpperCase().slice(-6);
   const subtotal = getCartTotal();
@@ -1124,27 +1193,47 @@ function placeOrder(){
     : 0;
   const total = Math.max(0, baseTotal - discount);
   const shipLabel = subtotal >= 199 ? 'Free Express Post' : (selectedShipping === 'express' ? 'Express Post' : 'Standard Post');
+  const orderItems = cart.map(i => ({ name: products[i.idx].name, spec: products[i.idx].spec, qty: i.qty, price: products[i.idx].price }));
 
-  document.getElementById('page-checkout').innerHTML = `
-    <div class="order-success-wrap">
-      <div class="order-success-icon">✅</div>
-      <div class="order-success-title">Order Received!</div>
-      <div class="order-success-ref">${ref}</div>
-      <p class="order-success-text">
-        Thank you ${first}! Your order has been received. We've sent a confirmation to <strong>${email}</strong>.<br><br>
-        ${selectedPayment === 'payid'
-          ? `To complete your order, transfer <strong>$${total.toFixed(2)} AUD</strong> via PayID to <strong>info@auspeptidewarehouse.au</strong> using reference <strong>${ref}</strong>, then send your payment screenshot to the same address.`
-          : selectedPayment === 'bank'
-          ? `To complete your order, transfer <strong>$${total.toFixed(2)} AUD</strong> to:<br><br><strong>Account Name:</strong> Peptide Warehouse Pty Ltd<br><strong>BSB:</strong> 063-000 &nbsp;·&nbsp; <strong>Account:</strong> 1234 5678<br><strong>Reference:</strong> ${ref}<br><br>Please send your transfer receipt to <strong>info@auspeptidewarehouse.au</strong> to expedite dispatch. Bank transfers typically clear in 1–3 business days.`
-          : `You'll be redirected to PayPal to complete your payment of <strong>$${total.toFixed(2)} AUD</strong>.`}
-        <br><br>Once payment is confirmed, your order will be dispatched via ${shipLabel} with tracking.
-      </p>
-      <button class="btn-primary" onclick="cart=[];updateCartBadge();goToShop()">Continue Shopping</button>
-    </div>
-    <div class="disclaimer"><p>⚠ RESEARCH USE ONLY — Not intended for human or veterinary consumption.</p></div>
-  `;
-  cart = [];
-  updateCartBadge();
+  // PayPal — render buttons inline
+  if(selectedPayment === 'paypal'){
+    const btn = document.getElementById('checkout-place-btn');
+    if(btn) btn.style.display = 'none';
+    const ppContainer = document.getElementById('paypal-btn-container');
+    if(ppContainer){ ppContainer.style.display = 'block'; }
+    if(window.paypal && ppContainer && !ppContainer._rendered){
+      ppContainer._rendered = true;
+      paypal.Buttons({
+        style:{ layout:'vertical', color:'blue', shape:'rect', label:'pay' },
+        createOrder: (data, actions) => actions.order.create({
+          purchase_units:[{ reference_id:ref, description:'Peptide Warehouse Australia', amount:{ currency_code:'AUD', value:total.toFixed(2) } }]
+        }),
+        onApprove: async (data, actions) => {
+          await actions.order.capture();
+          if(window._saveOrderToFirebase){
+            await window._saveOrderToFirebase({ ref, paymentMethod:'paypal', paypalOrderId:data.orderID,
+              customerName:`${formData.first} ${formData.last}`, customerEmail:formData.email,
+              customerPhone:formData.phone, customerAddress:formData.address, items:orderItems,
+              subtotal, shipping:shipCost, discount, total, shippingMethod:shipLabel,
+              coupon:appliedCoupon?appliedCoupon.code:null });
+          }
+          showOrderSuccess(ref, formData.first, formData.email, total, shipLabel, 'paypal');
+        },
+        onError: err => { alert('PayPal error. Please try again.'); console.error(err); }
+      }).render('#paypal-btn-container');
+    }
+    return;
+  }
+
+  // PayID / Bank — save to Firebase then show success
+  if(window._saveOrderToFirebase){
+    await window._saveOrderToFirebase({ ref, paymentMethod:selectedPayment,
+      customerName:`${formData.first} ${formData.last}`, customerEmail:formData.email,
+      customerPhone:formData.phone, customerAddress:formData.address, items:orderItems,
+      subtotal, shipping:shipCost, discount, total, shippingMethod:shipLabel,
+      coupon:appliedCoupon?appliedCoupon.code:null });
+  }
+  showOrderSuccess(ref, formData.first, formData.email, total, shipLabel, selectedPayment);
 }
 
 /* ─── PRODUCTS DATA ──────────────────────────────────────────── */
